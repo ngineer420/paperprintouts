@@ -75,6 +75,63 @@ TOOLS = [
         ],
     },
     {
+        "slug": "cross-stitch-paper",
+        "js": "cross-stitch-paper",
+        "nav": "Cross stitch",
+        "title": "Cross Stitch Pattern Paper — Every Count, True Scale, Centre Marks",
+        "h1": "Cross stitch pattern paper",
+        "desc": "Free printable cross stitch graph paper at any fabric count — 11, 14, 16, 18, "
+                "22, 25, 28 and 32 — with heavy lines every ten, edge numbering and centre marks. "
+                "Knows that evenweave is worked over two threads, so 28 count comes out at 14 "
+                "stitches per inch.",
+        "lede": "Charting paper at the size your stitches will actually be, for the count of "
+                "fabric you actually have. Centre marks included, because you start from the "
+                "middle.",
+        # "links" is filled in below, once the per-count pages exist to link to.
+        "intro": [
+            "Cross stitch paper is a square grid at one square per stitch, and the only thing "
+            "that makes one sheet different from another is how big that square is. That comes "
+            "from the fabric: 25.4 mm divided by the number of stitches you get to the inch. "
+            "Print at 100% and you can hold the sheet against the cloth and see your finished "
+            "design at its real size before you thread a needle.",
+            "The catch is that fabric is not sold by stitches per inch. It is sold by count — "
+            "threads, or Aida blocks, to the inch — and on evenweave and linen a stitch is worked "
+            "over two threads. So 28 count evenweave is 14 stitches per inch, exactly the stitch "
+            "size of 14 count Aida, and a sheet of 28 count paper drawn at 28 squares to the inch "
+            "is wrong for almost everybody who asks for it. The toggle here gets it right, and "
+            "the caption prints both numbers so the sheet can never mean something other than "
+            "what it says.",
+            "Set the stitch counts to your design size and the grid becomes the design, with the "
+            "finished measurement printed underneath in both millimetres and inches — which is "
+            "the number you need before you buy fabric and cut a margin for the frame.",
+        ],
+        "faq": [
+            ("Which count do I have?",
+             "If it came in a kit and nobody said, it is almost certainly 14 count Aida — that is "
+             "the default here. Aida has visible square blocks with holes at the corners; "
+             "evenweave and linen look like plain woven cloth with no obvious blocks at all."),
+            ("Why is the 28 count page drawn at 14 squares to the inch?",
+             "Because that is what 28 count evenweave stitches at. The count is the number of "
+             "threads to the inch, and cross stitch on evenweave or linen is worked over two of "
+             "them, so 28 threads give 14 stitches. If you genuinely are stitching over one "
+             "thread, switch the fabric control to Aida and the grid doubles to 28 squares to "
+             "the inch."),
+            ("Will it print at the true size?",
+             "Yes, at 100% scale. The grid is drawn in millimetres at 25.4 divided by your "
+             "stitches per inch, and the page size is declared to the printer. Print the "
+             "calibration page once to confirm your printer is not shrinking to fit, and then ten "
+             "squares of 14 count paper really will measure five sevenths of an inch."),
+            ("What are the arrows on the edges?",
+             "The centre. You find the middle of the fabric by folding it in half twice and start "
+             "stitching there, so the chart has to agree about where its own middle is. Static "
+             "PDFs rarely mark it."),
+            ("Can I chart a design that is bigger than one page?",
+             "Not across pages, no — this prints one sheet. Set the stitch counts to what fits "
+             "and chart in sections, or move up to A3 or tabloid, which at 14 count holds a "
+             "little over 150 stitches across."),
+        ],
+    },
+    {
         "slug": "english-paper-piecing-templates",
         "js": "english-paper-piecing",
         "nav": "EPP templates",
@@ -428,6 +485,226 @@ PAGES = [
     },
 ]
 
+# ------------------------------------ cross stitch: one landing page per count
+#
+# Fabric is sold by count, so every count is its own product and its own search,
+# and a generator with a dropdown does not answer the query "14 count cross
+# stitch paper" the way a page named that does.
+#
+# Count is threads — or Aida blocks — to the inch. It is only the same number as
+# stitches per inch when one stitch covers one thread, which is Aida's case and
+# nobody else's: evenweave, linen and Hardanger are worked over two threads, so
+# they stitch at half their count. Every figure on these pages is therefore
+# DERIVED from the two fields below rather than typed, because a page headed
+# "28 count" whose body says 14 stitches per inch has to get that arithmetic
+# right every single time or a stitcher will catch it out.
+
+CROSS_STITCH_COUNTS = [
+    {
+        "count": 11,
+        "fabric": "aida",
+        "cloth": "Aida",
+        "suits": "The largest Aida in common use. At eleven stitches to the inch the blocks are "
+                 "big enough to see and count without magnification, which is why it turns up in "
+                 "children's kits and in charts for anyone who finds 14 count hard on the eyes. "
+                 "The same design comes out about 27% larger than it would on 14 count.",
+        "faq": ("Is 11 count good for a beginner?",
+                "It is the easiest of the common counts to see, and the holes are unmistakable, "
+                "so it is a reasonable place to start. The trade-off is size: a design worked at "
+                "eleven stitches to the inch takes up noticeably more fabric than the same design "
+                "at fourteen."),
+    },
+    {
+        "count": 14,
+        "fabric": "aida",
+        "cloth": "Aida",
+        "suits": "The most common cross stitch fabric there is. It is the count most kits ship "
+                 "with, and the count a chart assumes when it does not say otherwise, so if you "
+                 "are not sure what is in your stash it is probably this. Every other count on "
+                 "this site is most usefully described by how it compares to it.",
+        "faq": ("Is 14 count the standard?",
+                "As close as the hobby has to one. Charts that quote a finished size without "
+                "naming a fabric have almost always worked it out at fourteen stitches to the "
+                "inch."),
+    },
+    {
+        "count": 16,
+        "fabric": "aida",
+        "cloth": "Aida",
+        "suits": "One step finer than 14 count Aida. The same chart comes out about 12% smaller, "
+                 "which is usually the whole reason for choosing it — a design that will not fit "
+                 "the frame you have at 14 count will often fit at 16.",
+        "faq": ("How much smaller is 16 count than 14 count?",
+                "About 12%. A design 100 stitches wide measures 7.14 inches on 14 count and 6.25 "
+                "inches on 16 count, because the stitch count has not changed and the stitches "
+                "have."),
+    },
+    {
+        "count": 18,
+        "fabric": "aida",
+        "cloth": "Aida",
+        "suits": "The finest Aida commonly sold. A chart comes out about 22% smaller than the "
+                 "same chart on 14 count, so it is what you reach for when a design has more "
+                 "detail in it than the space you have will allow.",
+        "faq": ("How much smaller is 18 count than 14 count?",
+                "About 22%. A design 100 stitches wide measures 7.14 inches on 14 count and 5.56 "
+                "inches on 18 count."),
+    },
+    {
+        "count": 22,
+        "fabric": "evenweave",
+        "cloth": "Hardanger",
+        "suits": "Hardanger cloth is woven in pairs: 22 threads to the inch, which is eleven "
+                 "pairs. Cross stitch worked over one pair is eleven stitches per inch — exactly "
+                 "the stitch size of 11 count Aida — which is why this page is drawn at eleven "
+                 "squares to the inch and not twenty-two.",
+        "faq": ("Why is 22 count drawn at 11 squares to the inch?",
+                "Because Hardanger is woven in pairs of threads and cross stitch is worked over a "
+                "pair. Twenty-two threads to the inch is eleven pairs, so eleven stitches. If you "
+                "are working over single threads instead, switch the fabric control to Aida and "
+                "the grid doubles."),
+    },
+    {
+        "count": 25,
+        "fabric": "evenweave",
+        "cloth": "evenweave",
+        "suits": "Worked over two threads, 25 count evenweave — Lugana and Dublin are the usual "
+                 "names — gives 12.5 stitches per inch. It is the one common count with no Aida "
+                 "equivalent at all, sitting between 11 and 14, and stitches very slightly larger "
+                 "than a 14 count stitch.",
+        "faq": ("Is there an Aida equivalent to 25 count?",
+                "No. Over two threads it works out at 12.5 stitches per inch, and Aida is not "
+                "sold in half counts. It is the closest thing to 14 count that is not 14 count, "
+                "which is worth knowing before you assume a chart's finished size."),
+    },
+    {
+        "count": 28,
+        "fabric": "evenweave",
+        "cloth": "evenweave",
+        "suits": "The linen substitution everybody makes. Worked over two threads, 28 count — "
+                 "Cashel linen, Jobelan, Brittney — comes out at exactly fourteen stitches per "
+                 "inch, the same stitch size as 14 count Aida. That is why a 14 count chart can "
+                 "be stitched on 28 count linen and finish at precisely the same size, and why "
+                 "this page is drawn at fourteen squares to the inch rather than twenty-eight.",
+        "faq": ("Can I stitch a 14 count chart on 28 count linen?",
+                "Yes, and it will finish at exactly the same size, because 28 threads worked over "
+                "two is fourteen stitches to the inch. This is the single most useful piece of "
+                "arithmetic in the hobby and the one that catches people out when they order "
+                "fabric."),
+    },
+    {
+        "count": 32,
+        "fabric": "evenweave",
+        "cloth": "linen",
+        "suits": "Fine linen — Belfast is the usual name — worked over two threads at sixteen "
+                 "stitches per inch, the same stitch size as 16 count Aida. It is chosen for the "
+                 "look and the drape of linen rather than to change the size of the design.",
+        "faq": ("Is 32 count linen the same as 16 count Aida?",
+                "The same stitch size, yes: 32 threads worked over two is sixteen stitches to the "
+                "inch. The fabric is nothing like the same to handle, but a chart finishes at the "
+                "identical measurement on either."),
+    },
+]
+
+
+def _fmt(n):
+    """Trim the trailing zeroes off a derived figure: 12.5 stays, 14.0 does not."""
+    return ("%.4f" % n).rstrip("0").rstrip(".")
+
+
+def cross_stitch_count_pages():
+    """One landing page per count, generated from the table above.
+
+    Hand-writing eight near-identical pages is how the arithmetic drifts: the
+    11 count page ends up quoting a figure worked out for 14, nobody notices,
+    and the one audience on earth that checks its stitch counts against a ruler
+    notices immediately. So every number below comes out of the same two fields
+    the generator itself is preloaded with.
+    """
+    pages = []
+    for spec in CROSS_STITCH_COUNTS:
+        count = spec["count"]
+        threads = 2 if spec["fabric"] == "evenweave" else 1
+        per_inch = count / threads
+        pitch = 25.4 / per_inch
+
+        spi = _fmt(per_inch)
+        mm_sq = "%.2f" % pitch
+        cloth = spec["cloth"]
+        worked = ("has one stitch per block" if threads == 1
+                  else "is worked over two threads")
+        # A concrete design to hang the sizes on. 100 stitches is a round number
+        # and near the middle of what one sheet holds.
+        hundred_in = "%.2f" % (100 / per_inch)
+        hundred_mm = "%.0f" % (100 / per_inch * 25.4)
+
+        heading = "%d count cross stitch paper" % count
+        pages.append({
+            "slug": "%d-count-cross-stitch-paper" % count,
+            "js": "cross-stitch-paper",
+            "title": "%d Count Cross Stitch Paper — Free Printable Grid, True Scale" % count,
+            "h1": heading,
+            "card": "%s stitches per inch · %s mm squares" % (spi, mm_sq),
+            "desc": "Free printable %d count cross stitch graph paper at true scale: %s stitches "
+                    "per inch, %s mm squares, heavy lines every ten, edge numbering and centre "
+                    "marks. Set it to your design size and it prints the finished measurement."
+                    % (count, spi, mm_sq),
+            "lede": "%d count %s %s, so this is %s stitches to the inch — squares of %s mm, "
+                    "printed at true size." % (count, cloth, worked, spi, mm_sq),
+            "preset": {"count": count, "fabric": spec["fabric"]},
+            "intro": [
+                "%d count %s %s, which puts %s stitches in an inch and makes every square on "
+                "this page %s mm across. Print it at 100%% and you can lay the sheet against the "
+                "cloth: a design 100 stitches wide finishes %s inches (%s mm) wide at this count."
+                % (count, cloth, worked, spi, mm_sq, hundred_in, hundred_mm),
+                spec["suits"],
+                "The grid below is the generator from the main cross stitch paper page, opened at "
+                "%d count. Heavy lines fall every ten stitches, the edges are numbered and the "
+                "centre is arrowed on all four sides. Change the paper size, the colour or the "
+                "design size and it redraws; nothing you set leaves your browser."
+                % count,
+            ],
+            "faq": [
+                spec["faq"],
+                ("How big will my design be on %d count?" % count,
+                 "Divide the stitch count by %s. A design 100 stitches wide finishes %s inches "
+                 "(%s mm) wide, and 200 stitches finishes twice that. Set the stitch counts in "
+                 "the panel and the sheet prints the finished measurement for you, in both "
+                 "millimetres and inches, so you can work out how much fabric to buy before you "
+                 "cut anything." % (spi, hundred_in, hundred_mm)),
+                ("Will it print at the true size?",
+                 "Yes, at 100%% scale. The grid is drawn in millimetres at 25.4 divided by %s "
+                 "stitches per inch, which is %s mm a square, and the page size is declared to "
+                 "the printer. Print the calibration page once to confirm your printer is not "
+                 "quietly shrinking to fit." % (spi, mm_sq)),
+            ],
+        })
+    return pages
+
+
+COUNT_PAGES = cross_stitch_count_pages()
+
+# The count pages and the generator page cross-link, which is what makes the set
+# navigable rather than eight orphans. Built after the fact because the links
+# point in both directions.
+_HUB_LINK = ("/cross-stitch-paper/", "Cross stitch paper, any count",
+             "The full generator — any count from 6 to 40")
+
+
+def _count_link(page):
+    return ("/%s/" % page["slug"], page["h1"], page["card"])
+
+
+for _page in COUNT_PAGES:
+    _page["links"] = ("Cross stitch paper by count",
+                      [_HUB_LINK] + [_count_link(other) for other in COUNT_PAGES
+                                     if other["slug"] != _page["slug"]])
+
+for _tool in TOOLS:
+    if _tool["slug"] == "cross-stitch-paper":
+        _tool["links"] = ("Cross stitch paper by count",
+                          [_count_link(other) for other in COUNT_PAGES])
+
 LEGAL = [
     ("privacy", "Privacy", "Privacy — Paper Printouts",
      "Paper Printouts runs entirely in your browser and collects nothing.",
@@ -574,9 +851,44 @@ def presets_html(page):
             '  <ul class="tool-cards">\n    %s\n  </ul>\n' % "\n    ".join(items))
 
 
+def links_html(page):
+    """A named set of sibling pages, for a tool that has a page per variant.
+
+    Different from presets_html: those are query strings on one page, these are
+    real pages with their own titles and their own copy. A count is a product
+    people search for by name, so it earns a URL rather than a parameter.
+    """
+    spec = page.get("links")
+    if not spec:
+        return ""
+    heading, items = spec
+    lis = "\n    ".join(
+        '<li><a href="%s"><strong>%s</strong><span>%s</span></a></li>'
+        % (href, sx.escape(label), sx.escape(blurb))
+        for href, label, blurb in items
+    )
+    return ('\n  <div class="prose"><h2>%s</h2></div>\n'
+            '  <ul class="tool-cards">\n    %s\n  </ul>\n' % (sx.escape(heading), lis))
+
+
+def preset_script(page):
+    """Preload the generator with what this page is a page about.
+
+    app.js reads window.PP_PRESET as the control defaults for this page, ahead of
+    whatever the visitor last used. A count page that opened at someone's last
+    count would contradict its own heading.
+    """
+    import json
+    preset = page.get("preset")
+    if not preset:
+        return ""
+    return "<script>window.PP_PRESET = %s;</script>" % json.dumps(preset)
+
+
 def tool_page(page):
     canonical = "%s/%s/" % (SITE, page["slug"])
     extra = app_jsonld(page, canonical) + "\n" + faq_jsonld(page["faq"])
+    extra += "\n" + preset_script(page)
     intro = "\n".join("<p>%s</p>" % sx.escape(p) for p in page["intro"])
     faqs = "\n".join(
         '<details class="faq"><summary>%s</summary><p>%s</p></details>'
@@ -602,6 +914,9 @@ def tool_page(page):
 
   <div class="prose">
     {intro}
+  </div>
+{links_html(page)}
+  <div class="prose">
     <h2>Questions</h2>
     {faqs}
     <h2>Other tools</h2>
@@ -636,8 +951,8 @@ def count_word(n):
 def home():
     canonical = SITE + "/"
     desc = ("Free printable paper and worksheet generators that run entirely in your browser: "
-            "graph paper, dot grid, lined paper, beading graph paper, savings challenge "
-            "charts, EPP templates, bubble "
+            "graph paper, dot grid, lined paper, cross stitch paper, beading graph paper, "
+            "savings challenge charts, EPP templates, bubble "
             "answer sheets, clock faces, periodic tables and attendance sheets.")
     cards = "\n".join(
         '<li><a href="/%s/"><strong>%s</strong><span>%s</span></a></li>'
@@ -688,14 +1003,14 @@ def main():
     (ROOT / "index.html").write_text(home(), encoding="utf-8")
     (ROOT / "404.html").write_text(not_found(), encoding="utf-8")
 
-    for page in TOOLS + PAGES:
+    for page in TOOLS + PAGES + COUNT_PAGES:
         write_page(page["slug"], tool_page(page))
 
     for slug, nav, title, desc, paras in LEGAL:
         write_page(slug, legal_page(slug, nav, title, desc, paras))
 
     urls = [SITE + "/"]
-    urls += ["%s/%s/" % (SITE, p["slug"]) for p in TOOLS + PAGES]
+    urls += ["%s/%s/" % (SITE, p["slug"]) for p in TOOLS + PAGES + COUNT_PAGES]
     urls += ["%s/%s/" % (SITE, s) for s, *_ in LEGAL]
     sitemap = ['<?xml version="1.0" encoding="UTF-8"?>',
                '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
@@ -704,7 +1019,7 @@ def main():
     sitemap.append("</urlset>")
     (ROOT / "sitemap.xml").write_text("\n".join(sitemap) + "\n", encoding="utf-8")
 
-    print("built %d pages" % (len(TOOLS) + len(PAGES) + len(LEGAL) + 2))
+    print("built %d pages" % (len(TOOLS) + len(PAGES) + len(COUNT_PAGES) + len(LEGAL) + 2))
 
 
 if __name__ == "__main__":
