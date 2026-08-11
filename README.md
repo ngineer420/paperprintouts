@@ -22,6 +22,7 @@ specialist geometries where the incumbents are static PDFs or paywalled:
 | Blank periodic table | The SERP is owned by non-customisable images |
 | Attendance / gradebook grids | Everyone ships a spreadsheet; nobody ships "paste 28 names, print" |
 | Graph, dot grid, lined paper | Table stakes — present for completeness and long-tail, not to win head terms |
+| Savings and goal charts | Etsy sellers describe the arithmetic by hand in the listing; a static PDF cannot do it |
 | Print calibration | Everything else depends on the printer not silently scaling |
 
 ## How it fits together

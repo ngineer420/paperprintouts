@@ -11,6 +11,7 @@ Run: python3 build.py
 
 import pathlib
 import xml.sax.saxutils as sx
+from urllib.parse import urlencode
 
 ROOT = pathlib.Path(__file__).parent
 SITE = "https://paperprintouts.com"
@@ -302,6 +303,99 @@ TOOLS = [
              "midline; capitals and ascenders reach the top line."),
         ],
     },
+    {
+        "slug": "savings-challenge-chart",
+        "js": "savings-challenge-chart",
+        "nav": "Savings charts",
+        "title": "Savings Challenge Chart Generator — Any Goal, Cells That Add Up Exactly",
+        "h1": "Savings and goal colouring charts",
+        "desc": "Printable savings challenge charts for any goal: 100 envelope challenge, 52 week "
+                "challenge, debt payoff, sinking funds, weight loss, mileage and reading trackers. "
+                "Circles, squares, hexagons or honeycomb, A4 down to A6 binder inserts, and the "
+                "cells always add up to the goal exactly.",
+        "lede": "Type your goal and how many cells you want. The chart solves for amounts that add "
+                "up to it exactly — then you colour one in as you go.",
+        "intro": [
+            "Every one of these charts is the same arithmetic problem: find N amounts that sum to "
+            "the goal, arranged so the early ones are bearable. The 100 envelope challenge is "
+            "1 to 100, which comes to 5,050. The 52 week challenge is 1 to 52, which comes to "
+            "1,378. But almost nobody's goal is 5,050 or 1,378 — it is 5,000, or 3,270, or "
+            "whatever is left on the card — and that is the arithmetic a printed PDF cannot do.",
+            "So this does it. Pick the goal, the number of cells and the shape of the "
+            "distribution: sequential, randomised, a fixed amount, a progressive ramp, or a "
+            "repeating cycle. The amounts are solved as whole pennies and the remainder is handed "
+            "out one penny at a time, so the cells sum to the goal exactly — not to within a "
+            "rounding error. The sheet prints what they add up to, so it proves its own sums.",
+            "Because it is only arithmetic and shapes, it is not only a savings chart. Set the "
+            "unit to lb, miles, pages or km and the same engine is a weight loss tracker, a "
+            "mileage chart or a reading log. Set the paper to A6 and it is a binder insert.",
+        ],
+        "presets": [
+            ("100 envelope challenge", "£5,050 in 100 envelopes — 1 to 100",
+             {"goal": "5050", "count": "100", "distribution": "sequential", "decimals": "0",
+              "title": "100 envelope challenge", "shape": "circle"}),
+            ("100 envelopes, randomised", "The same amounts, drawn in random order",
+             {"goal": "5050", "count": "100", "distribution": "random", "decimals": "0",
+              "title": "100 envelope challenge", "shape": "square"}),
+            ("52 week savings challenge", "£1,378 over a year — 1 to 52",
+             {"goal": "1378", "count": "52", "distribution": "sequential", "decimals": "0",
+              "title": "52 week savings challenge", "shape": "circle"}),
+            ("A6 binder insert", "The 52 week challenge sized for a pocket binder",
+             {"goal": "1378", "count": "52", "distribution": "sequential", "decimals": "0",
+              "paper": "a6", "title": "52 week challenge", "shape": "circle"}),
+            ("Sinking fund", "£1,200 over twelve equal months",
+             {"goal": "1200", "count": "12", "distribution": "fixed", "decimals": "2",
+              "title": "Sinking fund", "shape": "square"}),
+            ("Credit card payoff", "£3,500 over 50 cells, biggest payment first",
+             {"goal": "3500", "count": "50", "distribution": "progressive", "order": "down",
+              "decimals": "0", "title": "Credit card payoff", "shape": "hexagon"}),
+            ("Debt snowball", "£2,000 in a repeating four-week cycle",
+             {"goal": "2000", "count": "48", "distribution": "cyclical", "cycle": "4",
+              "decimals": "0", "title": "Debt snowball", "shape": "honeycomb"}),
+            ("House deposit tracker", "£20,000 over 100 rising cells",
+             {"goal": "20000", "count": "100", "distribution": "progressive", "ramp": "4",
+              "decimals": "0", "title": "House deposit", "shape": "honeycomb"}),
+            ("Weight loss tracker", "30 lb, one pound a cell",
+             {"goal": "30", "count": "30", "distribution": "fixed", "decimals": "0",
+              "unit": "lb", "unitPos": "after", "title": "Weight loss", "shape": "circle"}),
+            ("Running mileage chart", "500 miles over 52 weeks, building up",
+             {"goal": "500", "count": "52", "distribution": "progressive", "decimals": "0",
+              "unit": "miles", "unitPos": "after", "title": "500 miles", "shape": "hexagon"}),
+            ("Reading pages chart", "3,000 pages over 30 sittings",
+             {"goal": "3000", "count": "30", "distribution": "progressive", "decimals": "0",
+              "unit": "pages", "unitPos": "after", "title": "Reading log", "shape": "square"}),
+        ],
+        "faq": [
+            ("Do the cells really add up to the goal?",
+             "Exactly, every time, and the sheet prints the total so you can check it at a "
+             "glance. The amounts are worked out in whole pennies rather than in decimals, and "
+             "the few pennies that will not divide evenly are handed out one at a time to the "
+             "cells that were rounded down hardest. That is why a goal of 5,000 across 12 cells "
+             "gives four cells of 416.66 and eight of 416.67 rather than twelve cells of 416.67 "
+             "and a four penny hole."),
+            ("What if I want whole notes rather than odd pennies?",
+             "Set the rounding to whole units, or to multiples of 5, 10, 25, 50 or 100. Rounding "
+             "cannot be allowed to change the total, so whatever is left over — always less than "
+             "one of your chosen multiples — is carried by the largest cell, and the sheet says "
+             "so in print rather than quietly losing it."),
+            ("What is the difference between sequential and progressive?",
+             "Sequential is 1, 2, 3 up to N, scaled to your goal — the classic envelope "
+             "challenge, where the last cell is N times the first. Progressive is the same ramp "
+             "with the steepness in your hands: set it to 3 and the last cell is three times the "
+             "first, which is far gentler over 100 cells."),
+            ("Can I use it for something other than money?",
+             "Yes. The unit is a free text box, so lb, kg, miles, km, pages or minutes all work, "
+             "and it can sit after the number where those units belong. A 30 lb weight loss "
+             "tracker and a 500 mile running chart are the same solver as a savings challenge."),
+            ("Will it fit an A6 binder?",
+             "Yes — A6 is on the paper list, along with A5, A4, Letter, Legal, Tabloid and A3, "
+             "and the cells are laid out to fill whichever you choose. Everything prints at true "
+             "size, so an A6 insert really is 105 by 148 mm."),
+            ("Is anything I type sent anywhere?",
+             "No. The whole page runs in your browser, so your goal, your debt and your weight "
+             "target never leave the machine."),
+        ],
+    },
 ]
 
 PAGES = [
@@ -459,6 +553,27 @@ def app_jsonld(page, canonical):
     })
 
 
+def presets_html(page):
+    """Preset links for tools that are one engine serving many named jobs.
+
+    The controls already read the query string, so a preset is nothing but a
+    link back to the same page with the settings in it — no extra machinery,
+    and each named challenge gets a real URL that can be linked to.
+    """
+    presets = page.get("presets")
+    if not presets:
+        return ""
+    items = []
+    for label, blurb, params in presets:
+        query = urlencode(params)
+        items.append(
+            '<li><a href="/%s/?%s"><strong>%s</strong><span>%s</span></a></li>'
+            % (page["slug"], sx.escape(query), sx.escape(label), sx.escape(blurb))
+        )
+    return ('\n  <div class="prose"><h2>Start from a challenge</h2></div>\n'
+            '  <ul class="tool-cards">\n    %s\n  </ul>\n' % "\n    ".join(items))
+
+
 def tool_page(page):
     canonical = "%s/%s/" % (SITE, page["slug"])
     extra = app_jsonld(page, canonical) + "\n" + faq_jsonld(page["faq"])
@@ -483,6 +598,7 @@ def tool_page(page):
     </form>
     <section class="stage" id="stage" aria-live="polite" aria-label="Sheet preview"></section>
   </div>
+{presets_html(page)}
 
   <div class="prose">
     {intro}
@@ -520,7 +636,8 @@ def count_word(n):
 def home():
     canonical = SITE + "/"
     desc = ("Free printable paper and worksheet generators that run entirely in your browser: "
-            "graph paper, dot grid, lined paper, beading graph paper, EPP templates, bubble "
+            "graph paper, dot grid, lined paper, beading graph paper, savings challenge "
+            "charts, EPP templates, bubble "
             "answer sheets, clock faces, periodic tables and attendance sheets.")
     cards = "\n".join(
         '<li><a href="/%s/"><strong>%s</strong><span>%s</span></a></li>'
