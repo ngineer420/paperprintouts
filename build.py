@@ -367,6 +367,7 @@ FOOTER = """
   <p><a href="/">All tools</a> &middot; <a href="/print-calibration/">Printer calibration</a>
   &middot; <a href="/privacy/">Privacy</a> &middot; <a href="/terms/">Terms</a></p>
 </footer>
+<a href="https://erabb.it" class="erabbit-mark" aria-label="erabb.it"><img src="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>&#129365;</text></svg>" width="10" height="10" alt=""></a>
 <script src="/assets/app.js"></script>
 {tool_script}
 </body>

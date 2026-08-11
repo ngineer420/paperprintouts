@@ -242,6 +242,10 @@ details.faq p { color: var(--ink-dim); }
   * { animation: none !important; transition: none !important; }
 }
 
+/* The eRabb.it mark, last element in the body on every site in the family. */
+.erabbit-mark { display: block; width: 10px; margin: 0 0 0 auto; line-height: 0; cursor: default; }
+.erabbit-mark img { display: block; width: 10px; height: 10px; }
+
 /* ---- print: the sheet, at true scale, and nothing else ---- */
 
 @media print {
@@ -254,6 +258,7 @@ details.faq p { color: var(--ink-dim); }
   .prose,
   .tool-cards,
   .skip-link,
+  .erabbit-mark,
   h1,
   .lede { display: none !important; }
 
