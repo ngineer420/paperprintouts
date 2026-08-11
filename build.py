@@ -21,6 +21,60 @@ NAME = "Paper Printouts"
 
 TOOLS = [
     {
+        "slug": "beading-graph-paper",
+        "js": "beading-graph-paper",
+        "nav": "Beading graph",
+        "title": "Beading Graph Paper — Peyote, Brick, Herringbone, RAW, True Size",
+        "h1": "Beading graph paper",
+        "desc": "Free printable beading graph paper for all seven stitches — even and odd count "
+                "peyote, two-drop, brick, loom and square stitch, herringbone and right-angle "
+                "weave — at true bead size for Delica cylinders and round seed beads. No "
+                "watermark, every paper size, A6 included.",
+        "lede": "Charting paper drawn from the bead's own measurements, so the beads on the page "
+                "are the size of the beads in the tube. Every stitch, every size, no watermark.",
+        "intro": [
+            "Generic graph paper does not work for beadwork, because a bead is not a square. A "
+            "Delica 11/0 is 1.6 mm across the hole and 1.3 mm along it, and which of those two "
+            "numbers ends up horizontal depends entirely on which way the thread runs. Peyote and "
+            "brick stitch make the same fabric turned ninety degrees, so their paper is the same "
+            "paper rotated — and loom work uses the peyote proportion on a grid that does not "
+            "stagger at all.",
+            "All seven geometries are here: even count peyote, odd count peyote, two-drop peyote, "
+            "brick, loom and square stitch, herringbone and right-angle weave. So are the four "
+            "Delica cylinder sizes and the round seed bead sizes, which have a different aspect "
+            "ratio again. Set the column count to the width of your piece and the sheet becomes "
+            "the piece; leave it at zero and the grid fills the page.",
+            "Nothing is watermarked, no size is held back, and A6 is on the paper list alongside "
+            "A4 and Letter for anyone charting into a binder.",
+        ],
+        "faq": [
+            ("Will it print at the true bead size?",
+             "Yes, at 100% scale. The sheet is drawn in millimetres from published bead "
+             "dimensions and the page size is declared to the printer. Print the calibration page "
+             "once to confirm your printer is not shrinking to fit, and then a fifteen-bead row "
+             "on the page really will be as wide as fifteen beads."),
+            ("What is the difference between odd and even count peyote paper?",
+             "The lattice is identical; the column count is not. Even count peyote needs an even "
+             "number of columns and odd count needs an odd one, because the odd-count edge has to "
+             "be turned differently every other row. The generator forces the parity to match the "
+             "stitch you picked rather than letting you chart something you cannot stitch."),
+            ("Why are the round seed bead sizes given as one number?",
+             "Because that is how rocailles are sold. The published figure is the diameter across "
+             "the hole; how much they are squashed along the hole varies by maker and by batch, "
+             "which is exactly why cylinder beads are preferred for patterns that have to be "
+             "exact. Rather than invent a second figure, the sheet derives it — 80% of the "
+             "diameter by default, printed in the caption so it is never a hidden assumption. "
+             "Measure your own and change it, or type both numbers in as a custom size."),
+            ("Can I enlarge it to colour in?",
+             "Yes. The scale control multiplies the bead, and the caption always states the "
+             "scale, so an enlarged chart never gets mistaken for an actual-size one."),
+            ("Why does the counting line zigzag?",
+             "Because the cell boundary does. On peyote and brick the columns or rows are offset "
+             "by half a bead, so a straight rule would slice beads in half. The guide follows the "
+             "real boundary instead, stepping half a bead at a time."),
+        ],
+    },
+    {
         "slug": "english-paper-piecing-templates",
         "js": "english-paper-piecing",
         "nav": "EPP templates",
@@ -582,7 +636,8 @@ def count_word(n):
 def home():
     canonical = SITE + "/"
     desc = ("Free printable paper and worksheet generators that run entirely in your browser: "
-            "graph paper, dot grid, lined paper, savings challenge charts, EPP templates, bubble "
+            "graph paper, dot grid, lined paper, beading graph paper, savings challenge "
+            "charts, EPP templates, bubble "
             "answer sheets, clock faces, periodic tables and attendance sheets.")
     cards = "\n".join(
         '<li><a href="/%s/"><strong>%s</strong><span>%s</span></a></li>'
