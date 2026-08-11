@@ -361,6 +361,72 @@ TOOLS = [
         ],
     },
     {
+        "slug": "year-in-pixels",
+        "js": "year-in-pixels",
+        "nav": "Year in pixels",
+        "title": "Year in Pixels Generator — Printable Mood Tracker for Any Year",
+        "h1": "Year in pixels",
+        "desc": "Free printable year in pixels chart for any year: one cell a day, grid, "
+                "calendar or circular layout, your own legend, square or circle cells, and A5 "
+                "and A6 for planner inserts. February gets the right number of days.",
+        "lede": "One cell a day for a whole year, drawn for the year you name — so February is "
+                "the right length and the months stop where they actually stop.",
+        "intro": [
+            "A year in pixels is a cell for every day, coloured in daily against a legend you "
+            "write yourself, so that twelve months of mood or habit fit on one sheet you can "
+            "read at a glance. Every free version of it is a static PDF, which means it is a "
+            "12 by 31 grid with 372 cells and no opinion about which seven of them are not real "
+            "days.",
+            "Naming the year fixes that for free. April stops at 30, February is 28 or 29 "
+            "depending on the year you actually asked for, and the calendar layout can start "
+            "each month on its true weekday. The circular layout — one wedge a day around a "
+            "ring, with the year in the middle — is the variant people buy on Etsy and that no "
+            "generator offers.",
+            "The legend is what decides whether the sheet still makes sense next January, so it "
+            "gets real room: one to twelve entries, each with a swatch to colour and either the "
+            "label you typed or a ruled line long enough to write on. A5 and A6 are on the paper "
+            "list, because a planner insert is the format this is actually used in.",
+        ],
+        "presets": [
+            ("Mood tracker", "Five moods on a grid, A5",
+             {"paper": "a5", "layout": "grid", "categories": "5", "title": "Mood",
+              "labels": "Great\nGood\nOK\nLow\nRough"}),
+            ("Habit tracker", "Ten habits, circles, A5",
+             {"paper": "a5", "layout": "grid", "shape": "circle", "categories": "10",
+              "title": "Habits"}),
+            ("Circular year", "One wedge a day, the year in the middle",
+             {"paper": "a5", "layout": "circular", "categories": "5", "title": "Mood"}),
+            ("A6 planner insert", "Pocket binder size, five moods",
+             {"paper": "a6", "layout": "grid", "categories": "5"}),
+            ("Calendar layout", "Twelve mini months on their true weekdays",
+             {"paper": "a4", "layout": "calendar", "categories": "5", "dayNumbers": "1"}),
+            ("Sleep tracker", "Rounded cells, five bands, A4",
+             {"paper": "a4", "layout": "grid", "shape": "rounded", "categories": "5",
+              "title": "Sleep", "labels": "8+ hrs\n7 hrs\n6 hrs\n5 hrs\nUnder 5"}),
+        ],
+        "faq": [
+            ("Why does the year matter?",
+             "Because a printed grid cannot know it. Naming the year is what lets the sheet give "
+             "February 29 days in a leap year and 28 otherwise, stop April at 30, and start each "
+             "month of the calendar layout on the weekday it really starts on. The cells that are "
+             "not days are simply absent rather than left as traps."),
+            ("What do I put in the legend?",
+             "Whatever the colours mean. Five moods is the usual, ten habits is the other common "
+             "one. Type the labels and they are printed; leave them empty and you get a swatch "
+             "and a ruled line to fill in by hand."),
+            ("Will it fit my planner?",
+             "A5 and A6 are both on the paper list and both print at true size, so an A6 insert "
+             "really is 105 by 148 mm. A5 is the default here for that reason."),
+            ("What is the circular one?",
+             "The same year as a ring: one wedge per day, the months ticked and named around the "
+             "outside, and the year itself in the hole in the middle. It is the version sold as a "
+             "print, and it is the same data as the grid."),
+            ("Can I use it for something other than mood?",
+             "Yes — it is a cell a day and a legend, so habits, sleep, exercise, migraines, "
+             "weather or reading all work the same way. Set the title and the legend to suit."),
+        ],
+    },
+    {
         "slug": "savings-challenge-chart",
         "js": "savings-challenge-chart",
         "nav": "Savings charts",
@@ -952,7 +1018,7 @@ def home():
     canonical = SITE + "/"
     desc = ("Free printable paper and worksheet generators that run entirely in your browser: "
             "graph paper, dot grid, lined paper, cross stitch paper, beading graph paper, "
-            "savings challenge charts, EPP templates, bubble "
+            "year in pixels charts, savings challenge charts, EPP templates, bubble "
             "answer sheets, clock faces, periodic tables and attendance sheets.")
     cards = "\n".join(
         '<li><a href="/%s/"><strong>%s</strong><span>%s</span></a></li>'
