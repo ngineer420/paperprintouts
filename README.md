@@ -9,12 +9,13 @@ CNAME, the same shape as the rest of the portfolio.
 Most printable paper online is a fixed PDF. If you need ¾ inch hexagons and the file is 1 inch,
 the file is no use to you. Everything here is drawn from its measurements instead.
 
-The nine generators were picked from a market audit rather than guessed — see
+The generators were picked from a market audit rather than guessed — see
 `../paperprintouts-research.md`. Generic graph paper is a red ocean, so the anchors are the
 specialist geometries where the incumbents are static PDFs or paywalled:
 
 | Tool | Why it exists |
 | --- | --- |
+| Beading graph paper | Two sites sell blank peyote and brick paper as paid PDFs; the best free one misses four stitches and watermarks |
 | English paper piecing templates | The whole market is fixed-size PDFs; one blog ships "6 shapes, 20 sizes, 104 sheets" |
 | Bubble answer sheets | The best free competitor watermarks its output and charges to remove it |
 | Blank clock faces | Incumbents are server-side or static, and most draw the hour hand wrong |
