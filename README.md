@@ -9,7 +9,7 @@ CNAME, the same shape as the rest of the portfolio.
 Most printable paper online is a fixed PDF. If you need ¾ inch hexagons and the file is 1 inch,
 the file is no use to you. Everything here is drawn from its measurements instead.
 
-The nine generators were picked from a market audit rather than guessed — see
+The generators were picked from a market audit rather than guessed — see
 `../paperprintouts-research.md`. Generic graph paper is a red ocean, so the anchors are the
 specialist geometries where the incumbents are static PDFs or paywalled:
 
@@ -21,6 +21,7 @@ specialist geometries where the incumbents are static PDFs or paywalled:
 | Blank periodic table | The SERP is owned by non-customisable images |
 | Attendance / gradebook grids | Everyone ships a spreadsheet; nobody ships "paste 28 names, print" |
 | Graph, dot grid, lined paper | Table stakes — present for completeness and long-tail, not to win head terms |
+| Savings and goal charts | Etsy sellers describe the arithmetic by hand in the listing; a static PDF cannot do it |
 | Print calibration | Everything else depends on the printer not silently scaling |
 
 ## How it fits together
