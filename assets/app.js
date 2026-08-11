@@ -75,9 +75,32 @@
     return def.hidePageControls ? [] : base;
   }
 
+  /* A landing page can declare what it is a page *about*:
+
+       <script>window.PP_PRESET = {"count": 28, "fabric": "evenweave"};</script>
+
+     Those values replace the tool's own defaults, so Reset returns to what the
+     page is for and the address stays clean while the page shows it. They also
+     outrank the last-used settings in local storage, because somebody who opened
+     the 28 count page asked for 28 count by opening it, and a page that quietly
+     showed 14 because that is what they used yesterday would be lying about its
+     own heading. Settings the preset does not mention — paper size, colour —
+     still come from storage, so a preference carries from page to page.
+
+     An explicit query parameter still beats everything: that is a link somebody
+     chose to share. */
+  function presetted(c) {
+    var p = global.PP_PRESET;
+    return !!p && Object.prototype.hasOwnProperty.call(p, c.id);
+  }
+
+  function defaultOf(c) {
+    return presetted(c) ? global.PP_PRESET[c.id] : c.default;
+  }
+
   function controlDefaults(controls) {
     var out = {};
-    controls.forEach(function (c) { out[c.id] = c.default; });
+    controls.forEach(function (c) { out[c.id] = defaultOf(c); });
     return out;
   }
 
@@ -86,8 +109,8 @@
     var stored;
     try { stored = JSON.parse(localStorage.getItem(PP._key) || 'null'); } catch (e) { stored = null; }
     if (stored) {
-      Object.keys(values).forEach(function (k) {
-        if (stored[k] !== undefined) values[k] = stored[k];
+      controls.forEach(function (c) {
+        if (stored[c.id] !== undefined && !presetted(c)) values[c.id] = stored[c.id];
       });
     }
     /* The URL wins over storage, so a shared link always shows what was shared. */
@@ -107,7 +130,7 @@
     var params = new URLSearchParams();
     controls.forEach(function (c) {
       var v = values[c.id];
-      if (v === c.default || v === undefined || v === '') return;
+      if (v === defaultOf(c) || v === undefined || v === '') return;
       params.set(c.id, c.type === 'checkbox' ? (v ? '1' : '0') : v);
     });
     var qs = params.toString();
