@@ -1475,18 +1475,190 @@ THEME_BOOTSTRAP = (
 )
 
 
-def nav_html(current):
-    """The menu, with the active tool marked.
+# ------------------------------------------------------------- the toolbar
+#
+# The portfolio navigation pattern: ngineer420.github.io#13, with the errata.
+# One <nav class="toolbar"> per page, a direct child of <body> immediately after
+# </header> and above <main>. A labelled <details> trigger pinned left that
+# never scrolls, and one non-wrapping row of chips that does.
+#
+# Tier rule: a page is tier 1 only if it answers a different question. The same
+# generator with a ruling or a count baked in is tier 2 — it never appears in
+# the rail or the sheet body. It gets one hub link at the bottom of the sheet
+# plus real <a href> sibling chips inside the tool's own control panel, where it
+# is a parameter and not a peer.
 
-    A variant page passes its parent generator's slug, not its own: a visitor on
-    /5mm-graph-paper/ is using the graph paper tool, and leaving every nav item
-    unmarked because the exact slug is not in the menu tells them nothing about
-    where they are."""
-    links = []
-    for t in TOOLS + PAGES:
-        cls = ' aria-current="page"' if t["slug"] == current else ""
-        links.append('<a href="/%s/"%s>%s</a>' % (t["slug"], cls, sx.escape(t["nav"])))
-    return "\n      ".join(links)
+NAV_NOUN = "sheets"
+
+# Sheet groups, in the order they are rendered. Named from the visitor's
+# vocabulary — what they came to print — not from how the generators are built.
+NAV_GROUPS = [
+    ("grids", "Grids"),
+    ("school", "Writing &amp; school"),
+    ("needlecraft", "Needlecraft"),
+    ("charts", "Charts &amp; printing"),
+]
+
+# Tier-1 destinations in RAIL order; the first eight are the chips. The sheet
+# re-orders them by group. `label` is the chip text (<= 18 chars), `long` is the
+# anchor text in the sheet.
+#   slug, label, long, group
+NAV_TOOLS = [
+    ("graph-paper",                     "Graph paper",    "Printable graph paper",           "grids"),
+    ("lined-paper",                     "Lined paper",    "Printable lined paper",           "school"),
+    ("dot-grid-paper",                  "Dot grid",       "Printable dot grid paper",        "grids"),
+    ("cross-stitch-paper",              "Cross stitch",   "Cross stitch pattern paper",      "needlecraft"),
+    ("beading-graph-paper",             "Beading",        "Beading graph paper",             "needlecraft"),
+    ("blank-clock-faces",               "Clock faces",    "Blank clock faces",               "school"),
+    ("bubble-answer-sheet",             "Answer sheets",  "Bubble answer sheets",            "school"),
+    ("year-in-pixels",                  "Year in pixels", "Year in pixels chart",            "charts"),
+    # sheet only from here — the rail is capped at eight
+    ("blank-periodic-table",            None,             "Blank periodic table",            "school"),
+    ("attendance-sheet",                None,             "Attendance and gradebook grids",  "school"),
+    ("english-paper-piecing-templates", None,             "English paper piecing templates", "needlecraft"),
+    ("savings-challenge-chart",         None,             "Savings and goal charts",         "charts"),
+    ("print-calibration",               None,             "Printer calibration",             "charts"),
+]
+
+# One hub link at the bottom of the sheet, covering every tier-2 page at once.
+NAV_HUBS = [("/sheets/", "All 20 rulings and counts")]
+
+# Tier-2 sibling chips, per generator: real links, rendered into that tool's own
+# settings panel. The first entry of each family is the unparameterised
+# generator, so the switcher always has a way back to "any value".
+CHIP_GROUPS = {
+    "graph-paper": ("Ruling", "Graph paper ruling", [
+        ("/graph-paper/", "Any ruling"),
+        ("/5mm-graph-paper/", "5 mm"),
+        ("/1cm-graph-paper/", "1 cm"),
+        ("/quarter-inch-graph-paper/", "1/4 inch"),
+        ("/half-inch-graph-paper/", "1/2 inch"),
+        ("/engineering-paper/", "Engineering"),
+        ("/isometric-graph-paper/", "Isometric"),
+        ("/hexagonal-graph-paper/", "Hexagonal"),
+        ("/polar-graph-paper/", "Polar"),
+    ]),
+    "lined-paper": ("Ruling", "Lined paper ruling", [
+        ("/lined-paper/", "Any ruling"),
+        ("/college-ruled-paper/", "College"),
+        ("/wide-ruled-paper/", "Wide"),
+        ("/narrow-ruled-paper/", "Narrow"),
+    ]),
+    "dot-grid-paper": ("Spacing", "Dot grid spacing", [
+        ("/dot-grid-paper/", "Any spacing"),
+        ("/5mm-dot-grid-paper/", "5 mm"),
+    ]),
+    "cross-stitch-paper": ("Count", "Cross stitch count", [
+        ("/cross-stitch-paper/", "Any count"),
+    ] + [("/%d-count-cross-stitch-paper/" % s["count"], "%d ct" % s["count"])
+         for s in CROSS_STITCH_COUNTS]),
+}
+
+
+def _nav_anchor(href, text, current, owns=(), extra=""):
+    """One anchor, carrying the block's only per-page difference.
+
+    aria-current="page" is reserved for a link that really does point at the
+    page being rendered. A generator whose tier-2 variant is the current page
+    gets aria-current="true" instead — "the current item in this set" — which is
+    what stops the rail rendering unselected on all twenty variant pages
+    without announcing a link to somewhere else as the current page.
+    """
+    if href == current:
+        mark = ' aria-current="page"'
+    elif current in owns:
+        mark = ' aria-current="true"'
+    else:
+        mark = ""
+    return '<a href="%s"%s%s>%s</a>' % (href, extra, mark, text)
+
+
+def _owned(slug):
+    """The tier-2 URLs that belong to a tier-1 generator."""
+    group = CHIP_GROUPS.get(slug)
+    if not group:
+        return ()
+    return tuple(href for href, _ in group[2][1:])
+
+
+def nav_html(current):
+    """The toolbar, with the active tool marked.
+
+    `current` is the page's own clean URL. A variant page still marks its parent
+    generator: a visitor on /5mm-graph-paper/ is using the graph paper tool, and
+    leaving every item unmarked because the exact URL is not in the menu tells
+    them nothing about where they are.
+    """
+    count = len(NAV_TOOLS)
+    out = ['<nav class="toolbar" aria-label="Tools">',
+           '  <details class="tb-menu">',
+           # The count is the affordance an edge fade can never be, so it stays
+           # in the accessible name at every width, including below 400px where
+           # the noun itself is hidden.
+           '    <summary class="tb-trigger" aria-label="All %d %s">' % (count, NAV_NOUN),
+           '      <span class="tb-glyph" aria-hidden="true">&#9636;</span>',
+           '      <span class="tb-label">All %d<span class="tb-label-long"> %s</span></span>'
+           % (count, NAV_NOUN),
+           '    </summary>',
+           '    <div class="tb-sheet">']
+    for i, (key, title) in enumerate(NAV_GROUPS, start=1):
+        members = [t for t in NAV_TOOLS if t[3] == key]
+        if not members:
+            continue
+        gid = "tb-g%d" % i
+        # <p>, not <h2>: these are SEO landing pages and chrome headings would
+        # pollute the document outline. AT still announces the list.
+        out.append('      <p class="tb-grouplabel" id="%s">%s</p>' % (gid, title))
+        out.append('      <ul aria-labelledby="%s">' % gid)
+        for slug, _label, long, _group in members:
+            out.append('        <li>%s</li>' % _nav_anchor(
+                "/%s/" % slug, sx.escape(long), current, _owned(slug)))
+        out.append('      </ul>')
+    for href, text in NAV_HUBS:
+        out.append('      <p class="tb-hub">%s</p>'
+                   % _nav_anchor(href, sx.escape(text) + " &rarr;", current))
+    out += ['    </div>', '  </details>']
+    # A sibling of the <details>, not a child: the scrim is shown by CSS alone
+    # (.tb-menu[open] ~ .tb-scrim) so it works with JS off, and being outside the
+    # disclosure is what makes a tap on it count as a click-outside.
+    out.append('  <div class="tb-scrim"></div>')
+    out.append('  <ul class="tb-rail">')
+    for slug, label, _long, _group in NAV_TOOLS:
+        if not label:
+            continue
+        out.append('    <li>%s</li>' % _nav_anchor(
+            "/%s/" % slug, sx.escape(label), current, _owned(slug)))
+    out += ['  </ul>', '</nav>']
+    return "\n".join(out)
+
+
+def chips_html(page):
+    """Tier-2 sibling chips for the generator this page is a parameter of.
+
+    Rendered into the settings panel itself, ahead of the fields app.js appends,
+    because that is where a ruling or a count actually is: a control, not a peer
+    of the other twelve generators. Real links with real hrefs, so they work
+    with JS off and are crawlable; nothing intercepts the click, because these
+    pages differ by more than a preset — the heading, the copy and the FAQ are
+    all written for the count they name.
+    """
+    slug = page.get("navSlug", page["slug"])
+    group = CHIP_GROUPS.get(slug)
+    if not group:
+        return ""
+    label, aria, items = group
+    here = "/%s/" % page["slug"]
+    gid = "chip-label-%s" % slug
+    lis = "\n          ".join(
+        '<li>%s</li>' % _nav_anchor(href, sx.escape(text), here, extra=' class="chip"')
+        for href, text in items
+    )
+    return ('\n      <nav class="chip-row" aria-label="%s">\n'
+            '        <span class="chip-row-label" id="%s">%s</span>\n'
+            '        <ul aria-labelledby="%s">\n'
+            '          %s\n'
+            '        </ul>\n'
+            '      </nav>' % (sx.escape(aria), gid, sx.escape(label), gid, lis))
 
 
 def head(title, desc, canonical, extra_json=""):
@@ -1517,11 +1689,10 @@ def head(title, desc, canonical, extra_json=""):
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header">
   <a class="brand" href="/">paper<span>printouts</span></a>
-  <nav class="site-nav" aria-label="Tools">
-      {{nav}}
-  </nav>
   <button class="theme-toggle" type="button" aria-label="Switch theme">&#9680;</button>
 </header>
+
+{{nav}}
 """
 
 
@@ -1529,7 +1700,8 @@ FOOTER = """
 <footer class="site-footer">
   <p>Everything here runs in your browser. Nothing you type is uploaded, because there is
   nowhere to upload it to.</p>
-  <p><a href="/">All tools</a> &middot; <a href="/print-calibration/">Printer calibration</a>
+  <p><a href="/">All tools</a> &middot; <a href="/sheets/">Every printable sheet</a>
+  &middot; <a href="/print-calibration/">Printer calibration</a>
   &middot; <a href="/privacy/">Privacy</a> &middot; <a href="/terms/">Terms</a></p>
 </footer>
 <a href="https://erabb.it" class="erabbit-mark" aria-label="erabb.it"><img src="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>&#129365;</text></svg>" width="10" height="10" alt=""></a>
@@ -1646,7 +1818,7 @@ def tool_page(page):
 
   <div class="tool">
     <form class="panel" id="controls" onsubmit="return false">
-      <h2>Settings</h2>
+      <h2>Settings</h2>{chips_html(page)}
     </form>
     <section class="stage" id="stage" aria-live="polite" aria-label="Sheet preview"></section>
   </div>
@@ -1668,7 +1840,7 @@ def tool_page(page):
 """
     script = '<script src="/assets/tools/%s.js"></script>' % page["js"]
     return (head(page["title"], page["desc"], canonical, extra)
-            .replace("{nav}", nav_html(page.get("navSlug", page["slug"])))
+            .replace("{nav}", nav_html("/%s/" % page["slug"]))
             + body + FOOTER.replace("{tool_script}", script))
 
 
@@ -1677,7 +1849,7 @@ def legal_page(slug, nav, title, desc, paras):
     body = '<main id="main" class="wrap"><div class="prose"><h1>%s</h1>%s</div></main>' % (
         sx.escape(nav), "\n".join("<p>%s</p>" % sx.escape(p) for p in paras)
     )
-    return (head(title, desc, canonical).replace("{nav}", nav_html(slug))
+    return (head(title, desc, canonical).replace("{nav}", nav_html("/%s/" % slug))
             + body + FOOTER.replace("{tool_script}", ""))
 
 
@@ -1734,7 +1906,54 @@ def home():
 </main>
 """
     return (head("Paper Printouts — Printable Paper and Worksheet Generators", desc, canonical)
-            .replace("{nav}", nav_html("")) + body + FOOTER.replace("{tool_script}", ""))
+            .replace("{nav}", nav_html(canonical.replace(SITE, ""))) + body + FOOTER.replace("{tool_script}", ""))
+
+
+def sheets_hub():
+    """The one destination the toolbar offers for every tier-2 page.
+
+    Tier-2 pages are a generator with a ruling or a count baked in, so they are
+    deliberately absent from the rail and the sheet body. That leaves them one
+    route from the chrome, and this is it: a flat index of all twenty, grouped
+    under the generator each one opens, with the measurement as the blurb so the
+    list can be scanned by the number people actually came looking for.
+    """
+    canonical = SITE + "/sheets/"
+    desc = ("Every printable sheet on paperprintouts.com in one list: graph paper by ruling and "
+            "geometry, lined paper by ruling, dot grid spacing and cross stitch paper by count, "
+            "each one opening the generator already set to it.")
+    families = [
+        ("graph-paper", "Graph paper by ruling and geometry"),
+        ("lined-paper", "Lined paper by ruling"),
+        ("dot-grid-paper", "Dot grid paper"),
+    ]
+    sections = []
+    for slug, heading in families:
+        hub_label, hub_blurb = _FAMILY_HUB[slug][2], _FAMILY_HUB[slug][3]
+        items = [("/%s/" % slug, hub_label, hub_blurb)]
+        items += [_variant_link(v) for v in VARIANT_PAGES if v["family"] == slug]
+        sections.append((heading, items))
+    sections.append(("Cross stitch paper by count",
+                     [_HUB_LINK] + [_count_link(c) for c in COUNT_PAGES]))
+    blocks = []
+    for heading, items in sections:
+        lis = "\n    ".join(
+            '<li><a href="%s"><strong>%s</strong><span>%s</span></a></li>'
+            % (href, sx.escape(label), sx.escape(blurb))
+            for href, label, blurb in items
+        )
+        blocks.append('  <div class="prose"><h2>%s</h2></div>\n  <ul class="tool-cards">\n    %s\n  </ul>'
+                      % (sx.escape(heading), lis))
+    body = """
+<main id="main" class="wrap">
+  <h1>Every printable sheet</h1>
+  <p class="lede">The rulings, spacings and counts people search for by name. Each one opens the
+  generator it belongs to, already set to that value, and every setting is still yours to change.</p>
+%s
+</main>
+""" % "\n".join(blocks)
+    return (head("Every Printable Sheet — Rulings, Spacings and Counts", desc, canonical)
+            .replace("{nav}", nav_html("/sheets/")) + body + FOOTER.replace("{tool_script}", ""))
 
 
 def not_found():
@@ -1742,7 +1961,7 @@ def not_found():
             '<p>That page does not exist. <a href="/">All the tools are here</a>.</p>'
             '</div></main>')
     return (head("Page not found — Paper Printouts", "Page not found.", SITE + "/404")
-            .replace("{nav}", nav_html("")) + body + FOOTER.replace("{tool_script}", ""))
+            .replace("{nav}", nav_html("/404")) + body + FOOTER.replace("{tool_script}", ""))
 
 
 def write_page(slug, html):
@@ -1756,6 +1975,7 @@ def write_page(slug, html):
 def main():
     (ROOT / "index.html").write_text(home(), encoding="utf-8")
     (ROOT / "404.html").write_text(not_found(), encoding="utf-8")
+    write_page("sheets", sheets_hub())
 
     for page in TOOLS + PAGES + COUNT_PAGES + VARIANT_PAGES:
         write_page(page["slug"], tool_page(page))
@@ -1763,7 +1983,7 @@ def main():
     for slug, nav, title, desc, paras in LEGAL:
         write_page(slug, legal_page(slug, nav, title, desc, paras))
 
-    urls = [SITE + "/"]
+    urls = [SITE + "/", SITE + "/sheets/"]
     urls += ["%s/%s/" % (SITE, p["slug"]) for p in TOOLS + PAGES + COUNT_PAGES + VARIANT_PAGES]
     urls += ["%s/%s/" % (SITE, s) for s, *_ in LEGAL]
     sitemap = ['<?xml version="1.0" encoding="UTF-8"?>',
@@ -1774,7 +1994,7 @@ def main():
     (ROOT / "sitemap.xml").write_text("\n".join(sitemap) + "\n", encoding="utf-8")
 
     print("built %d pages" % (len(TOOLS) + len(PAGES) + len(COUNT_PAGES)
-                                + len(VARIANT_PAGES) + len(LEGAL) + 2))
+                                + len(VARIANT_PAGES) + len(LEGAL) + 3))
 
 
 if __name__ == "__main__":
