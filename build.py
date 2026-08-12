@@ -1600,7 +1600,14 @@ def nav_html(current):
            '      <span class="tb-label">All %d<span class="tb-label-long"> %s</span></span>'
            % (count, NAV_NOUN),
            '    </summary>',
-           '    <div class="tb-sheet">']
+           '    <div class="tb-sheet">',
+           # The columns live on this inner wrapper, never on .tb-sheet itself.
+           # A CSS multi-column box with a capped block-size does not scroll, it
+           # fragments sideways into extra columns, and links land outside the
+           # panel behind a silent horizontal drag. The wrapper is uncapped, so
+           # the columns balance at their natural height and the sheet scrolls
+           # vertically past them.
+           '      <div class="tb-sheet-cols">']
     for i, (key, title) in enumerate(NAV_GROUPS, start=1):
         members = [t for t in NAV_TOOLS if t[3] == key]
         if not members:
@@ -1608,16 +1615,16 @@ def nav_html(current):
         gid = "tb-g%d" % i
         # <p>, not <h2>: these are SEO landing pages and chrome headings would
         # pollute the document outline. AT still announces the list.
-        out.append('      <p class="tb-grouplabel" id="%s">%s</p>' % (gid, title))
-        out.append('      <ul aria-labelledby="%s">' % gid)
+        out.append('        <p class="tb-grouplabel" id="%s">%s</p>' % (gid, title))
+        out.append('        <ul aria-labelledby="%s">' % gid)
         for slug, _label, long, _group in members:
-            out.append('        <li>%s</li>' % _nav_anchor(
+            out.append('          <li>%s</li>' % _nav_anchor(
                 "/%s/" % slug, sx.escape(long), current, _owned(slug)))
-        out.append('      </ul>')
+        out.append('        </ul>')
     for href, text in NAV_HUBS:
-        out.append('      <p class="tb-hub">%s</p>'
+        out.append('        <p class="tb-hub">%s</p>'
                    % _nav_anchor(href, sx.escape(text) + " &rarr;", current))
-    out += ['    </div>', '  </details>']
+    out += ['      </div>', '    </div>', '  </details>']
     # A sibling of the <details>, not a child: the scrim is shown by CSS alone
     # (.tb-menu[open] ~ .tb-scrim) so it works with JS off, and being outside the
     # disclosure is what makes a tap on it count as a click-outside.
