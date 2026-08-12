@@ -762,6 +762,7 @@ def _count_link(page):
 
 
 for _page in COUNT_PAGES:
+    _page["navSlug"] = "cross-stitch-paper"
     _page["links"] = ("Cross stitch paper by count",
                       [_HUB_LINK] + [_count_link(other) for other in COUNT_PAGES
                                      if other["slug"] != _page["slug"]])
@@ -770,6 +771,673 @@ for _tool in TOOLS:
     if _tool["slug"] == "cross-stitch-paper":
         _tool["links"] = ("Cross stitch paper by count",
                           [_count_link(other) for other in COUNT_PAGES])
+
+
+# ---------------------------------------------------------------------------
+# Ruling and geometry variants.
+#
+# The same machinery as the count pages, pointed at the three generators people
+# actually search for by ruling name. Nobody types "graph paper generator"; they
+# type "5mm graph paper", "college ruled paper", "isometric graph paper". Each
+# entry below is a real product with its own history and its own audience, and
+# each carries its own hand-written paragraph and its own hand-written question
+# — a dozen pages that differ only in a number are worth nothing.
+#
+# `preset` becomes window.PP_PRESET, so the generator opens already set to the
+# ruling the page is about and Reset returns to that ruling rather than to the
+# generic default. Value types have to match the control types: a number control
+# wants an int or float, a select wants a string.
+# ---------------------------------------------------------------------------
+
+RULING_VARIANTS = [
+    # ---- new geometries -------------------------------------------------
+    {
+        "slug": "isometric-graph-paper",
+        "js": "graph-paper",
+        "family": "graph-paper",
+        "h1": "Isometric graph paper",
+        "card": "Vertical and 30° lines · for 3D sketching",
+        "title": "Isometric Graph Paper — Free Printable, True Scale, Any Triangle Size",
+        "desc": "Free printable isometric graph paper at true 1:1 scale. A vertical line and two "
+                "at 30 degrees, in any triangle size you like, drawn in the browser and printed "
+                "at the size you asked for.",
+        "lede": "A vertical and two lines thirty degrees off horizontal — the three axes of an "
+                "isometric drawing, at whatever triangle size you need.",
+        "preset": {"geometry": "isometric", "preset": "custom", "spacing": 10, "accentEvery": 0},
+        "closing":
+            "A 10 mm triangle side puts the lines 8.66 mm apart, which is the triangle height "
+            "and the number a ruler laid across the sheet will actually read. Everything else "
+            "the graph paper generator does is still here — paper size, orientation, margin, "
+            "line weight and colour — and the geometry control switches to hexagons or polar "
+            "without leaving the page.",
+        "scale_faq": (
+            "How do I check the triangles printed at the right size?",
+            "Measure across ten triangle sides rather than one — errors of a percent or two are "
+            "invisible over 10 mm and obvious over 100. At the default setting ten sides is "
+            "exactly 100 mm. If you get 94, your print dialogue was set to fit to page rather "
+            "than 100 percent."),
+        "intro": [
+            "Isometric paper is built around a single fact about isometric projection: the three "
+            "axes of a cube land on the page as a vertical and two lines thirty degrees off "
+            "horizontal. Draw along those three directions and a box comes out looking like a "
+            "box, with no vanishing point to judge and no foreshortening to guess at. That is "
+            "why it is the paper on every drawing board where pipework, ductwork and cabinetry "
+            "get sketched before anyone opens CAD.",
+            "The thing that makes it hard to buy is the size. Pipe isometrics want a coarse grid "
+            "so a run of pipe crosses several triangles; a jewellery or joinery sketch wants a "
+            "fine one. Printed pads come in one size and you take what you are given. Here the "
+            "triangle side is a number you type, so a 5 mm grid and a 15 mm grid are the same "
+            "two seconds of work.",
+            "Every line runs to the edge of the printable area and stops exactly there, so the "
+            "sheet has no half-triangles stranded in the margin and no white gutter where the "
+            "grid gave up early. If you want the horizontal-and-sixty-degree arrangement instead "
+            "— the one usually sold as triangle paper — switch the geometry control to "
+            "Triangular; it is the same lattice turned a quarter turn.",
+        ],
+        "faq": [
+            ("Is isometric paper the same as triangle paper?",
+             "They are the same lattice at different rotations. Isometric paper has a vertical "
+             "line and two at 30 degrees, which matches the axes of an isometric drawing. "
+             "Triangle paper has a horizontal line and two at 60 degrees. Both are on this page "
+             "— the geometry control switches between them."),
+            ("What triangle size should I use for pipe isometrics?",
+             "Around 10 mm is the usual working size: coarse enough that a run of pipe covers "
+             "several triangles and fittings have room to be annotated, fine enough that a whole "
+             "spool fits on one sheet. Detail sketches often drop to 5 mm."),
+        ],
+    },
+    {
+        "slug": "hexagonal-graph-paper",
+        "js": "graph-paper",
+        "family": "graph-paper",
+        "h1": "Hexagonal graph paper",
+        "card": "Whole hexagons, any side length, flat or pointy top",
+        "title": "Hexagonal Graph Paper — Free Printable Hex Grid, Any Size",
+        "desc": "Free printable hexagonal graph paper. Choose the hexagon side length in "
+                "millimetres and flat-top or pointy-top, and get whole hexagons at true 1:1 "
+                "scale with nothing cut off at the edges.",
+        "lede": "Whole hexagons at the side length you ask for, flat-top or pointy-top, printed "
+                "at true size.",
+        "preset": {"geometry": "hex-pointy", "hexSide": 10},
+        "closing":
+            "A hexagon quoted by its side length has two widths worth knowing, and the caption "
+            "control prints both on the sheet: turn it on and the page tells you its own side, "
+            "its width across the flats, and how many cells it drew. That is a sheet that can "
+            "be checked against a ruler months later without remembering what it was set to.",
+        "scale_faq": (
+            "How do I check the hexagons printed at the right size?",
+            "Measure across the flats — the shorter of the two widths — because it is the one "
+            "with two parallel edges to lay a ruler against. A 10 mm side is 17.32 mm across the "
+            "flats. Turning the caption on prints that figure on the sheet, so the paper can "
+            "check itself."),
+        "intro": [
+            "Two quite separate crowds print hex paper, and they want it turned different ways. "
+            "Tabletop maps use pointy-top hexes, because a pointy-top grid has clean columns and "
+            "the standard hex-numbering conventions assume them. Organic chemistry uses flat-top, "
+            "because that is the orientation a benzene ring is conventionally drawn in and a "
+            "fused ring system reads correctly along the horizontal. Both are here, and the "
+            "control that switches them is the geometry select.",
+            "The size that matters is the side length, not the width, because a hexagon has two "
+            "widths and people quote whichever suits them. A hexagon with a 10 mm side is 20 mm "
+            "across the points and 17.32 mm across the flats — the sheet will tell you both "
+            "figures if you turn the caption on. A 25 mm hex map tile and a 5 mm chemistry grid "
+            "come off the same page.",
+            "Only whole hexagons are drawn. A grid of hexes cannot fill a rectangle exactly, so "
+            "the honest options are a ragged edge of complete cells or a fringe of half-cells "
+            "sliced by the margin; this draws complete cells and centres the block they make. "
+            "The edge steps in and out by half a hex on alternate rows, which is exactly what a "
+            "printed hex pad does.",
+        ],
+        "faq": [
+            ("Flat-top or pointy-top — which do I want?",
+             "Pointy-top for tabletop maps and hex-and-counter wargames, where the numbering "
+             "conventions assume clean vertical columns. Flat-top for chemistry, where it is the "
+             "orientation a benzene ring is drawn in."),
+            ("Why is the edge of the grid ragged rather than straight?",
+             "Because hexagons do not tile a rectangle. Every other row sits half a cell across, "
+             "so a straight edge would mean slicing hexes in half at the margin. Whole cells with "
+             "a stepped edge is what printed hex paper does, and it is what you get here."),
+        ],
+    },
+    {
+        "slug": "polar-graph-paper",
+        "js": "graph-paper",
+        "family": "graph-paper",
+        "h1": "Polar graph paper",
+        "card": "Rings and spokes · any radial step, any spoke angle",
+        "title": "Polar Graph Paper — Free Printable Polar Grid, True Scale",
+        "desc": "Free printable polar graph paper: concentric rings at any radial step you choose "
+                "and spokes at any angle, drawn at true 1:1 scale so a measured radius is a "
+                "measured radius.",
+        "lede": "Concentric rings at the radial step you choose, with spokes at the angle you "
+                "choose, printed at true size.",
+        "preset": {"geometry": "polar", "polarStep": 10, "polarSpoke": 15, "accentEvery": 5},
+        "closing":
+            "The two heavy lines are the axes, at 0 and 90 degrees, rather than every fifth "
+            "spoke — counting spokes puts heavy lines at arbitrary angles and makes the sheet "
+            "look misprinted. Heavy rings still count outwards at whatever interval you set, "
+            "which is what makes a radius readable at a glance on a dense plot.",
+        "scale_faq": (
+            "How do I check the rings printed at the right size?",
+            "Measure the full diameter of the outermost ring rather than the gap between two "
+            "rings, because the diameter is the longest distance on the sheet and therefore the "
+            "one where a scaling error shows up most. At the default ten rings of 10 mm on "
+            "Letter that diameter is 180 mm."),
+        "intro": [
+            "Polar paper plots a point as a distance and an angle rather than as two distances, "
+            "which is the natural way to describe anything that goes round: a cardioid microphone "
+            "pattern, an antenna radiation plot, a rose curve, a wind rose, the sweep of a "
+            "compass bearing. On square paper those all have to be converted to x and y first, "
+            "which is arithmetic nobody enjoys and a fresh chance to make a mistake.",
+            "The two numbers that decide whether a polar sheet is any use are the radial step and "
+            "the spoke angle. A 15-degree spoke gives twenty-four sectors, which suits compass "
+            "work; 30 degrees gives twelve and keeps a busy plot readable; 10 gives thirty-six "
+            "for anything needing fine angular resolution. The radial step is whatever your data "
+            "measures in, and the rings are drawn at that exact distance apart on paper.",
+            "The outermost ring is sized to fit inside the shorter side of the printable area, "
+            "which means the whole plot is always on the page — no ring running off the edge and "
+            "no guessing at where the scale ended. Turn the heavy-line setting up and every fifth "
+            "ring is drawn heavier, which makes counting outwards from the centre much faster.",
+        ],
+        "faq": [
+            ("How many spokes should I use?",
+             "Fifteen degrees gives twenty-four spokes and is the usual default — it puts a line "
+             "on every compass point and every hour of a clock face. Thirty degrees gives twelve "
+             "and keeps a dense plot legible. Ten gives thirty-six for fine angular work."),
+            ("Do the rings print at their real size?",
+             "Yes, provided your print dialogue is not scaling. A 10 mm radial step measures "
+             "10 mm on the paper with a ruler. If it does not, the print was scaled to fit — the "
+             "calibration page will confirm it in one sheet."),
+        ],
+    },
+    {
+        "slug": "engineering-paper",
+        "js": "graph-paper",
+        "family": "graph-paper",
+        "h1": "Engineering paper",
+        "card": "5 squares per inch, green, with a border",
+        "title": "Engineering Paper — Free Printable Engineer's Computation Pad Grid",
+        "desc": "Free printable engineering paper: the 5-squares-to-the-inch green grid of an "
+                "engineer's computation pad, with a border, at true 1:1 scale.",
+        "lede": "The five-to-the-inch green grid of an engineer's computation pad, bordered and "
+                "printed at true size.",
+        "preset": {"geometry": "square", "preset": "fifth-inch", "accentEvery": 5,
+                   "colour": "green", "border": True, "lineWidth": 0.1},
+        "closing":
+            "The pale green and the border are set the way a pad would be, but both are just "
+            "controls: grey lines scan far better than green, and the border comes off with one "
+            "click when the sheet is going into something else. The spacing underneath stays "
+            "5.08 mm whatever you do to the colour.",
+        "scale_faq": (
+            "How do I check the grid printed at the right size?",
+            "Count five squares and measure: that distance has to be exactly one inch, or "
+            "25.4 mm. Five squares is the right test rather than one, because a single 5.08 mm "
+            "square is too small to tell 5.08 from 5.00 with a ruler."),
+        "intro": [
+            "An engineer's computation pad is a specific object: pale green paper, a grid of five "
+            "squares to the inch, a heavier line every fifth square so the inches read at a "
+            "glance, and a printed border. The convention comes from pads where the grid was "
+            "printed on the back of the sheet and showed through faintly, so a drawing could be "
+            "laid out on the grid and then photocopied without the grid coming with it.",
+            "Five squares to the inch is a fifth of an inch, or 5.08 mm — very nearly but not "
+            "quite the 5 mm of European graph paper. The difference is under two percent, which "
+            "sounds like nothing until you scale a drawing off it and find every dimension is out "
+            "by the same two percent. If a US course or a US drawing standard asked for "
+            "engineering paper, it means the inch-based grid, and that is what this page opens at.",
+            "The green line colour and the border are set for you, as they would be on a pad, but "
+            "both are ordinary controls — grey lines suit a scan far better than green does, and "
+            "the border comes off with one click if you are pasting the sheet into something else.",
+        ],
+        "faq": [
+            ("Is engineering paper the same as 5 mm graph paper?",
+             "No, though the two are close enough to be confused. Engineering paper is five "
+             "squares to the inch, which is 5.08 mm. It is about 1.6 percent coarser than 5 mm "
+             "paper — irrelevant for rough work, and not irrelevant if you are scaling dimensions "
+             "off the drawing."),
+            ("Why is engineering paper green?",
+             "Because the grid was traditionally printed on the reverse of the sheet in a pale "
+             "green that showed through faintly, so it guided the drawing without reproducing "
+             "when the sheet was copied. The colour stuck as a convention long after the reason "
+             "for it did."),
+        ],
+    },
+
+    # ---- graph paper rulings -------------------------------------------
+    {
+        "slug": "5mm-graph-paper",
+        "js": "graph-paper",
+        "family": "graph-paper",
+        "h1": "5 mm graph paper",
+        "card": "5 mm squares · the metric standard",
+        "title": "5mm Graph Paper — Free Printable 5 mm Squares, True Scale",
+        "desc": "Free printable 5 mm graph paper at true 1:1 scale. The standard metric square, "
+                "with a heavy line every five squares, printed at exactly 5 mm so a ruler agrees.",
+        "lede": "Five millimetre squares, the metric standard, printed at exactly five "
+                "millimetres.",
+        "preset": {"geometry": "square", "preset": "5mm", "accentEvery": 5},
+        "closing":
+            "On Letter with a 10 mm margin this comes out at 39 squares across and 51 down, all "
+            "of them whole — the generator counts complete squares and centres them, so the "
+            "leftover millimetre or two is split between the two edges rather than left as a "
+            "sliver of a square at the bottom right.",
+        "scale_faq": (
+            "How do I check the squares printed at exactly 5 mm?",
+            "Count twenty squares — four heavy blocks — and measure. That span is exactly 100 mm, "
+            "and a whole decimetre is far easier to read accurately off a ruler than a single "
+            "5 mm square is. If it comes out at 94 or 96, the print was scaled to fit."),
+        "intro": [
+            "Five millimetre squares are the default grid across most of the world outside the "
+            "United States. It is what a European school exercise book is ruled with, what a "
+            "bullet journal grid almost always is, and the ruling most cross-stitch and knitting "
+            "charts assume when they say \"graph paper\" without qualifying it. If you are "
+            "printing a sheet for someone else to use and you do not know what they want, this "
+            "is the safe answer.",
+            "The heavy line every fifth square makes each block a centimetre, which is the whole "
+            "reason the ruling works so well. You can count in centimetres without counting at "
+            "all, and a measurement read off the page needs no arithmetic — four blocks and two "
+            "squares is 4.2 cm and nothing had to be worked out.",
+            "It is worth knowing what 5 mm is not. It is not a quarter inch, which is 6.35 mm and "
+            "visibly coarser, and it is not the five-to-the-inch grid of engineering paper, which "
+            "is 5.08 mm. Both are close enough to look right and far enough out to ruin a scaled "
+            "drawing.",
+        ],
+        "faq": [
+            ("Is 5 mm graph paper the same as quarter inch?",
+             "No. A quarter inch is 6.35 mm, so quarter-inch squares are about 27 percent larger "
+             "in area than 5 mm ones. They look similar on screen and are obviously different "
+             "under a ruler."),
+            ("Why does 5 mm paper have a heavy line every fifth square?",
+             "So that each heavy block is exactly one centimetre. It turns counting squares into "
+             "reading centimetres, which is most of the point of a metric grid."),
+        ],
+    },
+    {
+        "slug": "1cm-graph-paper",
+        "js": "graph-paper",
+        "family": "graph-paper",
+        "h1": "1 cm graph paper",
+        "card": "10 mm squares · big enough to write in",
+        "title": "1cm Graph Paper — Free Printable 1 Centimetre Squares, True Scale",
+        "desc": "Free printable 1 cm graph paper at true 1:1 scale. Centimetre squares big enough "
+                "to write a number inside, for coordinate work, area problems and floor plans.",
+        "lede": "Centimetre squares — big enough to write inside, which is most of why people "
+                "want them.",
+        "preset": {"geometry": "square", "preset": "1cm", "accentEvery": 0},
+        "closing":
+            "A centimetre grid is also the easiest ruling to sanity-check, because ten squares "
+            "is a decimetre and any ruler shows that at a glance. If you want 5 cm blocks marked "
+            "for a large plan, set the heavy line control to every fifth square; it is off here "
+            "because at this spacing the lines are already countable.",
+        "scale_faq": (
+            "How do I check the squares printed at exactly 1 cm?",
+            "Lay a ruler across ten squares. That should read 10 cm exactly. Checking ten rather "
+            "than one turns a two percent scaling error from something invisible into two "
+            "millimetres you can see."),
+        "intro": [
+            "A centimetre square is big enough to write a number in, and that single property is "
+            "why primary and lower-secondary maths runs on it. Counting squares for area, "
+            "plotting coordinates, drawing a bar chart one square per unit, sketching a room to "
+            "scale — all of them need the square to hold a digit legibly, and 5 mm does not.",
+            "It is also the ruling to reach for when the grid is a measuring tool rather than a "
+            "writing surface. A floor plan at one centimetre to the metre, a garden bed laid out "
+            "at one square per foot, a seating plan — anything where you want to count squares "
+            "across a room and get an answer without a calculator.",
+            "The heavy-line setting is off here, because on a centimetre grid the lines are "
+            "already far enough apart to count and a heavy line every five would just make the "
+            "sheet busy. Turn it on if you want 5 cm blocks marked for a large plan.",
+        ],
+        "faq": [
+            ("Is 1 cm graph paper the same as 10 mm?",
+             "Yes, exactly — a centimetre is ten millimetres. They are two names for this sheet."),
+            ("What is 1 cm graph paper used for?",
+             "Mostly school maths where something has to be written inside the square: area by "
+             "counting, coordinate plotting, bar charts at one square per unit. Also scale plans, "
+             "where one square standing for one metre or one foot makes a room countable."),
+        ],
+    },
+    {
+        "slug": "quarter-inch-graph-paper",
+        "js": "graph-paper",
+        "family": "graph-paper",
+        "h1": "Quarter inch graph paper",
+        "card": "6.35 mm squares · 4 squares per inch",
+        "title": "Quarter Inch Graph Paper — Free Printable 4 Squares Per Inch",
+        "desc": "Free printable quarter inch graph paper — four squares to the inch, 6.35 mm — at "
+                "true 1:1 scale, with a heavy line every four squares to mark the inches.",
+        "lede": "Four squares to the inch, which is 6.35 mm — the American classroom default.",
+        "preset": {"geometry": "square", "preset": "quarter-inch", "accentEvery": 4},
+        "closing":
+            "The heavy line is set to every fourth square here rather than every fifth, which is "
+            "the change that makes the sheet imperial rather than metric-with-inch-squares: one "
+            "heavy block is one inch, so a dimension in inches and quarters reads straight off "
+            "the page.",
+        "scale_faq": (
+            "How do I check the squares printed at exactly a quarter inch?",
+            "Measure across four squares — one heavy block — which has to be exactly one inch. "
+            "Measure across sixteen for a four-inch check if your ruler is long enough; the "
+            "longer the run, the smaller the scaling error you can catch."),
+        "intro": [
+            "Quarter inch is the American classroom default, the ruling in the composition books "
+            "and the loose-leaf pads sold as \"graph paper\" without further explanation in the "
+            "US. Four squares to the inch, 6.35 mm a side, and — with the heavy line set to every "
+            "fourth square, as it is here — one heavy block per inch.",
+            "The imperial arithmetic is what makes it worth having rather than substituting 5 mm. "
+            "One square is a quarter inch, two are a half, and a block is an inch, so a "
+            "measurement in inches and quarters reads straight off the sheet without conversion. "
+            "That is exactly what quilting, woodworking layout and any US-dimensioned drawing "
+            "wants.",
+            "Do not swap it for 5 mm paper on the grounds that they look alike. A quarter inch is "
+            "6.35 mm, twenty-seven percent more square area, and a pattern printed on the wrong "
+            "one comes out the wrong size in a way you will not notice until it is cut.",
+        ],
+        "faq": [
+            ("What is 4 squares per inch?",
+             "It is quarter-inch paper described the other way round. Four squares to an inch "
+             "means each square is a quarter of an inch, or 6.35 mm — the same sheet."),
+            ("Can I use 5 mm paper instead of quarter inch?",
+             "Only for rough work. A quarter inch is 6.35 mm, so anything you scale off the sheet "
+             "will come out 27 percent smaller in area than intended. For a quilt block or a "
+             "cutting layout that matters a great deal."),
+        ],
+    },
+    {
+        "slug": "half-inch-graph-paper",
+        "js": "graph-paper",
+        "family": "graph-paper",
+        "h1": "Half inch graph paper",
+        "card": "12.7 mm squares · 2 squares per inch",
+        "title": "Half Inch Graph Paper — Free Printable 2 Squares Per Inch, True Scale",
+        "desc": "Free printable half inch graph paper — two squares to the inch, 12.7 mm — at true "
+                "1:1 scale. The coarse grid for large plans, early-years maths and quilt layouts.",
+        "lede": "Two squares to the inch, 12.7 mm a side — the coarse grid, for when you need room "
+                "inside the square.",
+        "preset": {"geometry": "square", "preset": "half-inch", "accentEvery": 2},
+        "closing":
+            "Half-inch squares are large enough that the centring matters visually: the "
+            "generator fits whole squares only and splits the leftover between the two edges, "
+            "which on a coarse grid is the difference between a sheet that looks deliberate and "
+            "one that looks as though it slipped in the printer.",
+        "scale_faq": (
+            "How do I check the squares printed at exactly half an inch?",
+            "Two squares should measure one inch, and eight should measure four. Use the longer "
+            "run: at this size a printer scaling to 96 percent still leaves each individual "
+            "square looking perfectly plausible."),
+        "intro": [
+            "Half inch is the coarse end of the imperial gradation, and it is chosen for room "
+            "rather than precision. Twelve and a half millimetres is enough to write a two-digit "
+            "number in comfortably, enough to colour a square without slipping over the line, and "
+            "enough that a grid still reads clearly from across a classroom on a projected or "
+            "photocopied sheet.",
+            "It is the standard grid for early-years number work for exactly that reason, and it "
+            "is the one quilters reach for when a block is being planned at half an inch to the "
+            "inch. Two squares to the inch also makes it the easiest imperial ruling to count in: "
+            "a heavy line every second square, as set here, puts one block on every inch.",
+            "If half an inch turns out to be too generous, quarter inch is the next step down and "
+            "twice as fine. If it is still too tight for what you are writing, the same generator "
+            "will draw one-inch squares — set the spacing control to 1 inch.",
+        ],
+        "faq": [
+            ("What is half inch graph paper used for?",
+             "Early-years number work, where a digit has to fit inside a square; quilt block "
+             "planning at half an inch to the inch; and any large-format sketch where a fine grid "
+             "would be unreadable at a distance."),
+            ("How many half-inch squares fit on a sheet of Letter?",
+             "With a 10 mm margin, fifteen across and twenty down — 12.7 mm squares in 195.9 mm "
+             "of usable width. The generator counts whole squares only and centres them, so "
+             "nothing is cut off at the edge."),
+        ],
+    },
+
+    # ---- lined paper rulings -------------------------------------------
+    {
+        "slug": "college-ruled-paper",
+        "js": "lined-paper",
+        "family": "lined-paper",
+        "h1": "College ruled paper",
+        "card": "7.1 mm line spacing · the US default",
+        "title": "College Ruled Paper — Free Printable 7.1 mm Ruling, True Scale",
+        "desc": "Free printable college ruled paper at true 1:1 scale: 7.1 mm between lines, the "
+                "standard US high school and college ruling, with a margin line.",
+        "lede": "Seven point one millimetres between lines — the US high school and college "
+                "standard, at true size.",
+        "preset": {"preset": "college"},
+        "closing":
+            "The margin line, the line colour and how far down the first line starts are all "
+            "still yours to set — this page only fixes the spacing. That matters more than it "
+            "sounds, because the margin line is the part of a ruled sheet that printed pads get "
+            "wrong most often for anyone left-handed.",
+        "scale_faq": (
+            "How do I check the ruling printed at 7.1 mm?",
+            "Measure across ten line gaps rather than one: that span should be 71 mm. A single "
+            "7.1 mm gap is far too short to tell apart from a 6.8 mm one by eye, and a printer "
+            "shrinking to fit takes off about that much."),
+        "intro": [
+            "College ruled is nine thirty-seconds of an inch between lines, which comes to "
+            "7.14 mm and is advertised everywhere as 7.1. It is the default ruling for American "
+            "high school and university paper, and the reason it became the default is straight "
+            "arithmetic: it fits about a third more lines on a page than wide ruled does, which "
+            "matters when you are taking lecture notes at speed.",
+            "It suits handwriting that has stopped growing. Most people write comfortably at "
+            "college ruling from around the age of twelve, and adults with small handwriting "
+            "often find even this generous. Below it, narrow ruled at 6.4 mm is the next step "
+            "down, and it is where most printed notebooks stop.",
+            "This page opens the lined paper generator already set to college ruling. Everything "
+            "else — the margin line, the line colour, how many lines fit the sheet — is still "
+            "yours to change, and the spacing measures 7.1 mm on the paper with a ruler provided "
+            "the print dialogue is not scaling to fit.",
+        ],
+        "faq": [
+            ("What is the exact spacing of college ruled paper?",
+             "Nine thirty-seconds of an inch, which is 7.14 mm. It is universally quoted as "
+             "7.1 mm and that is the figure this generator draws."),
+            ("Is college ruled the same as medium ruled?",
+             "Yes. Medium ruled is the older name for the same 7.1 mm spacing; the two terms are "
+             "used interchangeably, with \"college ruled\" dominant in the US and \"medium "
+             "ruled\" more common in stationery catalogues."),
+        ],
+    },
+    {
+        "slug": "wide-ruled-paper",
+        "js": "lined-paper",
+        "family": "lined-paper",
+        "h1": "Wide ruled paper",
+        "card": "8.7 mm line spacing · for larger handwriting",
+        "title": "Wide Ruled Paper — Free Printable 8.7 mm Ruling, True Scale",
+        "desc": "Free printable wide ruled paper at true 1:1 scale: 8.7 mm between lines, the "
+                "standard US elementary school ruling, with a margin line.",
+        "lede": "Eight point seven millimetres between lines — the elementary school ruling, for "
+                "handwriting that needs the room.",
+        "preset": {"preset": "wide"},
+        "closing":
+            "Because the sheet is generated rather than downloaded, the ruling is not the only "
+            "thing you can loosen. A paler line helps a reader who finds a dark ruling "
+            "competing with their own handwriting, and that is a one-click change here and "
+            "impossible on a printed pad.",
+        "scale_faq": (
+            "How do I check the ruling printed at 8.7 mm?",
+            "Ten line gaps should span 87 mm. If you get 82 or 83, the print was scaled — turn "
+            "off fit to page and print at 100 percent, then measure again."),
+        "intro": [
+            "Wide ruled is eleven thirty-seconds of an inch, or 8.73 mm, and it exists for "
+            "handwriting that has not finished shrinking. Children's letterforms are physically "
+            "larger than adults', not because of habit but because fine motor control develops "
+            "before the fine motor precision that lets you write small, and cramming that "
+            "handwriting into a college ruling produces the same illegible result every time.",
+            "It is also the ruling to choose for anyone whose vision or grip makes a tight line "
+            "hard work, which is a much larger group than the elementary-school framing suggests. "
+            "A millimetre and a half more between lines is the difference between a page someone "
+            "can read back and one they cannot.",
+            "Wide ruled is sometimes called legal ruled, which is confusing and worth "
+            "disentangling: the ruling is the same 8.7 mm, but legal-ruled pads are usually "
+            "printed on legal-size paper with a double margin line down the left. The paper size "
+            "and the ruling are separate choices, and both are controls on this page.",
+        ],
+        "faq": [
+            ("What is the difference between wide ruled and college ruled?",
+             "Spacing, and nothing else. Wide ruled is 8.7 mm between lines; college ruled is "
+             "7.1 mm. Wide fits roughly a quarter fewer lines on the same sheet."),
+            ("Is wide ruled the same as legal ruled?",
+             "The line spacing is the same 8.7 mm. \"Legal ruled\" usually also implies "
+             "legal-size paper and a double margin line at the left. Paper size and ruling are "
+             "separate controls here, so you can have either or both."),
+        ],
+    },
+    {
+        "slug": "narrow-ruled-paper",
+        "js": "lined-paper",
+        "family": "lined-paper",
+        "h1": "Narrow ruled paper",
+        "card": "6.4 mm line spacing · the tightest common ruling",
+        "title": "Narrow Ruled Paper — Free Printable 6.4 mm Ruling, True Scale",
+        "desc": "Free printable narrow ruled paper at true 1:1 scale: 6.4 mm between lines, the "
+                "tightest ruling in common use, for small handwriting and dense notes.",
+        "lede": "Six point four millimetres between lines — the tightest ruling in common use.",
+        "preset": {"preset": "narrow"},
+        "closing":
+            "At this spacing the line weight starts to matter as much as the spacing does. A "
+            "0.12 mm line disappears politely behind small handwriting; anything heavier starts "
+            "competing with it. That is a control on this page, which is the advantage of "
+            "generating the sheet rather than buying it.",
+        "scale_faq": (
+            "How do I check the ruling printed at 6.4 mm?",
+            "Ten gaps should measure 64 mm — and at this spacing checking is worth the trouble, "
+            "because a few percent of shrinkage on an already-tight ruling is what turns "
+            "legible notes into a wall of overlapping descenders."),
+        "intro": [
+            "Narrow ruled is a quarter of an inch, 6.35 mm, quoted as 6.4. It is the tightest "
+            "ruling sold as standard stationery and it fits about a fifth more lines on a page "
+            "than college ruled does. If you write small and have spent years finding college "
+            "ruling wasteful, this is the sheet you have been looking for.",
+            "It is common in British and European exercise books, where it is often described "
+            "simply as feint ruling, and it is what most bound notebooks aimed at adults use. "
+            "The trade-off is unforgiving: at 6.4 mm there is no room for a descender to cross "
+            "into the line below without touching it, so it rewards a disciplined hand and "
+            "punishes a loose one.",
+            "It is also the ruling to pick when the page is going to be scanned or photographed. "
+            "More lines per sheet means fewer sheets, and at this spacing a full page of notes "
+            "still reproduces cleanly at ordinary scan resolutions.",
+        ],
+        "faq": [
+            ("How narrow is narrow ruled paper?",
+             "A quarter of an inch — 6.35 mm, usually advertised as 6.4 mm. That is about "
+             "0.7 mm tighter than college ruled and fits roughly a fifth more lines per page."),
+            ("Is narrow ruled the same as feint ruled?",
+             "In British and European usage, effectively yes: feint ruling is the ordinary "
+             "exercise-book spacing at around 6 to 7 mm, and narrow ruled at 6.4 mm sits squarely "
+             "in that range."),
+        ],
+    },
+    {
+        "slug": "5mm-dot-grid-paper",
+        "js": "dot-grid-paper",
+        "family": "dot-grid-paper",
+        "h1": "5 mm dot grid paper",
+        "card": "5 mm dot spacing · the bullet journal standard",
+        "title": "5mm Dot Grid Paper — Free Printable Bullet Journal Dotted Paper",
+        "desc": "Free printable 5 mm dot grid paper at true 1:1 scale — the bullet journal "
+                "standard spacing, with adjustable dot size and colour.",
+        "lede": "Five millimetre dot spacing, the bullet journal standard, printed at true size.",
+        "preset": {"spacing": 5, "units": "mm"},
+        "closing":
+            "Dot size is the control worth playing with here. Printed notebooks pick one and "
+            "you live with it; drop these to a faint 0.2 mm for a page that is going to be "
+            "photographed for a spread, or fatten them up for anyone who needs to see the "
+            "lattice clearly.",
+        "scale_faq": (
+            "How do I check the dots printed 5 mm apart?",
+            "Count twenty gaps and measure: 100 mm exactly. Measure between dot centres rather "
+            "than edges, since the dot has a width of its own and measuring edge to edge builds "
+            "that width into every reading."),
+        "intro": [
+            "Five millimetres is the dot grid spacing that essentially every bullet journal "
+            "notebook uses, and the reason dot grid won out over both lined and squared paper for "
+            "that job is that dots guide without enclosing. A line tells you where to write; a "
+            "grid of squares boxes you in and shows up around anything you draw. Dots do neither "
+            "— they mark the lattice and then disappear behind whatever you put on top.",
+            "The spacing is small enough to write between two dots and large enough that a "
+            "spread does not read as texture. It also happens to make the arithmetic trivial: two "
+            "dots to the centimetre, so a spread laid out in dots converts to millimetres without "
+            "thinking, which matters when you are drawing a monthly grid to fit a page exactly.",
+            "Because this is a generator rather than a fixed PDF, the dot itself is adjustable "
+            "too. Printed notebooks pick a dot size and you live with it; here you can drop the "
+            "dots to a faint 0.2 mm for a page that is going to be photographed, or fatten them "
+            "up for someone who needs to see them clearly.",
+        ],
+        "faq": [
+            ("What dot spacing do bullet journals use?",
+             "5 mm, almost universally. Leuchtturm1917, Rhodia, Scribbles That Matter and the "
+             "rest all print 5 mm dot grids, which is why a spread copied from one notebook fits "
+             "another."),
+            ("Why dots rather than a square grid?",
+             "Because dots guide without enclosing. A printed square grid shows up around every "
+             "box you draw and behind every block of text; dots mark the same lattice and vanish "
+             "behind whatever you put on the page."),
+        ],
+    },
+]
+
+
+def ruling_variant_pages():
+    """Expand RULING_VARIANTS into full page dicts.
+
+    Every page closes on the true-scale promise, but the closing paragraph and
+    the scale question are written per variant rather than appended from a
+    template. A dozen pages ending in the same paragraph is exactly the thin
+    content this family exists to avoid, and a shared closer is still a shared
+    closer however good it is.
+    """
+    pages = []
+    seen_intro = {}
+    seen_faq = {}
+    for spec in RULING_VARIANTS:
+        page = dict(spec)
+        page["intro"] = list(spec["intro"]) + [spec["closing"]]
+        page["faq"] = list(spec["faq"]) + [spec["scale_faq"]]
+        del page["closing"]
+        del page["scale_faq"]
+        for para in page["intro"]:
+            if para in seen_intro:
+                raise SystemExit("intro paragraph shared by %s and %s"
+                                 % (seen_intro[para], page["slug"]))
+            seen_intro[para] = page["slug"]
+        for item in page["faq"]:
+            if item in seen_faq:
+                raise SystemExit("FAQ shared by %s and %s" % (seen_faq[item], page["slug"]))
+            seen_faq[item] = page["slug"]
+        pages.append(page)
+    return pages
+
+
+VARIANT_PAGES = ruling_variant_pages()
+
+# Each family cross-links to its siblings and back to the generator it opens, so
+# the set is navigable rather than a dozen orphans hanging off the sitemap.
+_FAMILY_HUB = {
+    "graph-paper": ("Graph paper by ruling and geometry", "/graph-paper/",
+                    "Graph paper, any ruling", "The full generator — any spacing, six geometries"),
+    "lined-paper": ("Lined paper by ruling", "/lined-paper/",
+                    "Lined paper, any ruling", "The full generator — any spacing, plus handwriting guides"),
+    "dot-grid-paper": ("Dot grid paper", "/dot-grid-paper/",
+                       "Dot grid paper, any spacing", "The full generator — square or triangular lattice"),
+}
+
+
+def _variant_link(page):
+    return ("/%s/" % page["slug"], page["h1"], page["card"])
+
+
+for _page in VARIANT_PAGES:
+    _page["navSlug"] = _page["family"]
+    _heading, _hub_href, _hub_label, _hub_blurb = _FAMILY_HUB[_page["family"]]
+    _siblings = [_variant_link(o) for o in VARIANT_PAGES
+                 if o["family"] == _page["family"] and o["slug"] != _page["slug"]]
+    _page["links"] = (_heading, [(_hub_href, _hub_label, _hub_blurb)] + _siblings)
+
+for _tool in TOOLS:
+    if _tool["slug"] in _FAMILY_HUB:
+        _heading = _FAMILY_HUB[_tool["slug"]][0]
+        _tool["links"] = (_heading, [_variant_link(o) for o in VARIANT_PAGES
+                                     if o["family"] == _tool["slug"]])
 
 LEGAL = [
     ("privacy", "Privacy", "Privacy — Paper Printouts",
@@ -808,6 +1476,12 @@ THEME_BOOTSTRAP = (
 
 
 def nav_html(current):
+    """The menu, with the active tool marked.
+
+    A variant page passes its parent generator's slug, not its own: a visitor on
+    /5mm-graph-paper/ is using the graph paper tool, and leaving every nav item
+    unmarked because the exact slug is not in the menu tells them nothing about
+    where they are."""
     links = []
     for t in TOOLS + PAGES:
         cls = ' aria-current="page"' if t["slug"] == current else ""
@@ -993,7 +1667,8 @@ def tool_page(page):
 </main>
 """
     script = '<script src="/assets/tools/%s.js"></script>' % page["js"]
-    return (head(page["title"], page["desc"], canonical, extra).replace("{nav}", nav_html(page["slug"]))
+    return (head(page["title"], page["desc"], canonical, extra)
+            .replace("{nav}", nav_html(page.get("navSlug", page["slug"])))
             + body + FOOTER.replace("{tool_script}", script))
 
 
@@ -1025,6 +1700,11 @@ def home():
         % (t["slug"], sx.escape(t["h1"]), sx.escape(t["lede"].split(".")[0]))
         for t in TOOLS
     )
+    variant_cards = "\n".join(
+        '<li><a href="/%s/"><strong>%s</strong><span>%s</span></a></li>'
+        % (t["slug"], sx.escape(t["h1"]), sx.escape(t["card"]))
+        for t in VARIANT_PAGES
+    )
     body = f"""
 <main id="main" class="wrap">
   <h1>Printable paper, generated to your measurements</h1>
@@ -1033,6 +1713,14 @@ def home():
   type leaves your browser.</p>
   <ul class="tool-cards">
     {cards}
+  </ul>
+  <div class="prose">
+    <h2>Straight to the ruling you were looking for</h2>
+    <p>Nobody searches for a graph paper generator; they search for 5 mm graph paper, or college
+    ruled, or isometric. These open the right generator already set to that ruling.</p>
+  </div>
+  <ul class="tool-cards">
+    {variant_cards}
   </ul>
   <div class="prose">
     <h2>Why generate rather than download</h2>
@@ -1069,14 +1757,14 @@ def main():
     (ROOT / "index.html").write_text(home(), encoding="utf-8")
     (ROOT / "404.html").write_text(not_found(), encoding="utf-8")
 
-    for page in TOOLS + PAGES + COUNT_PAGES:
+    for page in TOOLS + PAGES + COUNT_PAGES + VARIANT_PAGES:
         write_page(page["slug"], tool_page(page))
 
     for slug, nav, title, desc, paras in LEGAL:
         write_page(slug, legal_page(slug, nav, title, desc, paras))
 
     urls = [SITE + "/"]
-    urls += ["%s/%s/" % (SITE, p["slug"]) for p in TOOLS + PAGES + COUNT_PAGES]
+    urls += ["%s/%s/" % (SITE, p["slug"]) for p in TOOLS + PAGES + COUNT_PAGES + VARIANT_PAGES]
     urls += ["%s/%s/" % (SITE, s) for s, *_ in LEGAL]
     sitemap = ['<?xml version="1.0" encoding="UTF-8"?>',
                '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
@@ -1085,7 +1773,8 @@ def main():
     sitemap.append("</urlset>")
     (ROOT / "sitemap.xml").write_text("\n".join(sitemap) + "\n", encoding="utf-8")
 
-    print("built %d pages" % (len(TOOLS) + len(PAGES) + len(COUNT_PAGES) + len(LEGAL) + 2))
+    print("built %d pages" % (len(TOOLS) + len(PAGES) + len(COUNT_PAGES)
+                                + len(VARIANT_PAGES) + len(LEGAL) + 2))
 
 
 if __name__ == "__main__":

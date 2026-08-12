@@ -34,9 +34,13 @@ will not infer a content type for an extensionless file — it serves it as
 mistake hueshift shipped, and it is designed out here.
 
 ```sh
-python3 build.py          # regenerate every page and the sitemap
-python3 -m http.server    # serve it
+python3 build.py                          # regenerate every page and the sitemap
+python3 -m http.server                    # serve it
+node assets/tools/graph-paper.test.js     # geometry tests (no deps, node's own runner)
 ```
+
+`build.py` is idempotent: running it twice produces no diff. It never deletes, so a renamed
+slug leaves the old `slug.html` and `slug/` behind for you to `git rm`.
 
 `assets/app.js` is the shared framework. A generator registers itself and gets the control
 panel, paper size and orientation, margins, URL state, localStorage, print and SVG download for
