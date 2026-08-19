@@ -21,6 +21,83 @@ NAME = "Paper Printouts"
 
 TOOLS = [
     {
+        "slug": "staff-paper",
+        "js": "staff-paper",
+        "nav": "Staff paper",
+        "title": "Staff Paper &amp; Manuscript Paper — Free Printable, True Scale, Tab Too",
+        "h1": "Staff and tab paper",
+        "desc": "Free printable blank staff paper and manuscript paper at a staff height you "
+                "choose in millimetres, with rastral sizes as presets. Five-line staves, a "
+                "braced grand staff, and six-, four- and four-line tab for guitar, bass and "
+                "ukulele. No watermark, every paper size.",
+        "lede": "Blank manuscript and tablature ruled to a staff height you can measure with a "
+                "ruler, not to whatever the PDF you found happened to be. No watermark, no "
+                "fixed page count.",
+        "intro": [
+            "Every sheet of blank manuscript paper you can buy has already decided two things "
+            "for you: how tall the staves are and how many fit on the page. Those two numbers "
+            "are the whole product, and they are exactly what changes between a beginner "
+            "copying out a scale, a songwriter sketching a lead sheet on the bus and someone "
+            "engraving a part for a music stand three feet away. Here they are both controls, "
+            "and the staff height is given in millimetres because that is the number a ruler "
+            "can check.",
+            "Rastral numbers are on the same control as presets. A rastral size is a "
+            "traditional engraver's name for one measurement — the distance from the bottom "
+            "line of a five-line staff to the top line — so No. 3 is 7.0 mm and No. 6 is "
+            "5.5 mm, and neither is a different kind of thing from a number you type. Picking "
+            "the preset and picking 7.0 mm do exactly the same thing, which is the honest way "
+            "round: hardly anyone searching for blank staff paper knows the rastral table, and "
+            "everyone can measure seven millimetres.",
+            "Tablature is sized by a different question and gets its own control. A tab line "
+            "spacing has to hold a two-digit fret number between the lines, so it is set by "
+            "what you are going to write rather than by a notation convention — four "
+            "millimetres is comfortable for most hands, and it is a number rather than a "
+            "guess. Guitar takes six lines, bass and ukulele four, and the staff-over-tab "
+            "system pairs a five-line staff with a six-line tab as one braced unit.",
+            "There are no clefs on any of these sheets, and that is deliberate rather than "
+            "unfinished. Commercial blank manuscript paper ships without them, because the "
+            "clef belongs to the piece and not to the paper — and a hand-drawn treble clef "
+            "that is very nearly right is worse than a clean empty staff. The grand staff does "
+            "get its brace, because a brace is a curve rather than a glyph and it is the thing "
+            "that makes a grand staff readable as one system.",
+        ],
+        "faq": [
+            ("What staff height should I choose?",
+             "For writing by hand, larger than printed music: 7.9 mm (rastral No. 1) or 9.2 mm "
+             "(No. 0) leaves room for a pencil noteheadand its stem without crowding. Printed "
+             "music sits around 7.0 mm, and the smaller rastral sizes below that are for "
+             "engraved parts and study scores rather than anything you are going to write on. "
+             "Whatever you pick, the sheet prints at exactly that measurement, so you can check "
+             "it against a ruler."),
+            ("How many staves fit on a page?",
+             "It depends entirely on the staff height, which is why the systems-per-page number "
+             "is a control rather than a fixed twelve. At 7.9 mm on Letter, ten to twelve is "
+             "comfortable; at 5.5 mm you can fit far more, and at 9.2 mm rather fewer. Ask for "
+             "more than the page holds and the generator tells you how many actually fit "
+             "instead of silently squashing them."),
+            ("Why is there no treble clef?",
+             "Because a nearly-right one is worse than none. A treble clef is a difficult "
+             "shape, and a version of it that is subtly wrong is the first thing a musician "
+             "notices and the last thing they trust. Blank manuscript paper sold in shops does "
+             "not print clefs either — the clef is part of the piece. The brace on the grand "
+             "staff is drawn, because it is a curve rather than a glyph."),
+            ("Will it print at the right size?",
+             "Yes, at 100% scale. The sheet is drawn in millimetres and the page size is "
+             "declared to the printer, so a staff set to 7.0 mm measures 7.0 mm on paper. If "
+             "your print dialogue is set to fit to page or shrink to fit, every measurement "
+             "shrinks with it — print the calibration page once and you will know."),
+            ("Can I use this for a piano piece?",
+             "Choose the grand staff. It draws two five-line staves joined by a brace and a "
+             "systemic barline, with seven staff spaces between them, which is the usual "
+             "working gap — wide enough that ledger lines coming down from the right hand and "
+             "up from the left hand have somewhere to meet without colliding."),
+            ("What is the difference between the tab pages and this one?",
+             "Nothing but the settings they arrive with. Each of the six sheets has its own "
+             "page because they are six different searches, and each one opens this generator "
+             "already set for it. Every control is still here on every page."),
+        ],
+    },
+    {
         "slug": "beading-graph-paper",
         "js": "beading-graph-paper",
         "nav": "Beading graph",
@@ -790,6 +867,369 @@ for _tool in TOOLS:
 # ---------------------------------------------------------------------------
 
 RULING_VARIANTS = [
+    # ---- staff and tablature ---------------------------------------------
+    {
+        "slug": "blank-sheet-music",
+        "js": "staff-paper",
+        "family": "staff-paper",
+        "h1": "Blank sheet music",
+        "card": "Five-line staves · manuscript paper at any staff height",
+        "title": "Blank Sheet Music — Free Printable Manuscript Paper, True Scale",
+        "desc": "Free printable blank sheet music: five-line staves at a staff height you set in "
+                "millimetres, with rastral sizes as presets and any number of staves on the page. "
+                "Manuscript paper with no watermark, at true 1:1 scale.",
+        "lede": "Plain five-line staves, as many as you want, at the staff height you ask for "
+                "rather than the one the pad happened to be printed at.",
+        "preset": {"system": "staff5", "systems": 12, "rastral": "r3", "bars": 0},
+        "closing":
+            "Twelve staves at rastral No. 3 is what a shop-bought pad of manuscript paper "
+            "usually is, so that is what this page opens as. Both halves of that description "
+            "are controls: pull the staff height up to No. 0 and eight staves is a more "
+            "comfortable page, drop it to No. 6 and eighteen fit. Bar lines are off here, "
+            "because empty staves are what manuscript paper is for and a bar line you did not "
+            "want is a bar line you have to work around.",
+        "scale_faq": (
+            "How do I check the staves printed at the right size?",
+            "Measure from the bottom line of one staff to its top line — that single "
+            "measurement is what the staff height control sets, and at the default it should "
+            "read 7.0 mm. Errors of a percent or two hide inside 7 mm, so if you want to be "
+            "certain, measure from the top line of the first staff to the bottom line of the "
+            "last and compare it with what the page told you it drew."),
+        "intro": [
+            "Blank sheet music is the same object as manuscript paper and as staff paper: a "
+            "sheet ruled with five-line staves and nothing else on it. What separates one "
+            "sheet from another is two numbers — how tall each staff is, and how many of them "
+            "fit down the page — and buying a pad means accepting whatever pair the printer "
+            "chose. Those two numbers are the controls here.",
+            "They are not independent, which is why a pad has to pick. A page holds a fixed "
+            "amount of vertical space, so a taller staff means fewer staves, and there is no "
+            "arrangement that gives you both. What a generator can do that a pad cannot is let "
+            "you decide which way to trade: a child copying out a scale wants tall staves and "
+            "few of them, and someone drafting a full song wants the opposite on the same "
+            "sheet of paper.",
+            "Staff height is given in millimetres because that is the measurement you can "
+            "check. Rastral numbers — the engraver's traditional names for exactly this "
+            "measurement — sit on the same control as presets, so No. 3 and 7.0 mm are the "
+            "same choice made two ways round. Nobody should have to learn a numbering system "
+            "to buy the right paper.",
+            "There are no clefs, no time signature and no key signature, which is what makes "
+            "it blank. Every one of those belongs to the piece rather than to the paper, and "
+            "commercial manuscript paper leaves all three to you for the same reason.",
+        ],
+        "faq": [
+            ("Is manuscript paper the same as blank sheet music?",
+             "Yes — manuscript paper, staff paper, stave paper and blank sheet music all name "
+             "the same thing, a page of empty five-line staves. The word people reach for "
+             "tends to follow where they learned it; the sheet is identical."),
+            ("How is this different from lined paper?",
+             "Lined paper has one rule per row of writing. A staff is five rules that belong "
+             "together as one object, with a gap before the next staff starts, and the "
+             "distance across those five is the measurement that matters. Ruling a sheet with "
+             "evenly spaced lines and calling every fifth one a staff would put the gaps in "
+             "the wrong place."),
+        ],
+    },
+    {
+        "slug": "guitar-tab-paper",
+        "js": "staff-paper",
+        "family": "staff-paper",
+        "h1": "Guitar tab paper",
+        "card": "Six lines · one per string, spacing you can set",
+        "title": "Guitar Tab Paper — Free Printable Blank Tablature, True Scale",
+        "desc": "Free printable blank guitar tab paper: six lines, one per string, at a line "
+                "spacing you set in millimetres so two-digit fret numbers fit. Bar lines "
+                "optional, no watermark, prints at true 1:1 scale.",
+        "lede": "Six lines for six strings, spaced far enough apart that a two-digit fret "
+                "number actually fits between them.",
+        "preset": {"system": "tab6", "systems": 8, "tabSpacing": 4.5, "bars": 4},
+        "closing":
+            "Eight systems of four bars is thirty-two bars to a page, which is most of a song "
+            "for anything with a repeating structure. Turn the bar lines off if you are "
+            "transcribing something whose bar lengths you do not know yet — an empty staff is "
+            "easier to fit an odd bar into than one already divided into four. The TAB letters "
+            "down the left are on by default and switch off with the tab label control.",
+        "scale_faq": (
+            "How do I check the tab printed at the right size?",
+            "Measure from the top line to the bottom line and divide by five, because six "
+            "lines have five gaps between them. At the 4.5 mm default that whole span is "
+            "22.5 mm. Measuring one gap will not tell you much — the error you are looking "
+            "for is a percent or two, which is invisible over 4.5 mm and obvious over 22."),
+        "intro": [
+            "Guitar tablature is six lines, one for each string, with a fret number written on "
+            "the line for the string it belongs to. That is the whole notation, and it is why "
+            "it spread: it tells you where to put your fingers rather than which pitches to "
+            "produce, so you can read it before you can read music.",
+            "The line that catches everyone out is the top one. In tab the highest line is the "
+            "highest-sounding string — the thin E — not the one nearest your chin when the "
+            "guitar is on your knee. Tab is drawn as though you have turned the neck to face "
+            "you, and the low E sits at the bottom. Blank paper cannot help you with that, but "
+            "it is worth knowing before you fill a page in upside down.",
+            "The one measurement that matters on tab paper is the gap between two lines, "
+            "because that gap has to hold a fret number. Anything past the ninth fret is two "
+            "digits, and two digits at a size you can read is about four and a half "
+            "millimetres of clear space. Printed tab pads are frequently tighter than that, "
+            "which is why so much handwritten tab ends up with the numbers crowding the lines "
+            "above and below.",
+            "Set the tab lines control if your instrument does not have six strings. A "
+            "seven-string guitar takes seven, a baritone ukulele four; the sheet is otherwise "
+            "the same and the spacing control still means the same thing.",
+        ],
+        "faq": [
+            ("Which line is the low E string?",
+             "The bottom one. Tab is drawn from the player's point of view with the neck "
+             "turned to face you, so the highest line is the thinnest, highest-sounding "
+             "string and the lowest line is the low E. It is the opposite of how the strings "
+             "sit when you look down at the guitar in your lap."),
+            ("How many bars should I put on a line?",
+             "Four is the usual working figure and it is what this page opens with, but it "
+             "depends entirely on how dense the passage is: a strummed verse fits four bars "
+             "comfortably, a solo with two notes a beat wants two. Set the bar lines to zero "
+             "and rule them yourself if the piece changes density as it goes."),
+        ],
+    },
+    {
+        "slug": "bass-tab-paper",
+        "js": "staff-paper",
+        "family": "staff-paper",
+        "h1": "Bass tab paper",
+        "card": "Four lines · wider spacing for high fret numbers",
+        "title": "Bass Tab Paper — Free Printable Blank Bass Tablature, 4 or 5 String",
+        "desc": "Free printable blank bass tab paper: four lines for a standard bass, or set the "
+                "line count for a five- or six-string. Line spacing in millimetres so two-digit "
+                "fret numbers fit. True 1:1 scale, no watermark.",
+        "lede": "Four lines for E, A, D and G — and a line count you can raise the day you "
+                "start playing a five-string.",
+        "preset": {"system": "tab4bass", "systems": 8, "tabSpacing": 5, "bars": 4},
+        "closing":
+            "Five millimetres between lines rather than the four and a half guitar tab opens "
+            "with, because bass lines spend more time high up the neck than a guitar part "
+            "does and a page of two-digit numbers needs the extra room. Drop it back if you "
+            "are writing a root-note part that never leaves the first five frets — there is no "
+            "virtue in wasting the page.",
+        "scale_faq": (
+            "How do I check the bass tab printed at the right size?",
+            "Four lines have three gaps, so measure the whole span from the top line to the "
+            "bottom line and divide by three. At the 5 mm default that span is 15 mm. If it "
+            "comes out at 14, your print dialogue shrank the page to fit and every other "
+            "measurement on the sheet went with it."),
+        "intro": [
+            "Bass tab is four lines because a bass has four strings, tuned E, A, D and G from "
+            "the lowest. As on guitar tab the lowest-sounding string is the bottom line, and a "
+            "number on a line is the fret to stop that string at. Nothing about the reading is "
+            "different; the sheet is simply two lines shorter.",
+            "The practical difference is how far up the neck the numbers go. A bass part sits "
+            "on four strings instead of six, so getting to a note often means moving along the "
+            "string rather than across to the next one, and 12, 14 and 17 turn up constantly "
+            "where a guitar part would have used an open string. Two-digit numbers are the "
+            "normal case rather than the exception, which is why this page opens at a wider "
+            "line spacing than the guitar sheet does.",
+            "Five- and six-string basses are one control away. Set the tab lines number to "
+            "five and the low B gets a line of its own at the bottom; set it to six for a bass "
+            "with a high C as well. The spacing, bar lines, systems per page and paper size all "
+            "behave exactly as they did — only the string count changes.",
+            "If you want the rhythm written out properly as well as the fingering, the "
+            "staff-and-tab sheet pairs a five-line staff above the tab and joins them into one "
+            "system. Tab on its own says where, and never says when.",
+        ],
+        "faq": [
+            ("What about a five-string bass?",
+             "Set the tab lines control to five. The extra line goes on at the bottom for the "
+             "low B, which is where it belongs — the string order runs low to high from the "
+             "bottom line up. Six works too, for a bass with a high C."),
+            ("Why is bass tab spaced wider than guitar tab here?",
+             "Because bass parts live further up the neck. With only four strings, reaching a "
+             "note more often means sliding along one than crossing to the next, so two-digit "
+             "fret numbers are routine rather than occasional, and they need clear space "
+             "between the lines or they collide with the ones above and below."),
+        ],
+    },
+    {
+        "slug": "ukulele-tab-paper",
+        "js": "staff-paper",
+        "family": "staff-paper",
+        "h1": "Ukulele tab paper",
+        "card": "Four lines · tighter spacing, short neck",
+        "title": "Ukulele Tab Paper — Free Printable Blank Uke Tablature, True Scale",
+        "desc": "Free printable blank ukulele tab paper: four lines for G, C, E and A, at a line "
+                "spacing you set in millimetres. More systems to the page than guitar tab, "
+                "because a uke neck is short. True 1:1 scale, no watermark.",
+        "lede": "Four lines for a uke, spaced for the mostly single-digit fret numbers a short "
+                "neck produces — so more music fits on the page.",
+        "preset": {"system": "tab4uke", "systems": 10, "tabSpacing": 4, "bars": 4},
+        "closing":
+            "Ten systems rather than the eight the guitar page opens with, and four "
+            "millimetres between lines rather than four and a half. Both come from the same "
+            "fact: a soprano ukulele has twelve to fifteen frets, so almost every number you "
+            "write is one digit and does not need the room a 14 does. That is thirty per cent "
+            "more music on the same sheet of paper.",
+        "scale_faq": (
+            "How do I check the ukulele tab printed at the right size?",
+            "Measure the whole four-line span rather than a single gap: four lines have three "
+            "gaps, so at the 4 mm default the top line to the bottom line is 12 mm. Twelve "
+            "millimetres is short enough that a ruler with a millimetre scale settles it in "
+            "one look."),
+        "intro": [
+            "Ukulele tab is four lines, one for each string, read exactly as guitar tab is: a "
+            "number on a line is the fret to stop that string at. Standard tuning is G, C, E "
+            "and A, and the lines run in that order from the bottom of the staff upward.",
+            "There is one thing about that ordering worth saying out loud, because it "
+            "surprises people who came from guitar. Standard soprano and concert ukulele "
+            "tuning is <em>reentrant</em>: the G string is tuned above the C, not below it, so "
+            "the bottom line of the tab is not the lowest-sounding string. Tab lines map to "
+            "strings by their position on the instrument rather than by pitch, and on a "
+            "reentrant uke those two orderings simply are not the same. The paper cannot tell "
+            "you which convention a given piece of tab used, so it is worth writing the tuning "
+            "at the top of the sheet yourself.",
+            "A short neck is why this page is laid out more tightly than the guitar one. A "
+            "soprano ukulele has twelve to fifteen frets and most arrangements stay in the "
+            "first five, so nearly every number you write is a single digit and the gap "
+            "between lines does not need to hold a 14. Four millimetres is comfortable, which "
+            "leaves room for ten systems on a Letter or A4 page.",
+            "A baritone ukulele is tuned like the top four strings of a guitar — D, G, B, E — "
+            "and takes exactly this sheet, since the string count is the same. Anything with "
+            "more strings, an eight-string tenor for instance, is the tab lines control.",
+        ],
+        "faq": [
+            ("Is the bottom line the lowest note?",
+             "Not on a standard soprano or concert ukulele. Reentrant tuning puts the G string "
+             "above the C in pitch even though it sits at the bottom of the tab, because tab "
+             "lines follow the physical order of the strings rather than their pitch. Low-G "
+             "tuning removes the surprise, which is one reason players who read a lot of "
+             "guitar tab often switch to it."),
+            ("How is ukulele tab different from guitar tab?",
+             "Four lines instead of six, and in practice lower numbers on them. Everything "
+             "about how you read it is the same. The difference on this page is the layout it "
+             "opens with: tighter line spacing and more systems, because a short neck produces "
+             "single-digit fret numbers."),
+        ],
+    },
+    {
+        "slug": "grand-staff-paper",
+        "js": "staff-paper",
+        "family": "staff-paper",
+        "h1": "Grand staff paper",
+        "card": "Two staves joined by a brace · piano, harp, organ",
+        "title": "Grand Staff Paper — Free Printable Piano Manuscript With Brace",
+        "desc": "Free printable grand staff paper: two five-line staves joined by a brace and a "
+                "systemic bar line, with seven staff spaces between them. Piano manuscript "
+                "paper at a staff height you set in millimetres, true 1:1 scale.",
+        "lede": "Two staves, one brace, and a gap between them wide enough for the ledger lines "
+                "that meet in the middle.",
+        "preset": {"system": "grand", "systems": 6, "rastral": "r1", "bars": 4},
+        "closing":
+            "Six systems is what a Letter or A4 page holds comfortably at rastral No. 1, and "
+            "the number falls fast as the staff height goes up — a grand staff is nearly four "
+            "times the height of a single staff once the gap is counted. Ask for more than the "
+            "page holds and the generator says how many actually fit rather than squashing "
+            "them together.",
+        "scale_faq": (
+            "How do I check the grand staff printed at the right size?",
+            "Two measurements, and take the second: one staff from its bottom line to its top "
+            "line should read the staff height you chose, 7.9 mm by default. Then measure the "
+            "whole system, top line to bottom line — at 7.9 mm that is 29.6 mm, since the gap "
+            "between the staves is seven staff spaces. The larger number is the one that will "
+            "expose a printer quietly scaling the page."),
+        "intro": [
+            "A grand staff is two five-line staves treated as one thing: a brace down the "
+            "left-hand side, a vertical line joining them at the start of the system, and bar "
+            "lines that run straight through both. That is what tells a reader the two staves "
+            "are played together by one player rather than being two separate parts, which is "
+            "why it is the paper for piano, harp, organ and anything else with two hands and "
+            "one brain.",
+            "The gap between the two staves is the number nobody thinks about until it is "
+            "wrong. Ledger lines come down below the upper staff and up above the lower one, "
+            "and they meet in the middle around middle C. Too little space and they collide "
+            "into an unreadable ladder; too much and a single system eats the page. Seven "
+            "staff spaces is the usual working figure and it is what this sheet draws, "
+            "scaling with the staff height so the proportion holds whatever size you choose.",
+            "The brace is drawn as a plain curve of even weight, which is what a ruled "
+            "manuscript page has always had, rather than as an engraved brace with a swelling "
+            "waist. An even-weight brace is a shape that cannot come out subtly wrong; a "
+            "variable-width one can, and a nearly-right brace is more distracting on a blank "
+            "page than an honest simple one.",
+            "There are no clefs. That is the one thing this page will not do for you, and it "
+            "is a deliberate choice rather than an unfinished one — see the question below, "
+            "because it is the first thing most people notice about a grand staff sheet.",
+        ],
+        "faq": [
+            ("Why are there no treble and bass clefs?",
+             "Because a hand-drawn treble clef that is nearly right is worse than no clef at "
+             "all. It is a difficult shape, a version of it that is slightly off is the first "
+             "thing a musician's eye catches, and there is no honest way to draw one without "
+             "shipping a font — which would be an external request this site does not make. "
+             "Blank piano manuscript sold in shops leaves the clefs to you as well, on the "
+             "grounds that the clef belongs to the piece. The brace is drawn, because a brace "
+             "is a curve rather than a glyph."),
+            ("Can I use this for organ music?",
+             "For manuals, yes — two staves braced together is exactly right. Organ music with "
+             "a separate pedal part conventionally uses three staves, the pedal staff sitting "
+             "below and outside the brace, which this sheet does not draw. The nearest thing "
+             "here is a page of plain five-line staves with the spacing set wide enough to "
+             "group them by eye."),
+        ],
+    },
+    {
+        "slug": "staff-and-tab-paper",
+        "js": "staff-paper",
+        "family": "staff-paper",
+        "h1": "Staff and tab paper",
+        "card": "Notation over tablature · joined as one system",
+        "title": "Staff and Tab Paper — Free Printable Notation Over Tablature",
+        "desc": "Free printable staff-and-tab paper: a five-line staff above a six-line "
+                "tablature staff, joined into one system by a bar line so the rhythm and the "
+                "fingering line up. True 1:1 scale, no watermark.",
+        "lede": "Notation on top, tablature underneath, joined into one system &mdash; so the "
+                "rhythm and the fingering are read as one thing.",
+        "preset": {"system": "staffTab", "systems": 4, "rastral": "r1", "tabSpacing": 4.5, "bars": 4},
+        "closing":
+            "Four systems is what a page holds, and that is the honest cost of this sheet: a "
+            "staff plus a gap plus six tab lines is roughly three times the height of tab "
+            "alone. If you are running out of page, the staff height and the tab spacing come "
+            "down independently, and dropping the staff to rastral No. 3 buys most of a fifth "
+            "system without touching the tab.",
+        "scale_faq": (
+            "How do I check a staff-and-tab system printed at the right size?",
+            "The two halves are set by separate controls, so check them separately: the "
+            "five-line staff should measure the staff height you chose, and the six-line tab "
+            "should measure five times the tab spacing — 22.5 mm at the 4.5 mm default. If "
+            "one is right and the other is not, you have found a genuine bug rather than a "
+            "printer setting; if both are short by the same fraction, the print dialogue "
+            "shrank the page."),
+        "intro": [
+            "Tab says where to put your fingers and never says when. Standard notation says "
+            "when with complete precision and leaves you to work out where, which on a guitar "
+            "is genuinely ambiguous — the same pitch is available in as many as four places. "
+            "Putting the two on top of each other and joining them into one system gives you "
+            "both, and it is how nearly every printed guitar book has done it for forty years.",
+            "The join matters. This sheet draws a vertical line at the start of the system "
+            "connecting the staff to the tab, and runs every bar line straight through both, "
+            "so a bar on the staff is unambiguously the same bar on the tab underneath. Two "
+            "separately ruled staves that merely happen to sit near each other do not give you "
+            "that, and the first time the two drift out of alignment mid-page you find out why "
+            "it is worth having.",
+            "The gap between the staff and the tab is deliberately generous. Stems and beams "
+            "hang below the notation staff, and on many published layouts the rhythm is written "
+            "with stems in the tab as well, so the space between the two is working space "
+            "rather than air. Five staff spaces keeps them clear of each other at every staff "
+            "height the generator offers.",
+            "Both halves size independently. The staff height control moves the notation "
+            "staff, the tab spacing control moves the tablature, and the two are set by "
+            "different considerations — one by how big you want to write notes, the other by "
+            "how much room a two-digit fret number needs.",
+        ],
+        "faq": [
+            ("Why write both notation and tab?",
+             "Because each one is missing what the other has. Tab gives you a fingering and no "
+             "rhythm; notation gives you a rhythm and, on a fretted instrument, an ambiguous "
+             "fingering. Written together the rhythm is read off the top and the position off "
+             "the bottom, which is why guitar publishers settled on it."),
+            ("Can I use this for a five-string bass?",
+             "Yes — set the tab lines control to five and the tab half becomes a five-line "
+             "bass staff under the notation. The system still joins and the bar lines still "
+             "run through both. Six works for a six-string bass or a standard guitar the same "
+             "way."),
+        ],
+    },
     # ---- new geometries -------------------------------------------------
     {
         "slug": "isometric-graph-paper",
@@ -1413,6 +1853,8 @@ VARIANT_PAGES = ruling_variant_pages()
 # Each family cross-links to its siblings and back to the generator it opens, so
 # the set is navigable rather than a dozen orphans hanging off the sitemap.
 _FAMILY_HUB = {
+    "staff-paper": ("Staff and tab paper by instrument", "/staff-paper/",
+                    "Staff and tab paper, any size", "The full generator — any staff height, six systems"),
     "graph-paper": ("Graph paper by ruling and geometry", "/graph-paper/",
                     "Graph paper, any ruling", "The full generator — any spacing, six geometries"),
     "lined-paper": ("Lined paper by ruling", "/lined-paper/",
@@ -1495,6 +1937,7 @@ NAV_NOUN = "sheets"
 NAV_GROUPS = [
     ("grids", "Grids"),
     ("school", "Writing &amp; school"),
+    ("music", "Music"),
     ("needlecraft", "Needlecraft"),
     ("charts", "Charts &amp; printing"),
 ]
@@ -1513,6 +1956,7 @@ NAV_TOOLS = [
     ("bubble-answer-sheet",             "Answer sheets",  "Bubble answer sheets",            "school"),
     ("year-in-pixels",                  "Year in pixels", "Year in pixels chart",            "charts"),
     # sheet only from here — the rail is capped at eight
+    ("staff-paper",                     None,             "Staff and tab paper",             "music"),
     ("blank-periodic-table",            None,             "Blank periodic table",            "school"),
     ("attendance-sheet",                None,             "Attendance and gradebook grids",  "school"),
     ("english-paper-piecing-templates", None,             "English paper piecing templates", "needlecraft"),
@@ -1521,7 +1965,7 @@ NAV_TOOLS = [
 ]
 
 # One hub link at the bottom of the sheet, covering every tier-2 page at once.
-NAV_HUBS = [("/sheets/", "All 20 rulings and counts")]
+NAV_HUBS = [("/sheets/", "All 26 rulings, counts and staff sheets")]
 
 # Tier-2 sibling chips, per generator: real links, rendered into that tool's own
 # settings panel. The first entry of each family is the unparameterised
@@ -1543,6 +1987,15 @@ CHIP_GROUPS = {
         ("/college-ruled-paper/", "College"),
         ("/wide-ruled-paper/", "Wide"),
         ("/narrow-ruled-paper/", "Narrow"),
+    ]),
+    "staff-paper": ("Sheet", "Staff and tab sheet", [
+        ("/staff-paper/", "Any size"),
+        ("/blank-sheet-music/", "Blank staves"),
+        ("/grand-staff-paper/", "Grand staff"),
+        ("/guitar-tab-paper/", "Guitar tab"),
+        ("/bass-tab-paper/", "Bass tab"),
+        ("/ukulele-tab-paper/", "Ukulele tab"),
+        ("/staff-and-tab-paper/", "Staff + tab"),
     ]),
     "dot-grid-paper": ("Spacing", "Dot grid spacing", [
         ("/dot-grid-paper/", "Any spacing"),
@@ -1921,18 +2374,20 @@ def sheets_hub():
 
     Tier-2 pages are a generator with a ruling or a count baked in, so they are
     deliberately absent from the rail and the sheet body. That leaves them one
-    route from the chrome, and this is it: a flat index of all twenty, grouped
+    route from the chrome, and this is it: a flat index of all of them, grouped
     under the generator each one opens, with the measurement as the blurb so the
     list can be scanned by the number people actually came looking for.
     """
     canonical = SITE + "/sheets/"
     desc = ("Every printable sheet on paperprintouts.com in one list: graph paper by ruling and "
-            "geometry, lined paper by ruling, dot grid spacing and cross stitch paper by count, "
-            "each one opening the generator already set to it.")
+            "geometry, lined paper by ruling, dot grid spacing, staff and tab paper by "
+            "instrument, and cross stitch paper by count — each one opening the generator "
+            "already set to it.")
     families = [
         ("graph-paper", "Graph paper by ruling and geometry"),
         ("lined-paper", "Lined paper by ruling"),
         ("dot-grid-paper", "Dot grid paper"),
+        ("staff-paper", "Staff and tab paper by instrument"),
     ]
     sections = []
     for slug, heading in families:
