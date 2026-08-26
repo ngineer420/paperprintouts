@@ -250,6 +250,42 @@
     return map;
   }
 
+  /* ------------------------------------------------------------- versions */
+
+  /* A seeded generator, so a version's question order is the same on every
+     visit and every machine: a bookmarked link prints the same version B next
+     term. Numerical Recipes' LCG in doubles, which is exact below 2^53. */
+  function seeded(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s = (s * 1664525 + 1013904223) % 4294967296;
+      return s / 4294967296;
+    };
+  }
+
+  /* The question order for one version: position i on the version's paper
+     holds original question order[i]. Version A is the original order. The
+     later versions shuffle with a seed drawn from the question count and the
+     version index, so the map on a key sheet never changes under a teacher. */
+  function versionOrder(questions, index) {
+    var order = [], i, j, t, same;
+    for (i = 1; i <= questions; i++) order.push(i);
+    if (index === 0) return order;
+    var rng = seeded(questions * 1009 + index * 7919 + 17);
+    for (i = questions - 1; i > 0; i--) {
+      j = Math.floor(rng() * (i + 1));
+      t = order[i]; order[i] = order[j]; order[j] = t;
+    }
+    /* A short paper can shuffle back into its own order. Rotate it, so a
+       version B is never a copy of version A. */
+    same = true;
+    for (i = 0; i < questions; i++) { if (order[i] !== i + 1) { same = false; break; } }
+    if (same && questions > 1) order.push(order.shift());
+    return order;
+  }
+
+  var LETTERS = 'ABC';
+
   /* ---------------------------------------------------------------- render */
 
   function draw(v) {
@@ -279,6 +315,18 @@
     var keyed = 0, kq;
     for (kq in key) { if (Object.prototype.hasOwnProperty.call(key, kq)) keyed++; }
 
+    /* ---- the job: which sheets print, and in how many versions ----------- */
+
+    var versions = clampInt(v.versions, 1, 3, 1);
+    var sheets = String(v.sheets || 'both');
+    if (sheets !== 'students' && sheets !== 'keys') sheets = 'both';
+    var wantStudents = sheets !== 'keys';
+    if (sheets === 'keys' && keyed === 0) {
+      throw new Error('No answer key is typed in, so there is no key sheet to print. ' +
+        'Paste the key, or choose the student sheets.');
+    }
+    var printKeys = sheets !== 'students' && keyed > 0;
+
     /* ---- one answer column -------------------------------------------- */
 
     /* The number sits to the left of its row, right-aligned so the units digit
@@ -307,10 +355,13 @@
 
     /* ---- header band --------------------------------------------------- */
 
-    /* A key and a score box are mutually exclusive: you do not score the key,
-       and the badge is the warning that stops one being handed out by mistake. */
-    var showBadge = keyed > 0;
-    var showScore = !!v.scoreBox && !showBadge;
+    /* A student sheet carries the score box and a key sheet carries the badge,
+       which is the warning that stops a key being handed out by mistake. Every
+       sheet in the job shares one layout, so a key lies over its student sheet
+       as a marking overlay. The band is therefore sized for the taller of the
+       two boxes the job prints. */
+    var showBadge = printKeys;
+    var showScore = !!v.scoreBox && wantStudents;
     var BADGE_H = 9, SCORE_H = 17;
     /* The box may take at most a third of the band and must leave 40 mm for a
        name to be written in. On paper too narrow for both, it goes: the key is
@@ -321,18 +372,30 @@
       if (rightW < 28 || W - rightW - 6 < 40) rightW = 0;
     }
     if (!rightW) { showBadge = false; showScore = false; }
-    var rightH = showBadge ? BADGE_H : (showScore ? SCORE_H : 0);
-    var titleH = title ? 9 : 0;
+    var rightH = Math.max(showBadge ? BADGE_H : 0, showScore ? SCORE_H : 0);
+    /* The version stamp sits on the title row, so a versioned job always has one. */
+    var titleH = (title || versions > 1) ? 9 : 0;
     var fieldsH = v.header ? 12 : 0;
     var headH = Math.max(titleH + fieldsH, rightH);
     if (headH > 0) headH += 5;            /* air, then the rule that closes the band */
     var leftW = W - (rightW ? rightW + 6 : 0);
 
-    function headerSVG() {
+    function headerSVG(sheet) {
       var out = '';
       var fx, fwid, lead, names, share, fgap, room, k;
+      var tx = x0;
 
-      if (title) out += txt(x0, y0 + 6.2, fit(title, leftW, 5.6), 5.6, { weight: 700, fill: INK });
+      /* The version stamp leads the title row on student sheets and keys alike,
+         so the two are matched by eye before anything is marked. */
+      if (sheet.letter) {
+        var stamp = 'VERSION ' + sheet.letter;
+        var stampW = wid(stamp, 2.8, 0.5) + 5;
+        out += rect(x0, y0 + 0.6, stampW, 6.2, { stroke: INK, w: 0.35, r: 1 });
+        out += txtMid(x0 + stampW / 2, y0 + 3.7, stamp, 2.8,
+          { anchor: 'middle', weight: 700, fill: INK, spacing: 0.5 });
+        tx = x0 + stampW + 3;
+      }
+      if (title) out += txt(tx, y0 + 6.2, fit(title, leftW - (tx - x0), 5.6), 5.6, { weight: 700, fill: INK });
 
       if (v.header) {
         var fy = y0 + titleH + 8.4;       /* the writing rules sit on this baseline */
@@ -352,13 +415,13 @@
         }
       }
 
-      if (showScore) {
+      if (showScore && !sheet.isKey) {
         out += rect(x1 - rightW, y0, rightW, SCORE_H, { stroke: INK, w: 0.35, r: 1 });
         out += txt(x1 - rightW + 3, y0 + 4.8, 'SCORE', 2.5, { weight: 700, fill: SOFT, spacing: 0.5 });
         /* the denominator, printed light so the marked score reads first */
         out += txt(x1 - 3, y0 + SCORE_H - 3, '/ ' + questions, 5.5, { anchor: 'end', fill: PALE });
       }
-      if (showBadge) {
+      if (showBadge && sheet.isKey) {
         out += rect(x1 - rightW, y0, rightW, BADGE_H, { fill: INK, r: 1 });
         out += txtMid(x1 - rightW / 2, y0 + BADGE_H / 2, 'ANSWER KEY', 3.2,
           { anchor: 'middle', fill: WHITE, weight: 700, spacing: 0.6 });
@@ -514,11 +577,16 @@
 
     /* ---- a page -------------------------------------------------------- */
 
-    function pageSVG(index, firstQ, count) {
+    /* `sheet` says which member of the job this page belongs to:
+         letter  the version stamp, or '' on a single-version job
+         order   position -> original question, on a shuffled version's key
+         marks   position -> filled option, on a key sheet
+         isKey   badge and foot instead of the score box */
+    function pageSVG(sheet, index, firstQ, count) {
       var out = '';
       /* an explicit white ground, so the downloaded SVG is not read on a dark one */
       out += rect(0, 0, page.w, page.h, { fill: WHITE });
-      out += headerSVG();
+      out += headerSVG(sheet);
 
       var top = y0 + headH;
       if (index === 0 && idOn) {
@@ -551,7 +619,17 @@
           out += txtMid(cx0 + numW - 2.2, cy, String(q) + '.', 2.9, { anchor: 'end', fill: SOFT });
           labels = labelsFor(mode, q, opts);
           for (k = 0; k < opts; k++) {
-            out += bubble(cx0 + numW + R + k * PITCH, cy, labels.charAt(k), key[q] === k);
+            out += bubble(cx0 + numW + R + k * PITCH, cy, labels.charAt(k), !!sheet.marks && sheet.marks[q] === k);
+          }
+          /* The key map: which original question this row holds. It goes
+             beside the bubbles when the panel has room, and under the row
+             number when it does not, so the overlay geometry never moves. */
+          if (sheet.order) {
+            if (boxPad >= 8) {
+              out += txtMid(cx0 + numW + R + (opts - 1) * PITCH + R + 2, cy, 'A' + sheet.order[q - 1], 2.4, { fill: GREY });
+            } else {
+              out += txt(cx0 + numW - 2.2, cy + 3, 'A' + sheet.order[q - 1], 1.8, { anchor: 'end', fill: GREY });
+            }
           }
           /* a hairline every five questions: the eye keeps its place, and a
              misaligned overlay shows up immediately */
@@ -564,16 +642,26 @@
 
       /* ---- foot ---- */
       var foot = '';
-      if (keyed > 0) {
+      if (sheet.isKey) {
         /* the long form reports the parse, which is how a mistyped key gets
            noticed; narrow paper gets the short form so the two feet cannot meet */
-        foot += txt(x0, y1 - 1.4,
-          W < 110 ? 'ANSWER KEY' : 'ANSWER KEY · ' + keyed + ' of ' + questions + ' marked',
-          2.8, { weight: 700, fill: INK, spacing: 0.3 });
+        var footText;
+        if (W < 110) {
+          footText = 'ANSWER KEY' + (sheet.letter ? ' ' + sheet.letter : '');
+        } else {
+          footText = 'ANSWER KEY' + (sheet.letter ? ' · VERSION ' + sheet.letter : '') +
+            ' · ' + keyed + ' of ' + questions + ' marked';
+          /* the legend for the key map, worked on the first row of this page */
+          if (sheet.order && W >= 150) {
+            footText += ' · A' + sheet.order[firstQ - 1] + ' beside row ' + firstQ +
+              ' = question ' + sheet.order[firstQ - 1] + ' on version A';
+          }
+        }
+        foot += txt(x0, y1 - 1.4, footText, 2.8, { weight: 700, fill: INK, spacing: 0.3 });
       }
       if (pages > 1) {
         /* centred on its own, pushed to the right margin when the key shares the foot */
-        foot += keyed > 0
+        foot += sheet.isKey
           ? txt(x1, y1 - 1.4, 'Page ' + (index + 1) + ' of ' + pages, 2.8, { anchor: 'end', fill: GREY })
           : txt(x0 + W / 2, y1 - 1.4, 'Page ' + (index + 1) + ' of ' + pages, 2.8, { anchor: 'middle', fill: GREY });
       }
@@ -581,19 +669,52 @@
       return out;
     }
 
-    var out = [];
-    var start = 1;
-    for (p = 0; p < pages; p++) {
-      out.push(pageSVG(p, start, counts[p]));
-      start += counts[p];
+    /* ---- the job ------------------------------------------------------- */
+
+    /* One entry per version. A version's key is the pasted key read through
+       its order: position 1 on version B holds original question order[0],
+       so its bubble is the pasted answer to that question. */
+    var jobs = [];
+    var vi, order, marks, pos;
+    for (vi = 0; vi < versions; vi++) {
+      order = versionOrder(questions, vi);
+      marks = {};
+      for (pos = 1; pos <= questions; pos++) {
+        if (key[order[pos - 1]] !== undefined) marks[pos] = key[order[pos - 1]];
+      }
+      jobs.push({
+        letter: versions > 1 ? LETTERS.charAt(vi) : '',
+        order: vi > 0 ? order : null,
+        marks: marks
+      });
     }
+
+    var out = [];
+    function pushSheet(job, isKey) {
+      var start = 1;
+      var sheet = { letter: job.letter, order: isKey ? job.order : null, marks: isKey ? job.marks : null, isKey: isKey };
+      for (p = 0; p < pages; p++) {
+        out.push(pageSVG(sheet, p, start, counts[p]));
+        start += counts[p];
+      }
+    }
+    /* Student sheets first, in version order, then the keys in the same order:
+       the pile comes off the printer ready to hand out, with the keys on top. */
+    if (wantStudents) { for (vi = 0; vi < jobs.length; vi++) pushSheet(jobs[vi], false); }
+    if (printKeys) { for (vi = 0; vi < jobs.length; vi++) pushSheet(jobs[vi], true); }
     return out.length === 1 ? out[0] : out;
   }
 
   /* ---------------------------------------------------------------- wiring */
 
   PP.register('bubble-answer-sheet', {
-    filename: function (v) { return [v.questions + '-questions']; },
+    filename: function (v) {
+      var parts = [v.questions + '-questions'];
+      var n = clampInt(v.versions, 1, 3, 1);
+      if (n > 1) parts.push(n + '-versions');
+      if (v.sheets === 'keys') parts.push('key');
+      return parts;
+    },
     defaultPaper: 'letter',
     defaultOrientation: 'portrait',
     defaultMargin: 10,
@@ -632,7 +753,24 @@
       {
         id: 'answerKey', label: 'Answer key', type: 'textarea', default: '',
         placeholder: 'ABCDA BCDAB\nor 1A 2C 3D',
-        hint: 'Fills the matching bubbles so the sheet prints as a marking overlay. Letters with or without question numbers, separated by spaces, commas or newlines. The foot of the sheet reports how many were read.'
+        hint: 'Adds a key sheet with the matching bubbles filled, laid out to sit over the student sheet as a marking overlay. Letters with or without question numbers, separated by spaces, commas or newlines. The foot of the key reports how many were read.'
+      },
+      {
+        id: 'versions', label: 'Versions', type: 'select', default: '1',
+        options: [
+          { value: '1', label: 'One' },
+          { value: '2', label: 'Two — A and B' },
+          { value: '3', label: 'Three — A, B and C' }
+        ],
+        hint: 'Versions B and C shuffle the question order. Each version gets its own stamp, its own key, and a map on the key that says which original question each row holds.'
+      },
+      {
+        id: 'sheets', label: 'Print', type: 'select', default: 'both',
+        options: [
+          { value: 'both', label: 'Student sheets and answer keys' },
+          { value: 'students', label: 'Student sheets only' },
+          { value: 'keys', label: 'Answer keys only' }
+        ]
       }
     ],
     render: draw

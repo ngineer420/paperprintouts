@@ -254,8 +254,10 @@ TOOLS = [
             "Set the number of questions and how many options each one has, and the sheet lays "
             "itself out in as many columns as it needs. Header fields, a student ID bubble grid "
             "and a score box are all optional.",
-            "The answer key mode fills in the correct bubbles so you can print a marking overlay "
-            "from the same settings.",
+            "Paste the answer key and the job adds a key sheet with the correct bubbles filled, "
+            "laid out to sit over a student sheet as a marking overlay. Choose two or three "
+            "versions and the question order is shuffled for B and C, each sheet is stamped with "
+            "its letter, and each key carries a map that says which original question a row holds.",
         ],
         "faq": [
             ("Is there a watermark?",
@@ -263,6 +265,12 @@ TOOLS = [
             ("Can I use ACT-style F/G/H/J lettering?",
              "Yes — the option labels can be A–F, or alternating A/B/C/D and F/G/H/J the way the "
              "ACT alternates them, or true/false."),
+            ("How do the A, B and C versions work?",
+             "Version A is your original question order. Versions B and C shuffle it, and the "
+             "shuffle is fixed for a given question count, so a bookmarked link prints the same "
+             "version B next term. Print the test questions in each version's order, hand out the "
+             "matching stamped sheet, and mark with the key for that letter. Each key shows the "
+             "original question number beside every row, so one pasted key serves all three."),
             ("Will this work with an automatic scanner?",
              "It is designed for hand or overlay marking. Commercial optical scanners expect "
              "their own registration marks and their own paper stock."),
