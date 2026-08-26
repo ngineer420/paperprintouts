@@ -196,6 +196,7 @@
   }
 
   PP.register('lined-paper', {
+    filename: function (v) { return [v.preset === 'custom' ? v.spacing + 'mm' : v.preset]; },
     defaultPaper: 'letter',
     defaultOrientation: 'portrait',
     defaultMargin: 10,

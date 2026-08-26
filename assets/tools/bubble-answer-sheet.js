@@ -593,6 +593,7 @@
   /* ---------------------------------------------------------------- wiring */
 
   PP.register('bubble-answer-sheet', {
+    filename: function (v) { return [v.questions + '-questions']; },
     defaultPaper: 'letter',
     defaultOrientation: 'portrait',
     defaultMargin: 10,
