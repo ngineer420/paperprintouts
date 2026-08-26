@@ -112,6 +112,7 @@
   }
 
   PP.register('cross-stitch-paper', {
+    filename: function (v) { return [v.count + '-count', v.fabric]; },
     defaultPaper: 'letter',
     defaultOrientation: 'portrait',
     defaultMargin: 10,

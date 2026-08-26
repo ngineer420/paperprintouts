@@ -263,6 +263,7 @@
   /* ---------- registration ---------- */
 
   PP.register('english-paper-piecing-templates', {
+    filename: function (v) { return [v.shape, v.side + (v.units === 'inch' ? 'in' : 'mm')]; },
     defaultPaper: 'letter',
     defaultOrientation: 'portrait',
     defaultMargin: 10,

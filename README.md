@@ -43,8 +43,8 @@ node assets/tools/graph-paper.test.js     # geometry tests (no deps, node's own 
 slug leaves the old `slug.html` and `slug/` behind for you to `git rm`.
 
 `assets/app.js` is the shared framework. A generator registers itself and gets the control
-panel, paper size and orientation, margins, URL state, localStorage, print and SVG download for
-free:
+panel, paper size and orientation, margins, URL state, localStorage, print and PDF, PNG and SVG
+download for free:
 
 ```js
 PP.register('graph-paper', {
@@ -52,6 +52,10 @@ PP.register('graph-paper', {
   render: function (v) { return '<path d="..." stroke="#9aa3ad"/>'; }
 });
 ```
+
+The download name carries the setting that defines the sheet plus the paper size, for example
+`graph-paper-5mm-letter.pdf`. A tool adds its fragment with
+`filename: function (values) { return ['5mm']; }`. Without one the name is the slug and the paper.
 
 `render` returns SVG **children** with every coordinate in millimetres. The framework wraps
 them in `<svg width="215.9mm" height="279.4mm" viewBox="0 0 215.9 279.4">`, which is what makes
@@ -64,6 +68,13 @@ The claim that a 100 mm square prints as 100 mm is verified, not assumed. Printi
 `/print-calibration/` to PDF through headless Chrome gives a MediaBox of 612 × 792 pt — exactly
 US Letter — and a composite user-space transform of 2.834645 pt per unit, so the 100-unit square
 measures 283.46 pt, which is 100.00 mm.
+
+The PDF download keeps that scale. `assets/vendor/` holds jsPDF 4.2.1 and svg2pdf.js 2.7.0
+(both MIT, copied from the npm packages). They load on the first click of "Download PDF" only.
+The page is created in millimetres at the size of the chosen paper and the SVG is drawn as
+vectors with 1 unit = 1 mm, so Letter is 612 × 792 pt and A4 is 595.28 × 841.89 pt. The PNG
+download draws the first sheet on a canvas at 300 dots per inch (Letter is 2550 × 3300 pixels)
+and writes that density into the file, so a word processor places it at its real size.
 
 Two things that break it, both guarded: a print dialogue set to "fit to page" (hence the
 calibration page), and any stray element escaping the print stylesheet onto a second sheet.

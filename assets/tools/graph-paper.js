@@ -503,10 +503,28 @@
     return opts;
   }
 
+  /* The download name carries the measurement that defines the sheet:
+     graph-paper-5mm-letter.pdf, graph-paper-hex-flat-10mm-a4.pdf. */
+  function fileFragment(v) {
+    var geom = lookup(GEOMETRIES, v.geometry, null) ? v.geometry : 'square';
+    var parts = geom === 'square' ? [] : [geom];
+    if (geom === 'hex-pointy' || geom === 'hex-flat') {
+      parts.push(num(v.hexSide, 10, 2, 100) + 'mm');
+    } else if (geom === 'polar') {
+      parts.push(num(v.polarStep, 10, 1, 100) + 'mm');
+    } else if (lookup(PRESETS, v.preset, null) !== null) {
+      parts.push(v.preset);
+    } else {
+      parts.push(num(v.spacing, 5, 0.01, 1000) + (v.units === 'inch' ? 'in' : 'mm'));
+    }
+    return parts;
+  }
+
   PP.register('graph-paper', {
     defaultPaper: 'letter',
     defaultOrientation: 'portrait',
     defaultMargin: 10,
+    filename: fileFragment,
 
     controls: [
       {

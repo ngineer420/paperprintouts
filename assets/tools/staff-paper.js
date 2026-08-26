@@ -199,6 +199,7 @@
   }
 
   PP.register('staff-paper', {
+    filename: function (v) { return [v.system]; },
     defaultPaper: 'letter',
     defaultOrientation: 'portrait',
     defaultMargin: 12,

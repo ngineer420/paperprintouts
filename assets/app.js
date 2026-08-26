@@ -2,7 +2,7 @@
  *
  * Every generator registers itself with PP.register(slug, definition) and gets,
  * for free: the control panel, paper size / orientation / margin handling,
- * URL state, localStorage persistence, print, and SVG download.
+ * URL state, localStorage persistence, print, and PDF, PNG and SVG download.
  *
  * A generator's render() returns SVG *children* as a string, with all
  * coordinates in millimetres. The framework wraps that in
@@ -232,11 +232,15 @@
       actions.className = 'actions';
       actions.innerHTML =
         '<button type="button" class="btn" id="do-print">Print</button>' +
+        '<button type="button" class="btn secondary" id="do-pdf">Download PDF</button>' +
+        '<button type="button" class="btn secondary" id="do-png">Download PNG</button>' +
         '<button type="button" class="btn secondary" id="do-svg">Download SVG</button>' +
         '<button type="button" class="btn secondary" id="do-reset">Reset</button>';
       panel.appendChild(actions);
 
       actions.querySelector('#do-print').addEventListener('click', function () { global.print(); });
+      actions.querySelector('#do-pdf').addEventListener('click', downloadPDF);
+      actions.querySelector('#do-png').addEventListener('click', downloadPNG);
       actions.querySelector('#do-svg').addEventListener('click', downloadSVG);
       actions.querySelector('#do-reset').addEventListener('click', function () {
         var d = controlDefaults(controls);
@@ -304,19 +308,174 @@
         writeState(controls, values);
       }
 
-      function downloadSVG() {
-        var first = stage.querySelector('svg.sheet');
-        if (!first) return;
-        var blob = new Blob([first.outerHTML], { type: 'image/svg+xml' });
+      /* The file name carries the paper size and, when the tool supplies
+         def.filename(values), the setting that defines the sheet:
+         graph-paper-5mm-letter.pdf. */
+      function fileName(ext) {
+        var v = Object.assign({}, values, { page: currentPage() });
+        var parts = [slug].concat(def.filename ? def.filename(v) || [] : []);
+        if (values.paper) parts.push(values.paper);
+        if (values.orientation === 'landscape') parts.push('landscape');
+        return parts.map(function (part) {
+          return String(part).toLowerCase().replace(/[^a-z0-9.]+/g, '-').replace(/^-+|-+$/g, '');
+        }).filter(Boolean).join('-') + '.' + ext;
+      }
+
+      function saveBlob(blob, name) {
         var a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
-        a.download = slug + '.svg';
+        a.download = name;
         a.click();
         setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
       }
 
+      function downloadSVG() {
+        var first = stage.querySelector('svg.sheet');
+        if (!first) return;
+        saveBlob(new Blob([first.outerHTML], { type: 'image/svg+xml' }), fileName('svg'));
+      }
+
+      /* Holds a button while a download is prepared, then puts it back. */
+      function busy(btn, label, work) {
+        var original = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = label;
+        return work().catch(function (err) {
+          global.alert('The file could not be made. ' + (err && err.message ? err.message : ''));
+        }).then(function () {
+          btn.disabled = false;
+          btn.textContent = original;
+        });
+      }
+
+      /* PDF. Every sheet becomes one page of the same size as the paper, and
+         the SVG is drawn as vectors with 1 user unit = 1 mm, so a 5 mm grid
+         measures 5 mm on the page. Letter comes out at 612 x 792 pt. The two
+         libraries load on the first click only. */
+      function downloadPDF() {
+        var sheets = stage.querySelectorAll('svg.sheet');
+        if (!sheets.length) return;
+        var page = currentPage();
+        busy(actions.querySelector('#do-pdf'), 'Preparing PDF…', function () {
+          return PP.loadPdfLibs().then(function () {
+            var orientation = page.w > page.h ? 'landscape' : 'portrait';
+            var doc = new global.jspdf.jsPDF({
+              unit: 'mm', format: [page.w, page.h], orientation: orientation, compress: true
+            });
+            var chain = Promise.resolve();
+            Array.prototype.forEach.call(sheets, function (svg, i) {
+              chain = chain.then(function () {
+                if (i > 0) doc.addPage([page.w, page.h], orientation);
+                return doc.svg(svg, { x: 0, y: 0, width: page.w, height: page.h });
+              });
+            });
+            return chain.then(function () {
+              saveBlob(doc.output('blob'), fileName('pdf'));
+            });
+          });
+        });
+      }
+
+      /* PNG. The first sheet is drawn on a canvas at 300 dots per inch, so
+         Letter is 2550 x 3300 pixels. A pHYs chunk records the density, so a
+         word processor places the image at its real size. */
+      var PNG_DPI = 300;
+      function downloadPNG() {
+        var first = stage.querySelector('svg.sheet');
+        if (!first) return;
+        var page = currentPage();
+        var w = Math.round(page.w / PP.MM_PER_INCH * PNG_DPI);
+        var h = Math.round(page.h / PP.MM_PER_INCH * PNG_DPI);
+        busy(actions.querySelector('#do-png'), 'Preparing PNG…', function () {
+          return new Promise(function (resolve, reject) {
+            var clone = first.cloneNode(true);
+            clone.setAttribute('width', w);
+            clone.setAttribute('height', h);
+            var url = URL.createObjectURL(new Blob([clone.outerHTML], { type: 'image/svg+xml' }));
+            var img = new Image();
+            img.onload = function () {
+              URL.revokeObjectURL(url);
+              var canvas = document.createElement('canvas');
+              canvas.width = w;
+              canvas.height = h;
+              var ctx = canvas.getContext('2d');
+              ctx.fillStyle = '#ffffff';
+              ctx.fillRect(0, 0, w, h);
+              ctx.drawImage(img, 0, 0, w, h);
+              canvas.toBlob(function (blob) {
+                if (!blob) { reject(new Error('The canvas gave no image.')); return; }
+                blob.arrayBuffer().then(function (buf) {
+                  saveBlob(new Blob([PP.pngWithDensity(buf, PNG_DPI)], { type: 'image/png' }), fileName('png'));
+                  resolve();
+                }, reject);
+              }, 'image/png');
+            };
+            img.onerror = function () {
+              URL.revokeObjectURL(url);
+              reject(new Error('The sheet could not be drawn as an image.'));
+            };
+            img.src = url;
+          });
+        });
+      }
+
       render();
     });
+  };
+
+  /* jsPDF and svg2pdf.js are vendored in assets/vendor and load on the first
+     PDF click only, so a page that never makes a PDF never fetches them. */
+  var pdfLibs = null;
+  PP.loadPdfLibs = function () {
+    if (pdfLibs) return pdfLibs;
+    function load(src) {
+      return new Promise(function (resolve, reject) {
+        var el = document.createElement('script');
+        el.src = src;
+        el.onload = resolve;
+        el.onerror = function () { reject(new Error('Could not load ' + src)); };
+        document.head.appendChild(el);
+      });
+    }
+    pdfLibs = load('/assets/vendor/jspdf.umd.min.js')
+      .then(function () { return load('/assets/vendor/svg2pdf.umd.min.js'); })
+      .catch(function (err) { pdfLibs = null; throw err; });
+    return pdfLibs;
+  };
+
+  /* Insert a pHYs chunk after IHDR, so the PNG declares its dots per inch.
+     The canvas writes no density of its own. */
+  var crcTable = null;
+  function crc32(bytes) {
+    if (!crcTable) {
+      crcTable = [];
+      for (var n = 0; n < 256; n++) {
+        var c = n;
+        for (var k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1;
+        crcTable[n] = c >>> 0;
+      }
+    }
+    var crc = 0xffffffff;
+    for (var i = 0; i < bytes.length; i++) crc = crcTable[(crc ^ bytes[i]) & 0xff] ^ (crc >>> 8);
+    return (crc ^ 0xffffffff) >>> 0;
+  }
+  PP.pngWithDensity = function (buffer, dpi) {
+    var src = new Uint8Array(buffer);
+    var ihdrEnd = 8 + 4 + 4 + 13 + 4;
+    var chunk = new Uint8Array(4 + 4 + 9 + 4);
+    var view = new DataView(chunk.buffer);
+    var perMetre = Math.round(dpi / 0.0254);
+    view.setUint32(0, 9);
+    chunk.set([0x70, 0x48, 0x59, 0x73], 4);
+    view.setUint32(8, perMetre);
+    view.setUint32(12, perMetre);
+    chunk[16] = 1;
+    view.setUint32(17, crc32(chunk.subarray(4, 17)));
+    var out = new Uint8Array(src.length + chunk.length);
+    out.set(src.subarray(0, ihdrEnd), 0);
+    out.set(chunk, ihdrEnd);
+    out.set(src.subarray(ihdrEnd), ihdrEnd + chunk.length);
+    return out;
   };
 
   /* Theme toggle, shared by every page. The no-flash bootstrap lives inline in

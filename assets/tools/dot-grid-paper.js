@@ -112,6 +112,7 @@
   }
 
   PP.register('dot-grid-paper', {
+    filename: function (v) { return [v.spacing + (v.units === 'inch' ? 'in' : 'mm')]; },
     defaultPaper: 'letter',
     defaultOrientation: 'portrait',
     defaultMargin: 10,
