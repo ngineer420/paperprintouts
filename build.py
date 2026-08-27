@@ -2142,8 +2142,11 @@ def head(title, desc, canonical, extra_json=""):
 <meta property="og:title" content="{sx.escape(title)}">
 <meta property="og:description" content="{sx.escape(desc)}">
 <meta property="og:url" content="{canonical}">
+<meta property="og:image" content="{SITE}/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:site_name" content="{NAME}">
-<meta name="twitter:card" content="summary">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{sx.escape(title)}">
 <meta name="twitter:description" content="{sx.escape(desc)}">
 <meta name="theme-color" content="#14161a">
