@@ -496,7 +496,17 @@ details.faq p { color: var(--ink-dim); }
   .skip-link,
   .erabbit-mark,
   h1,
-  .lede { display: none !important; }
+  .lede,
+  /* Ad containers. Nothing on this site serves one today, and the list above
+     names every element that exists, so a slot added later would print on the
+     sheet — on a ruled page at true scale, which is the one output where a
+     stray block is not a cosmetic fault. Screen rendering is untouched: these
+     selectors live inside @media print and nowhere else. */
+  ins.adsbygoogle,
+  .adsbygoogle,
+  [data-ad-client],
+  [id^="aswift"],
+  [id^="google_ads"] { display: none !important; }
 
   body { background: #fff; color: #000; }
   .wrap { max-width: none; margin: 0; padding: 0; }
