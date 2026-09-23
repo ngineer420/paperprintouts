@@ -655,105 +655,345 @@ CROSS_STITCH_COUNTS = [
         "count": 11,
         "fabric": "aida",
         "cloth": "Aida",
-        "suits": "The largest Aida in common use. At eleven stitches to the inch the blocks are "
-                 "big enough to see and count without magnification, which is why it turns up in "
-                 "children's kits and in charts for anyone who finds 14 count hard on the eyes. "
-                 "The same design comes out about 27% larger than it would on 14 count.",
-        "faq": ("Is 11 count good for a beginner?",
-                "It is the easiest of the common counts to see, and the holes are unmistakable, "
-                "so it is a reasonable place to start. The trade-off is size: a design worked at "
-                "eleven stitches to the inch takes up noticeably more fabric than the same design "
-                "at fourteen."),
+        "lede": "The count you can see. Eleven blocks to the inch, holes you do not have to "
+                "hunt for, and a chart that comes out big enough to read across a room.",
+        "desc": "Free printable 11 count cross stitch graph paper at true scale: {spi} stitches "
+                "per inch, {mm} mm squares, numbered edges and centre arrows. The largest Aida "
+                "in common use — the beginner's count, and the one to reach for when 14 count "
+                "has become hard on the eyes.",
+        "opening":
+            "Eleven count Aida is the coarsest weave most shops carry, and coarse is the point. "
+            "The blocks measure {mm} mm, which is wide enough to count with your eyes rather "
+            "than a needle tip, and the corner holes are open enough that a threaded needle "
+            "drops through without being aimed. That is why it is the fabric under most "
+            "children's kits, and why a stitcher whose eyes have changed usually moves here "
+            "rather than giving the hobby up.",
+        "suits":
+            "The trade is size. A chart is a count of stitches, not a measurement, so the same "
+            "chart grows as the fabric gets coarser: 100 stitches across finish {in100} inches "
+            "({mm100} mm) here, against 7.14 inches on 14 count — about 27 per cent more cloth "
+            "in each direction. Work that out before you buy, and add three inches on every "
+            "side for the hoop and the frame rebate.",
+        "working":
+            "Floss behaves differently at this size too. Two strands, the 14 count habit, leave "
+            "the white of the cloth showing between the legs of the stitch; three is the usual "
+            "starting point on 11 count, and a size 22 tapestry needle carries them without "
+            "fraying. Perle cotton and fine tapestry wool both cover it as well, which is the "
+            "other reason it ends up in classrooms.",
+        "faq": [
+            ("Is 11 count good for a beginner?",
+             "It is the easiest of the common counts to see, and the holes are unmistakable, so "
+             "it is a reasonable place to start. The trade-off is size: a design worked at "
+             "eleven stitches to the inch takes up noticeably more fabric than the same design "
+             "at fourteen."),
+            ("How many strands of floss should I use on 11 count?",
+             "Three is the usual starting point, and stitchers who like heavy coverage go to "
+             "four. Two strands will stitch perfectly well but the fabric shows through, so if "
+             "you are converting a 14 count kit, buy more floss than the chart asks for — a "
+             "third more thread goes into the same number of stitches."),
+            ("Can I work an 11 count chart on 22 count Hardanger?",
+             "Yes. Hardanger is woven in pairs and cross stitch goes over a pair, so 22 threads "
+             "to the inch is eleven stitches to the inch — the same stitch size, on a much finer "
+             "cloth. The design finishes at exactly {in100} inches per 100 stitches either way."),
+        ],
     },
     {
         "count": 14,
         "fabric": "aida",
         "cloth": "Aida",
-        "suits": "The most common cross stitch fabric there is. It is the count most kits ship "
-                 "with, and the count a chart assumes when it does not say otherwise, so if you "
-                 "are not sure what is in your stash it is probably this. Every other count on "
-                 "this site is most usefully described by how it compares to it.",
-        "faq": ("Is 14 count the standard?",
-                "As close as the hobby has to one. Charts that quote a finished size without "
-                "naming a fabric have almost always worked it out at fourteen stitches to the "
-                "inch."),
+        "lede": "The count charts assume. Fourteen blocks to the inch, {mm} mm squares, and the "
+                "number every other count on this site gets compared against.",
+        "desc": "Free printable 14 count cross stitch graph paper at true scale: {spi} stitches "
+                "per inch, {mm} mm squares, heavy lines every ten and numbered edges. The "
+                "default count — what most kits ship with and what a chart means when it prints "
+                "a finished size without naming a fabric.",
+        "opening":
+            "If a chart quotes a finished size and never says what it is stitched on, it means "
+            "this. Fourteen blocks to the inch puts a {mm} mm square under every symbol, and "
+            "100 stitches across come out at {in100} inches ({mm100} mm). Those two figures do "
+            "more work in this hobby than any others, because every other count gets described "
+            "as a percentage of them.",
+        "suits":
+            "It is also the count you most likely already own. Kits are packed with it, shops "
+            "stock more colours in it than in anything else, and a fat quarter of it is the "
+            "default gift. If you have inherited a stash and nothing is labelled, count the "
+            "blocks along an inch of a selvedge edge — fourteen is the safe first guess.",
+        "working":
+            "Two strands of six-stranded floss over one block, with a size 24 tapestry needle, "
+            "is the combination this cloth is built around. It covers without crowding the "
+            "hole, which is why kit instructions rarely bother to say it. One strand is used "
+            "for backstitch outlines and for anything meant to recede, and three is only "
+            "reached for when a colour is thin and needs help.",
+        "faq": [
+            ("Is 14 count the standard?",
+             "As close as the hobby has to one. Charts that quote a finished size without naming "
+             "a fabric have almost always worked it out at fourteen stitches to the inch."),
+            ("How do I tell what count my fabric is?",
+             "Lay a ruler on it and count the blocks, or the threads, across one inch. Blocks "
+             "you can see with the naked eye and squares that measure about {mm} mm across are "
+             "14 count Aida. If you have to count threads under a lamp, you are holding "
+             "evenweave or linen, and that number is halved before it becomes stitches."),
+            ("How much fabric do I buy for a 14 count design?",
+             "Divide each side of the stitch count by {spi} for the finished size, then add "
+             "three inches all round. A 100 by 100 design finishes {in100} inches ({mm100} mm) "
+             "square and wants a piece about 13 inches square, which leaves enough to hoop and "
+             "enough to fold over a frame."),
+        ],
     },
     {
         "count": 16,
         "fabric": "aida",
         "cloth": "Aida",
-        "suits": "One step finer than 14 count Aida. The same chart comes out about 12% smaller, "
-                 "which is usually the whole reason for choosing it — a design that will not fit "
-                 "the frame you have at 14 count will often fit at 16.",
-        "faq": ("How much smaller is 16 count than 14 count?",
-                "About 12%. A design 100 stitches wide measures 7.14 inches on 14 count and 6.25 "
-                "inches on 16 count, because the stitch count has not changed and the stitches "
-                "have."),
+        "lede": "The count that makes a design fit. Sixteen blocks to the inch takes about "
+                "twelve per cent off every measurement without changing a single stitch.",
+        "desc": "Free printable 16 count cross stitch graph paper at true scale: {spi} stitches "
+                "per inch, {mm} mm squares, heavy lines every ten and centre marks. One step "
+                "finer than 14 count Aida — the count people choose to fit a chart into a frame "
+                "they already own.",
+        "opening":
+            "Sixteen count Aida exists to solve one problem: the design is too big for the "
+            "frame. Nothing about the chart changes, only the cloth under it, and the same 100 "
+            "stitches that measured 7.14 inches on 14 count come out at {in100} inches "
+            "({mm100} mm) here. Twelve per cent does not sound like much until it is the "
+            "difference between a mount that fits and one that has to be cut.",
+        "suits":
+            "The squares are {mm} mm, so the weave is still clearly a grid and the holes are "
+            "still obvious in daylight. Most stitchers who move up from 14 count stop here and "
+            "never go further, because 18 count asks real questions about coverage and this "
+            "does not.",
+        "working":
+            "Two strands still cover, though they sit tighter in the hole than they do on 14 "
+            "count, and a size 26 needle passes more sweetly than a 24. Where 16 count does "
+            "catch people is in floss quantity: the stitches are shorter, so a skein goes "
+            "further, and a chart's thread estimate worked out for 14 count leaves you with "
+            "spares rather than shortages.",
+        "faq": [
+            ("How much smaller is 16 count than 14 count?",
+             "About 12%. A design 100 stitches wide measures 7.14 inches on 14 count and "
+             "{in100} inches on 16 count, because the stitch count has not changed and the "
+             "stitches have."),
+            ("Do I need fewer strands on 16 count?",
+             "Usually not. Two strands still cover the block, and stitchers who find them tight "
+             "change needle rather than thread — a size 26 tapestry needle opens the hole less "
+             "than a 24 does. One strand is for backstitch, as on 14 count."),
+            ("Is 16 count Aida the same size as 32 count linen?",
+             "In finished measurement, yes. Linen is worked over two threads, so 32 count linen "
+             "stitches at sixteen to the inch and a chart lands at the identical size on either. "
+             "What differs is the handling: Aida has a hole to aim at and linen does not."),
+        ],
     },
     {
         "count": 18,
         "fabric": "aida",
         "cloth": "Aida",
-        "suits": "The finest Aida commonly sold. A chart comes out about 22% smaller than the "
-                 "same chart on 14 count, so it is what you reach for when a design has more "
-                 "detail in it than the space you have will allow.",
-        "faq": ("How much smaller is 18 count than 14 count?",
-                "About 22%. A design 100 stitches wide measures 7.14 inches on 14 count and 5.56 "
-                "inches on 18 count."),
+        "lede": "The finest Aida sold. Eighteen blocks to the inch, {mm} mm squares, and the "
+                "count to use when the design has more detail in it than you have room for.",
+        "desc": "Free printable 18 count cross stitch graph paper at true scale: {spi} stitches "
+                "per inch, {mm} mm squares, heavy lines every ten and numbered edges. The finest "
+                "Aida in common sale — detail work, small finished sizes, and the count where "
+                "coverage and light start to matter.",
+        "opening":
+            "At eighteen blocks to the inch a square is {mm} mm, which is roughly the width of "
+            "a grain of rice. A 100-stitch design finishes {in100} inches ({mm100} mm), about "
+            "22 per cent down on 14 count, and that is the whole argument for the fabric: a "
+            "portrait or a sampler with a lot of single stitches in it keeps its detail and "
+            "still fits a frame you can hang.",
+        "suits":
+            "It is also where the hobby stops being forgiving. The holes are small enough that "
+            "a needle finds them by feel rather than by sight, and a mis-stitch is harder to "
+            "see and harder to unpick. Good light is not optional, and most people who stitch "
+            "here for long buy a lamp with a lens on it.",
+        "working":
+            "Coverage is the live argument. Two strands cover fully but crowd the hole and "
+            "leave a slightly domed stitch; one strand lies flat and neat but lets the cloth "
+            "show through on a dark fabric. Neither is wrong. Stitch a square inch of each on a "
+            "scrap in the colour you are actually using, look at it in the light the finished "
+            "piece will hang in, and pick from that. A size 26 needle suits both.",
+        "faq": [
+            ("How much smaller is 18 count than 14 count?",
+             "About 22%. A design 100 stitches wide measures 7.14 inches on 14 count and "
+             "{in100} inches on 18 count."),
+            ("One strand or two on 18 count?",
+             "Both are normal and the fabric decides. One strand gives a flat, fine stitch and "
+             "suits pale cloth; two cover a dark cloth properly but sit high in the hole. Work a "
+             "test square of each before you commit a whole project to one answer."),
+            ("Does 18 count need magnification?",
+             "Many stitchers use it, and nobody needs it to start. A {mm} mm square is legible "
+             "in good directional light; what tires the eye is a dim room and a dark fabric "
+             "together. A lamp helps more than a lens, and a lens on the lamp helps most."),
+        ],
     },
     {
         "count": 22,
         "fabric": "evenweave",
         "cloth": "Hardanger",
-        "suits": "Hardanger cloth is woven in pairs: 22 threads to the inch, which is eleven "
-                 "pairs. Cross stitch worked over one pair is eleven stitches per inch — exactly "
-                 "the stitch size of 11 count Aida — which is why this page is drawn at eleven "
-                 "squares to the inch and not twenty-two.",
-        "faq": ("Why is 22 count drawn at 11 squares to the inch?",
-                "Because Hardanger is woven in pairs of threads and cross stitch is worked over a "
-                "pair. Twenty-two threads to the inch is eleven pairs, so eleven stitches. If you "
-                "are working over single threads instead, switch the fabric control to Aida and "
-                "the grid doubles."),
+        "lede": "Twenty-two threads to the inch, woven in pairs, so cross stitch over a pair is "
+                "eleven stitches to the inch — and this grid is drawn at eleven.",
+        "desc": "Free printable 22 count Hardanger graph paper at true scale: {spi} stitches per "
+                "inch over pairs of threads, {mm} mm squares, heavy lines every ten. The cloth "
+                "with two jobs — kloster blocks for Hardanger embroidery, and coarse-sized cross "
+                "stitch on a fine weave.",
+        "opening":
+            "Hardanger cloth is the one fabric whose name is a count and a technique at the same "
+            "time. It is woven in pairs of threads, twenty-two to the inch, which is eleven "
+            "pairs. Cross stitch goes over a pair, so the stitch is eleven to the inch and every "
+            "square on this sheet is {mm} mm — the stitch size of 11 count Aida, on a cloth that "
+            "looks nothing like it.",
+        "suits":
+            "The technique it is named for uses the same pairs differently. Kloster blocks are "
+            "counted in fives over the same grid, threads are cut and withdrawn inside them, and "
+            "the remaining bars are wrapped. A sheet of squares at eleven to the inch charts "
+            "that as readily as it charts a cross stitch design, which is why this page is "
+            "useful to two audiences who never speak to each other.",
+        "working":
+            "Two strands over a pair is the usual cross stitch weight; Hardanger embroidery "
+            "itself is worked in perle cotton, No. 5 for the kloster blocks and No. 8 for the "
+            "filling stitches. If you want the stitches at twenty-two to the inch rather than "
+            "eleven, that is over-one work: switch the fabric control to Aida and the grid "
+            "doubles.",
+        "faq": [
+            ("Why is 22 count drawn at 11 squares to the inch?",
+             "Because Hardanger is woven in pairs of threads and cross stitch is worked over a "
+             "pair. Twenty-two threads to the inch is eleven pairs, so eleven stitches. If you "
+             "are working over single threads instead, switch the fabric control to Aida and the "
+             "grid doubles."),
+            ("Can I chart Hardanger embroidery on this sheet?",
+             "Yes, and it is what the grid suits best. Kloster blocks are five stitches over "
+             "four pairs, so they sit on these squares exactly, and the heavy line every ten "
+             "gives you a count to check the block spacing against before anything is cut."),
+            ("Is 22 count the same finished size as 11 count Aida?",
+             "Exactly the same. Both stitch at {spi} to the inch, so 100 stitches finish "
+             "{in100} inches ({mm100} mm) on either. Hardanger is the finer, crisper cloth and "
+             "holds a cut edge, which is why it costs more for the same stitch."),
+        ],
     },
     {
         "count": 25,
         "fabric": "evenweave",
         "cloth": "evenweave",
-        "suits": "Worked over two threads, 25 count evenweave — Lugana and Dublin are the usual "
-                 "names — gives 12.5 stitches per inch. It is the one common count with no Aida "
-                 "equivalent at all, sitting between 11 and 14, and stitches very slightly larger "
-                 "than a 14 count stitch.",
-        "faq": ("Is there an Aida equivalent to 25 count?",
-                "No. Over two threads it works out at 12.5 stitches per inch, and Aida is not "
-                "sold in half counts. It is the closest thing to 14 count that is not 14 count, "
-                "which is worth knowing before you assume a chart's finished size."),
+        "lede": "The half count. Twenty-five threads over two gives {spi} stitches to the inch — "
+                "the one common size with no Aida equivalent at all.",
+        "desc": "Free printable 25 count evenweave graph paper at true scale: {spi} stitches per "
+                "inch over two threads, {mm} mm squares, numbered edges and centre marks. Lugana "
+                "and Dublin — the count that sits between 11 and 14 and matches neither.",
+        "opening":
+            "Twenty-five is the count that will not divide. Worked over two threads it gives "
+            "{spi} stitches to the inch and a {mm} mm square, and Aida is not sold in halves, so "
+            "there is nothing to convert it to. A 100-stitch design finishes {in100} inches "
+            "({mm100} mm), about 12 per cent larger than the same chart on 14 count and "
+            "well short of the 9.09 inches the same design takes on 11.",
+        "suits":
+            "You will meet it under two names. Lugana is a cotton and rayon blend with a slight "
+            "sheen and a soft drape; Dublin is linen, with the slubs and the stiffness that come "
+            "with it. They stitch at the same size and feel entirely different in the hand, so "
+            "buy by name rather than by count if the finish matters to you.",
+        "working":
+            "Two strands over two threads is the standard weight, worked with a size 24 or 26 "
+            "needle. Because there is no block to aim at, most stitchers start by finding the "
+            "centre, tacking a guideline every ten threads, and letting the tacking carry the "
+            "count — the same job the heavy lines on this sheet do for the chart.",
+        "faq": [
+            ("Is there an Aida equivalent to 25 count?",
+             "No. Over two threads it works out at 12.5 stitches per inch, and Aida is not sold "
+             "in half counts. It is the closest thing to 14 count that is not 14 count, which is "
+             "worth knowing before you assume a chart's finished size."),
+            ("What is the difference between Lugana and Dublin?",
+             "The fibre, not the size. Lugana is a cotton and rayon blend that hangs softly and "
+             "takes a hoop well; Dublin is a linen, stiffer and slubbed. Both are 25 count and "
+             "both stitch at {spi} to the inch, so a chart finishes identically on either."),
+            ("Why does my chart's finished size not match on 25 count?",
+             "Because the chart was almost certainly sized for fourteen stitches to the inch. At "
+             "{spi} everything comes out about 12 per cent larger: a 100-stitch width goes from "
+             "7.14 inches to {in100} inches. Re-divide the stitch counts by {spi} before you cut "
+             "the fabric."),
+        ],
     },
     {
         "count": 28,
         "fabric": "evenweave",
         "cloth": "evenweave",
-        "suits": "The linen substitution everybody makes. Worked over two threads, 28 count — "
-                 "Cashel linen, Jobelan, Brittney — comes out at exactly fourteen stitches per "
-                 "inch, the same stitch size as 14 count Aida. That is why a 14 count chart can "
-                 "be stitched on 28 count linen and finish at precisely the same size, and why "
-                 "this page is drawn at fourteen squares to the inch rather than twenty-eight.",
-        "faq": ("Can I stitch a 14 count chart on 28 count linen?",
-                "Yes, and it will finish at exactly the same size, because 28 threads worked over "
-                "two is fourteen stitches to the inch. This is the single most useful piece of "
-                "arithmetic in the hobby and the one that catches people out when they order "
-                "fabric."),
+        "lede": "The linen substitution everybody makes. Twenty-eight over two is fourteen "
+                "stitches to the inch, so a 14 count chart lands at exactly the same size.",
+        "desc": "Free printable 28 count evenweave graph paper at true scale: {spi} stitches per "
+                "inch over two threads, {mm} mm squares, heavy lines every ten. Cashel, Jobelan "
+                "and Brittney — the usual first step off Aida and onto linen.",
+        "opening":
+            "This is the swap that gets a stitcher off Aida. Twenty-eight threads to the inch "
+            "worked over two is {spi} stitches to the inch, which is the stitch size of 14 count "
+            "Aida exactly. Take a kit chart, put it on 28 count, and it finishes at the same "
+            "{in100} inches ({mm100} mm) per 100 stitches — no recalculation, no new frame, a "
+            "completely different looking piece.",
+        "suits":
+            "Cashel is the linen one, with the irregular slubs that people either love or spend "
+            "the project fighting. Jobelan and Brittney are blends: more even, softer, and far "
+            "more forgiving of a first attempt. All three are 28 count and all three stitch at "
+            "{spi} to the inch, so the choice is about handling and nothing else.",
+        "working":
+            "The habit to unlearn is aiming. There is no block here, so the needle goes between "
+            "threads that you have counted rather than into a hole you can see. Two strands and "
+            "a size 26 needle, a tacked grid every ten threads to start, and the first hour is "
+            "slower than Aida and every hour after that is not. Over one thread instead of two "
+            "gives twenty-eight stitches to the inch, which is what people use for a face or a "
+            "line of small lettering inside an over-two design.",
+        "faq": [
+            ("Can I stitch a 14 count chart on 28 count linen?",
+             "Yes, and it will finish at exactly the same size, because 28 threads worked over "
+             "two is fourteen stitches to the inch. This is the single most useful piece of "
+             "arithmetic in the hobby and the one that catches people out when they order "
+             "fabric."),
+            ("What is over one, and when would I use it?",
+             "Over one means each stitch spans a single thread rather than a pair, so 28 count "
+             "gives twenty-eight stitches to the inch instead of {spi}. It is used in patches "
+             "inside an over-two piece — faces, small lettering, anything that needs detail the "
+             "main grid cannot hold — rather than for a whole design."),
+            ("Which 28 count should I buy first?",
+             "A blend. Jobelan and Brittney are woven far more evenly than linen, so a miscount "
+             "is easier to spot and a slub never pushes a stitch out of line. Cashel linen has "
+             "the look most people are after, and it is a kinder second purchase than a first."),
+        ],
     },
     {
         "count": 32,
         "fabric": "evenweave",
         "cloth": "linen",
-        "suits": "Fine linen — Belfast is the usual name — worked over two threads at sixteen "
-                 "stitches per inch, the same stitch size as 16 count Aida. It is chosen for the "
-                 "look and the drape of linen rather than to change the size of the design.",
-        "faq": ("Is 32 count linen the same as 16 count Aida?",
-                "The same stitch size, yes: 32 threads worked over two is sixteen stitches to the "
-                "inch. The fabric is nothing like the same to handle, but a chart finishes at the "
-                "identical measurement on either."),
+        "lede": "Fine linen, thirty-two threads to the inch. Over two that is {spi} stitches to "
+                "the inch — 16 count Aida's measurement, and nothing else about it is alike.",
+        "desc": "Free printable 32 count linen graph paper at true scale: {spi} stitches per "
+                "inch over two threads, {mm} mm squares, numbered edges and centre arrows. "
+                "Belfast linen — chosen for the drape and the fineness rather than to change a "
+                "finished size.",
+        "opening":
+            "Thirty-two count linen — Belfast, most often — is not chosen to make a design "
+            "smaller. Worked over two threads it gives {spi} stitches to the inch, which is 16 "
+            "count Aida's size to the millimetre: {mm} mm a square, {in100} inches ({mm100} mm) "
+            "for 100 stitches. It is chosen because the cloth is thin, hangs properly, and "
+            "leaves a finished piece that looks like fabric rather than like a grid.",
+        "suits":
+            "It is the count that samplers and reproduction charts assume, and the reason is "
+            "history rather than fashion: a linen at about this fineness is what the originals "
+            "were worked on. Antique-dyed Belfast under a reproduction sampler is a different "
+            "object from the same chart on Aida, and that difference is the entire purchase.",
+        "working":
+            "One strand over two threads is common here, two where a dark linen needs covering, "
+            "and a size 26 or 28 needle for either. Below this count the work turns into "
+            "miniature stitching: 40 count and the silk gauzes above it are what dollhouse "
+            "carpets and framed miniatures are worked on, usually over one thread and usually "
+            "under a lens. Thirty-two is the last count most people reach with the naked eye.",
+        "faq": [
+            ("Is 32 count linen the same as 16 count Aida?",
+             "The same stitch size, yes: 32 threads worked over two is sixteen stitches to the "
+             "inch. The fabric is nothing like the same to handle, but a chart finishes at the "
+             "identical measurement on either."),
+            ("How many strands on 32 count linen?",
+             "One over two threads is the common answer, and it gives the flat, fine look the "
+             "cloth is bought for. Go to two where the linen is dark or the colour is thin. A "
+             "size 26 needle suits one strand and a 28 suits a tight weave."),
+            ("What comes after 32 count?",
+             "Miniature work. Forty count linen and the silk gauzes above it are what dollhouse "
+             "carpets and framed miniatures are stitched on, almost always over a single thread "
+             "and almost always under magnification. Thirty-two is about as fine as the hobby "
+             "goes without a lens."),
+        ],
     },
 ]
 
@@ -763,14 +1003,91 @@ def _fmt(n):
     return ("%.4f" % n).rstrip("0").rstrip(".")
 
 
+def assert_no_shared_copy(pages, what):
+    """No two pages in a family may share an intro paragraph or an FAQ item.
+
+    The cheapest duplicate-content fault is a paragraph pasted across a family,
+    and it is the one nobody notices, because each page reads well on its own.
+    """
+    seen_intro = {}
+    seen_faq = {}
+    for page in pages:
+        for para in page["intro"]:
+            if para in seen_intro:
+                raise SystemExit("%s: intro paragraph shared by %s and %s"
+                                 % (what, seen_intro[para], page["slug"]))
+            seen_intro[para] = page["slug"]
+        for item in page["faq"]:
+            if item in seen_faq:
+                raise SystemExit("%s: FAQ shared by %s and %s"
+                                 % (what, seen_faq[item], page["slug"]))
+            seen_faq[item] = page["slug"]
+
+
+# The exact-match gate above cannot see the fault it was written for once a
+# paragraph carries a number: eight sentences that differ only in "14" and "18"
+# are eight distinct strings and a hundred per cent the same page. So the count
+# family is measured as well as compared. OVERLAP_LIMIT is the most any two
+# siblings may share, word for word, across their own copy — heading, card,
+# meta description, lede, intro paragraphs and FAQ. Site chrome is not counted,
+# because it is identical everywhere by design and would drown the signal.
+#
+# The ruling variant family, which has always been written per page, measures
+# 0.265 at its worst pair (college-ruled against wide-ruled, two pages about
+# the same product at two spacings). The limit is set just above that, so the
+# family that already passes keeps passing and no other family may be worse.
+OVERLAP_LIMIT = 0.30
+
+
+def _copy_words(page):
+    import re
+    parts = [page.get("h1", ""), page.get("card", ""), page.get("desc", ""),
+             page.get("lede", "")]
+    parts += list(page.get("intro", []))
+    for question, answer in page.get("faq", []):
+        parts += [question, answer]
+    return re.findall(r"[a-z0-9%.'-]+", " ".join(parts).lower())
+
+
+def assert_distinct_copy(pages, what, limit=OVERLAP_LIMIT):
+    """Fail the build when two sibling pages are mostly the same words."""
+    import difflib
+    import itertools
+    words = {page["slug"]: _copy_words(page) for page in pages}
+    worst = []
+    for a, b in itertools.combinations(sorted(words), 2):
+        match = difflib.SequenceMatcher(None, words[a], words[b], autojunk=False)
+        shared = sum(block.size for block in match.get_matching_blocks())
+        ratio = 2 * shared / (len(words[a]) + len(words[b]))
+        if ratio > limit:
+            worst.append((ratio, a, b))
+    if worst:
+        worst.sort(reverse=True)
+        lines = ["%s: %d sibling pair(s) over the %.0f%% copy-overlap limit:"
+                 % (what, len(worst), limit * 100)]
+        lines += ["  %.1f%%  %s  vs  %s" % (r * 100, a, b) for r, a, b in worst[:10]]
+        raise SystemExit("\n".join(lines))
+
+
 def cross_stitch_count_pages():
     """One landing page per count, generated from the table above.
 
-    Hand-writing eight near-identical pages is how the arithmetic drifts: the
-    11 count page ends up quoting a figure worked out for 14, nobody notices,
-    and the one audience on earth that checks its stitch counts against a ruler
-    notices immediately. So every number below comes out of the same two fields
-    the generator itself is preloaded with.
+    Two things are true at once here, and the split in the table reflects them.
+
+    The ARITHMETIC is derived. Hand-writing eight near-identical pages is how
+    the numbers drift: the 11 count page ends up quoting a figure worked out
+    for 14, nobody notices, and the one audience on earth that checks its
+    stitch counts against a ruler notices immediately. So every figure comes
+    out of the same two fields the generator itself is preloaded with, and the
+    prose below formats them in with {count}, {spi}, {mm}, {in100} and {mm100}.
+
+    The COPY is not derived. Each count is a different product with a different
+    reader: 11 is the count you can see, 18 is where coverage and light start
+    to matter, 22 is a cloth with a second technique named after it, 32 is the
+    last count before miniature work. Writing those eight pages from one
+    template produced eight pages that were 93% the same words
+    (paperprintouts#24), so every paragraph and every question is written per
+    count and both gates below are run over the result.
     """
     pages = []
     for spec in CROSS_STITCH_COUNTS:
@@ -779,57 +1096,34 @@ def cross_stitch_count_pages():
         per_inch = count / threads
         pitch = 25.4 / per_inch
 
-        spi = _fmt(per_inch)
-        mm_sq = "%.2f" % pitch
-        cloth = spec["cloth"]
-        worked = ("has one stitch per block" if threads == 1
-                  else "is worked over two threads")
-        # A concrete design to hang the sizes on. 100 stitches is a round number
-        # and near the middle of what one sheet holds.
-        hundred_in = "%.2f" % (100 / per_inch)
-        hundred_mm = "%.0f" % (100 / per_inch * 25.4)
+        # The one place these figures are worked out. Every string in the table
+        # that quotes a number pulls it from here.
+        n = {
+            "count": count,
+            "cloth": spec["cloth"],
+            "spi": _fmt(per_inch),
+            "mm": "%.2f" % pitch,
+            # A concrete design to hang the sizes on. 100 stitches is a round
+            # number and near the middle of what one sheet holds.
+            "in100": "%.2f" % (100 / per_inch),
+            "mm100": "%.0f" % (100 / per_inch * 25.4),
+        }
+        fill = lambda text: text.format(**n)
 
-        heading = "%d count cross stitch paper" % count
         pages.append({
             "slug": "%d-count-cross-stitch-paper" % count,
             "js": "cross-stitch-paper",
             "title": "%d Count Cross Stitch Paper — Free Printable Grid, True Scale" % count,
-            "h1": heading,
-            "card": "%s stitches per inch · %s mm squares" % (spi, mm_sq),
-            "desc": "Free printable %d count cross stitch graph paper at true scale: %s stitches "
-                    "per inch, %s mm squares, heavy lines every ten, edge numbering and centre "
-                    "marks. Set it to your design size and it prints the finished measurement."
-                    % (count, spi, mm_sq),
-            "lede": "%d count %s %s, so this is %s stitches to the inch — squares of %s mm, "
-                    "printed at true size." % (count, cloth, worked, spi, mm_sq),
+            "h1": "%d count cross stitch paper" % count,
+            "card": "%s stitches per inch · %s mm squares" % (n["spi"], n["mm"]),
+            "desc": fill(spec["desc"]),
+            "lede": fill(spec["lede"]),
             "preset": {"count": count, "fabric": spec["fabric"]},
-            "intro": [
-                "%d count %s %s, which puts %s stitches in an inch and makes every square on "
-                "this page %s mm across. Print it at 100%% and you can lay the sheet against the "
-                "cloth: a design 100 stitches wide finishes %s inches (%s mm) wide at this count."
-                % (count, cloth, worked, spi, mm_sq, hundred_in, hundred_mm),
-                spec["suits"],
-                "The grid below is the generator from the main cross stitch paper page, opened at "
-                "%d count. Heavy lines fall every ten stitches, the edges are numbered and the "
-                "centre is arrowed on all four sides. Change the paper size, the colour or the "
-                "design size and it redraws; nothing you set leaves your browser."
-                % count,
-            ],
-            "faq": [
-                spec["faq"],
-                ("How big will my design be on %d count?" % count,
-                 "Divide the stitch count by %s. A design 100 stitches wide finishes %s inches "
-                 "(%s mm) wide, and 200 stitches finishes twice that. Set the stitch counts in "
-                 "the panel and the sheet prints the finished measurement for you, in both "
-                 "millimetres and inches, so you can work out how much fabric to buy before you "
-                 "cut anything." % (spi, hundred_in, hundred_mm)),
-                ("Will it print at the true size?",
-                 "Yes, at 100%% scale. The grid is drawn in millimetres at 25.4 divided by %s "
-                 "stitches per inch, which is %s mm a square, and the page size is declared to "
-                 "the printer. Print the calibration page once to confirm your printer is not "
-                 "quietly shrinking to fit." % (spi, mm_sq)),
-            ],
+            "intro": [fill(spec["opening"]), fill(spec["suits"]), fill(spec["working"])],
+            "faq": [(fill(q), fill(a)) for q, a in spec["faq"]],
         })
+    assert_no_shared_copy(pages, "cross stitch count pages")
+    assert_distinct_copy(pages, "cross stitch count pages")
     return pages
 
 
@@ -1835,24 +2129,16 @@ def ruling_variant_pages():
     closer however good it is.
     """
     pages = []
-    seen_intro = {}
-    seen_faq = {}
     for spec in RULING_VARIANTS:
         page = dict(spec)
         page["intro"] = list(spec["intro"]) + [spec["closing"]]
         page["faq"] = list(spec["faq"]) + [spec["scale_faq"]]
         del page["closing"]
         del page["scale_faq"]
-        for para in page["intro"]:
-            if para in seen_intro:
-                raise SystemExit("intro paragraph shared by %s and %s"
-                                 % (seen_intro[para], page["slug"]))
-            seen_intro[para] = page["slug"]
-        for item in page["faq"]:
-            if item in seen_faq:
-                raise SystemExit("FAQ shared by %s and %s" % (seen_faq[item], page["slug"]))
-            seen_faq[item] = page["slug"]
         pages.append(page)
+    # The same two gates the count family runs. They were written here first.
+    assert_no_shared_copy(pages, "ruling variant pages")
+    assert_distinct_copy(pages, "ruling variant pages")
     return pages
 
 
