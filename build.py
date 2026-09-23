@@ -9,7 +9,11 @@ use, and it is the thing hueshift got wrong.
 Run: python3 build.py
 """
 
+import datetime
+import json
 import pathlib
+import re
+import subprocess
 import xml.sax.saxutils as sx
 from urllib.parse import urlencode
 
@@ -1040,7 +1044,6 @@ OVERLAP_LIMIT = 0.30
 
 
 def _copy_words(page):
-    import re
     parts = [page.get("h1", ""), page.get("card", ""), page.get("desc", ""),
              page.get("lede", "")]
     parts += list(page.get("intro", []))
@@ -2144,6 +2147,14 @@ def ruling_variant_pages():
 
 VARIANT_PAGES = ruling_variant_pages()
 
+# The breadcrumb parent for a tier-2 page. A ruling page and a count page are
+# absent from the rail and from the sheet body by design, so /sheets/ is the one
+# route to them and their real parent. A tier-1 generator sits below the root.
+SHEETS_HUB = ("Every printable sheet", SITE + "/sheets/")
+
+for _page in COUNT_PAGES + VARIANT_PAGES:
+    _page["hub"] = SHEETS_HUB
+
 # Each family cross-links to its siblings and back to the generator it opens, so
 # the set is navigable rather than a dozen orphans hanging off the sitemap.
 _FAMILY_HUB = {
@@ -2453,10 +2464,37 @@ def head(title, desc, canonical, extra_json=""):
 """
 
 
+# ---- the other sites in the portfolio ----
+#
+# Each entry is the address, the link text taken from that site's own meta
+# description, and the bare domain. The block sits inside the footer, above the
+# legal line and beside the erabb.it mark, and it is hidden from print with
+# everything else that is not the sheet.
+
+PEERS = [
+    ("https://drawlots.net/", "Spinners, dice and random pickers", "drawlots.net"),
+    ("https://blanknotepad.com/", "A blank notepad that autosaves", "blanknotepad.com"),
+    ("https://clocklab.net/", "Timers, stopwatch and world clock", "clocklab.net"),
+    ("https://gamutlens.com/", "Color pickers, palettes and contrast", "gamutlens.com"),
+]
+
+PEER_SITES = (
+    '  <nav class="peer-sites" aria-label="Related tools">\n'
+    '    <span class="peer-sites-label">Related tools</span>\n'
+    '    <ul>\n%s\n    </ul>\n'
+    '  </nav>'
+) % "\n".join(
+    '      <li><a href="%s">%s</a> <span class="peer-domain">%s</span></li>'
+    % (href, sx.escape(text), sx.escape(domain))
+    for href, text, domain in PEERS
+)
+
+
 FOOTER = """
 <footer class="site-footer">
   <p>Everything here runs in your browser. Nothing you type is uploaded, because there is
   nowhere to upload it to.</p>
+{peer_sites}
   <p><a href="/">All tools</a> &middot; <a href="/sheets/">Every printable sheet</a>
   &middot; <a href="/print-calibration/">Printer calibration</a>
   &middot; <a href="/privacy/">Privacy</a> &middot; <a href="/terms/">Terms</a></p>
@@ -2466,7 +2504,7 @@ FOOTER = """
 {tool_script}
 </body>
 </html>
-"""
+""".replace("{peer_sites}", PEER_SITES)
 
 
 def faq_jsonld(faq):
@@ -2477,7 +2515,6 @@ def faq_jsonld(faq):
             "name": q,
             "acceptedAnswer": {"@type": "Answer", "text": a},
         })
-    import json
     return '<script type="application/ld+json">%s</script>' % json.dumps({
         "@context": "https://schema.org",
         "@type": "FAQPage",
@@ -2485,8 +2522,28 @@ def faq_jsonld(faq):
     })
 
 
+def breadcrumb_jsonld(name, canonical, hub=None):
+    """The trail a search result shows in place of the raw URL.
+
+    Every page below the root gets one. Position 2 appears only for a page that
+    a real hub page owns, so a tier-1 generator has two items and a tier-2
+    ruling or count page has three. Both twins of a page carry the same trail,
+    pointing at the directory URL, because that is what both canonicalize to.
+    """
+    items = [{"@type": "ListItem", "position": 1, "name": "Home", "item": SITE + "/"}]
+    if hub:
+        items.append({"@type": "ListItem", "position": len(items) + 1,
+                      "name": hub[0], "item": hub[1]})
+    items.append({"@type": "ListItem", "position": len(items) + 1,
+                  "name": name, "item": canonical})
+    return '<script type="application/ld+json">%s</script>' % json.dumps({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": items,
+    })
+
+
 def app_jsonld(page, canonical):
-    import json
     return '<script type="application/ld+json">%s</script>' % json.dumps({
         "@context": "https://schema.org",
         "@type": "WebApplication",
@@ -2547,7 +2604,6 @@ def preset_script(page):
     whatever the visitor last used. A count page that opened at someone's last
     count would contradict its own heading.
     """
-    import json
     preset = page.get("preset")
     if not preset:
         return ""
@@ -2557,6 +2613,7 @@ def preset_script(page):
 def tool_page(page):
     canonical = "%s/%s/" % (SITE, page["slug"])
     extra = app_jsonld(page, canonical) + "\n" + faq_jsonld(page["faq"])
+    extra += "\n" + breadcrumb_jsonld(page["h1"], canonical, page.get("hub"))
     extra += "\n" + preset_script(page)
     intro = "\n".join("<p>%s</p>" % sx.escape(p) for p in page["intro"])
     faqs = "\n".join(
@@ -2606,7 +2663,8 @@ def legal_page(slug, nav, title, desc, paras):
     body = '<main id="main" class="wrap"><div class="prose"><h1>%s</h1>%s</div></main>' % (
         sx.escape(nav), "\n".join("<p>%s</p>" % sx.escape(p) for p in paras)
     )
-    return (head(title, desc, canonical).replace("{nav}", nav_html("/%s/" % slug))
+    return (head(title, desc, canonical, breadcrumb_jsonld(nav, canonical))
+            .replace("{nav}", nav_html("/%s/" % slug))
             + body + FOOTER.replace("{tool_script}", ""))
 
 
@@ -2711,7 +2769,8 @@ def sheets_hub():
 %s
 </main>
 """ % "\n".join(blocks)
-    return (head("Every Printable Sheet — Rulings, Spacings and Counts", desc, canonical)
+    return (head("Every Printable Sheet — Rulings, Spacings and Counts", desc, canonical,
+                 breadcrumb_jsonld("Every printable sheet", canonical))
             .replace("{nav}", nav_html("/sheets/")) + body + FOOTER.replace("{tool_script}", ""))
 
 
@@ -2721,6 +2780,29 @@ def not_found():
             '</div></main>')
     return (head("Page not found — Paper Printouts", "Page not found.", SITE + "/404")
             .replace("{nav}", nav_html("/404")) + body + FOOTER.replace("{tool_script}", ""))
+
+
+def last_commit_date(path):
+    """The day the file this URL serves last changed, read from git.
+
+    The file mtime is not that day and must not be the primary source. A fresh
+    clone gives every file the same mtime, and a build run touches every page it
+    writes whether the bytes changed or not. Git is the only record of the day
+    the page really changed. The mtime stays as the fallback for a tarball with
+    no history, and nothing wider than OSError is caught here: a missing import
+    or a bad regex must fail the build loudly, not fall through in silence.
+    """
+    try:
+        out = subprocess.run(
+            ["git", "log", "-1", "--format=%ad", "--date=short", "--", str(path)],
+            cwd=ROOT, capture_output=True, text=True, timeout=20)
+    except (OSError, subprocess.SubprocessError):
+        out = None
+    if out is not None and out.returncode == 0:
+        date = out.stdout.strip()
+        if re.fullmatch(r"\d{4}-\d{2}-\d{2}", date):
+            return date
+    return datetime.date.fromtimestamp(path.stat().st_mtime).isoformat()
 
 
 def write_page(slug, html):
@@ -2742,13 +2824,18 @@ def main():
     for slug, nav, title, desc, paras in LEGAL:
         write_page(slug, legal_page(slug, nav, title, desc, paras))
 
-    urls = [SITE + "/", SITE + "/sheets/"]
-    urls += ["%s/%s/" % (SITE, p["slug"]) for p in TOOLS + PAGES + COUNT_PAGES + VARIANT_PAGES]
-    urls += ["%s/%s/" % (SITE, s) for s, *_ in LEGAL]
+    # (URL, the file that URL serves). The lastmod is the day that file last
+    # changed, so the pair has to be carried together.
+    urls = [(SITE + "/", ROOT / "index.html"),
+            (SITE + "/sheets/", ROOT / "sheets" / "index.html")]
+    urls += [("%s/%s/" % (SITE, p["slug"]), ROOT / p["slug"] / "index.html")
+             for p in TOOLS + PAGES + COUNT_PAGES + VARIANT_PAGES]
+    urls += [("%s/%s/" % (SITE, s), ROOT / s / "index.html") for s, *_ in LEGAL]
     sitemap = ['<?xml version="1.0" encoding="UTF-8"?>',
                '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
-    for u in urls:
-        sitemap.append("  <url><loc>%s</loc></url>" % u)
+    for u, path in urls:
+        sitemap.append("  <url><loc>%s</loc><lastmod>%s</lastmod></url>"
+                       % (u, last_commit_date(path)))
     sitemap.append("</urlset>")
     (ROOT / "sitemap.xml").write_text("\n".join(sitemap) + "\n", encoding="utf-8")
 
