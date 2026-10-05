@@ -399,6 +399,21 @@ textarea:focus-visible {
 .peer-sites a:hover { color: var(--ink); }
 .peer-domain { color: var(--ink-dim); font-family: var(--mono); font-size: 0.78rem; }
 
+/* ---- contact: one route to a person, on every page ----
+   Footer type, footer colour, sitting under the link row as the last line of
+   the footer. The address is the only interactive word in the sentence, so it
+   is the only one that takes the ink colour and an underline on hover. The
+   anchor gets a 34px minimum height because a mail address on a phone is a tap
+   target, not a run of 0.9rem text. */
+.footer-contact { margin: 0.7rem 0 0; color: var(--ink-dim); font-size: 0.9rem; }
+.footer-contact a {
+  color: var(--ink);
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+}
+.footer-contact a:hover { text-decoration: underline; }
+
 /* ---- prose ---- */
 
 .wrap { max-width: 1180px; margin: 0 auto; padding: 1.4rem 1.1rem; }
@@ -527,6 +542,11 @@ details.faq p { color: var(--ink-dim); }
   .toolbar,
   .site-footer,
   .peer-sites,
+  /* Named, although .site-footer above already hides its parent. The print
+     output here is the ruled sheet at true scale and nothing else, so every
+     element that exists is listed by name rather than left to a parent rule
+     that a later refactor could move it out from under. */
+  .footer-contact,
   .panel,
   .stage-note,
   .prose,

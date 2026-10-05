@@ -19,6 +19,47 @@ from urllib.parse import urlencode
 
 ROOT = pathlib.Path(__file__).parent
 SITE = "https://paperprintouts.com"
+
+# ---- one route to a person ----
+#
+# Every character of the href and of the link text is written as a decimal
+# numeric character reference. The HTML parser decodes them while it parses, so
+# the anchor ends up with a real mailto: URL, keeps its place in the tab order,
+# and is read out as the plain address by a screen reader. Neither "@" nor the
+# string "mailto:hello" appears anywhere in the bytes a scraper downloads.
+#
+# No JavaScript. A link that needs script to work fails for the reader who has
+# script off and still works for the scraper that runs it, which is the wrong
+# way round.
+#
+# The address is written once, in plain text, and encoded here. The privacy
+# page reads the same two strings, so the policy and the footer cannot
+# disagree.
+#
+# It prints on nothing. `.footer-contact` is named in the @media print hide
+# list in assets/style.css, beside `.site-footer`, because this site's one
+# print output is the ruled sheet at true scale.
+
+
+def ncr(text):
+    """Every character of `text` as a decimal numeric character reference."""
+    return "".join("&#%d;" % ord(c) for c in text)
+
+
+CONTACT_ADDRESS = "hello@goodbotbad.bot"
+CONTACT_HREF = ncr("mailto:" + CONTACT_ADDRESS)
+CONTACT_LABEL = ncr(CONTACT_ADDRESS)
+
+CONTACT_LINE = (
+    '  <p class="footer-contact">Questions or a problem with a sheet? '
+    '<a href="%s">%s</a></p>' % (CONTACT_HREF, CONTACT_LABEL)
+)
+
+
+class Raw(str):
+    """Paragraph text that is already HTML and must not be escaped again."""
+
+
 NAME = "Paper Printouts"
 
 # ---------------------------------------------------------------- page specs
@@ -2199,6 +2240,11 @@ LEGAL = [
          "This site shows advertising through Google AdSense, which may set cookies and use them "
          "to personalise the advertising you see. You can control that through Google's own ad "
          "settings.",
+         # Raw, not escaped: this paragraph is a link. The policy had no way to
+         # reach anybody, which made every other promise on it unanswerable.
+         Raw('Questions about this policy go to <a href="%s">%s</a>, which is also '
+             'the contact link in the footer of every page here.'
+             % (CONTACT_HREF, CONTACT_LABEL)),
      ]),
     ("terms", "Terms", "Terms — Paper Printouts",
      "Terms of use for Paper Printouts.",
@@ -2495,13 +2541,14 @@ FOOTER = """
   <p><a href="/">All tools</a> &middot; <a href="/sheets/">Every printable sheet</a>
   &middot; <a href="/print-calibration/">Printer calibration</a>
   &middot; <a href="/privacy/">Privacy</a> &middot; <a href="/terms/">Terms</a></p>
+{contact_line}
 </footer>
 <a href="https://erabb.it" class="erabbit-mark" aria-label="erabb.it"><img src="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>&#129365;</text></svg>" width="10" height="10" alt=""></a>
 <script src="/assets/app.js"></script>
 {tool_script}
 </body>
 </html>
-""".replace("{peer_sites}", PEER_SITES)
+""".replace("{peer_sites}", PEER_SITES).replace("{contact_line}", CONTACT_LINE)
 
 
 def faq_jsonld(faq):
@@ -2658,7 +2705,9 @@ def tool_page(page):
 def legal_page(slug, nav, title, desc, paras):
     canonical = "%s/%s/" % (SITE, slug)
     body = '<main id="main" class="wrap"><div class="prose"><h1>%s</h1>%s</div></main>' % (
-        sx.escape(nav), "\n".join("<p>%s</p>" % sx.escape(p) for p in paras)
+        sx.escape(nav),
+        "\n".join("<p>%s</p>" % (p if isinstance(p, Raw) else sx.escape(p))
+                  for p in paras)
     )
     return (head(title, desc, canonical, breadcrumb_jsonld(nav, canonical))
             .replace("{nav}", nav_html("/%s/" % slug))
@@ -2779,16 +2828,89 @@ def not_found():
             .replace("{nav}", nav_html("/404")) + body + FOOTER.replace("{tool_script}", ""))
 
 
-def last_commit_date(path):
-    """The day the file this URL serves last changed, read from git.
+def dirty_paths():
+    """Every path git reports as changed or untracked, repo-relative, posix.
 
-    The file mtime is not that day and must not be the primary source. A fresh
-    clone gives every file the same mtime, and a build run touches every page it
-    writes whether the bytes changed or not. Git is the only record of the day
-    the page really changed. The mtime stays as the fallback for a tarball with
-    no history, and nothing wider than OSError is caught here: a missing import
-    or a bad regex must fail the build loudly, not fall through in silence.
+    One call for the whole repo. A call per file would ask git the same
+    question fifty times and get the same answer.
+
+    `--porcelain -z` writes NUL-separated entries and never quotes or escapes a
+    path, so a name with a space or a non-ASCII character survives. Columns 0
+    and 1 are the status code, column 2 is a space, and the path starts at
+    column 3. A rename or copy entry is two NUL-separated fields, "old" then
+    "new"; the second is the file that exists now, so take it and drop the
+    first.
     """
+    try:
+        out = subprocess.run(["git", "status", "--porcelain", "-z"],
+                             cwd=ROOT, capture_output=True, text=True, timeout=20)
+    except (OSError, subprocess.SubprocessError):
+        return None
+    if out.returncode != 0:
+        return None
+    fields = out.stdout.split("\0")
+    paths, i = set(), 0
+    while i < len(fields):
+        entry, i = fields[i], i + 1
+        if not entry:
+            continue
+        code, path = entry[:2], entry[3:]
+        if "R" in code or "C" in code:
+            if i < len(fields):
+                path, i = fields[i], i + 1
+        if path:
+            paths.add(path)
+    return paths
+
+
+# Read on the first call and reused. The order matters: main() writes every
+# page first and builds the sitemap last, so the set has to be read AFTER the
+# pages are on disk. A page this run rewrote counts as dirty only once the
+# write has returned. Reading it at import time would ask git about a tree the
+# build has not touched yet and miss every page it changes.
+_DIRTY = []
+
+
+def dirty_set():
+    if not _DIRTY:
+        _DIRTY.append(dirty_paths())
+    return _DIRTY[0]
+
+
+def last_commit_date(path):
+    """The day the file this URL serves last changed. Three sources, in order:
+
+        today            if the file is dirty or untracked right now
+        git log -1       otherwise
+        the mtime        only where git cannot answer at all
+
+    The dirty test is the half that was missing, and without it the date is
+    always one build behind. The sitemap is written BEFORE the commit that
+    ships it, so `git log -1` on a page this run just rewrote returns the
+    PREVIOUS commit's day. The moment the commit lands, that page's last commit
+    is the new one, a rebuild moves the date forward, and a check on a clean
+    tree fails with nothing actually changed.
+
+    Dating a dirty file today closes the loop. The file is dirty during the
+    build, so the sitemap says today. The commit lands, the file goes clean,
+    and its last commit is today, so the next rebuild says today again and the
+    sitemap still matches.
+
+    The mtime is never the primary source. A fresh clone gives every file the
+    same mtime, `git pull` rewrites them, and a build run touches every page it
+    writes whether the bytes changed or not. The mtime stays as the fallback
+    for a tarball with no history. Nothing wider than OSError is caught here: a
+    missing import or a bad regex must fail the build loudly, not fall through
+    in silence.
+    """
+    dirty = dirty_set()
+    if dirty is not None:
+        try:
+            rel = pathlib.Path(path).resolve().relative_to(ROOT.resolve()).as_posix()
+        except ValueError:
+            rel = None
+        if rel is not None and rel in dirty:
+            return datetime.date.today().isoformat()
     try:
         out = subprocess.run(
             ["git", "log", "-1", "--format=%ad", "--date=short", "--", str(path)],
