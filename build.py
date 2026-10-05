@@ -2472,10 +2472,7 @@ def head(title, desc, canonical, extra_json=""):
 # everything else that is not the sheet.
 
 PEERS = [
-    ("https://drawlots.net/", "Spinners, dice and random pickers", "drawlots.net"),
-    ("https://blanknotepad.com/", "A blank notepad that autosaves", "blanknotepad.com"),
-    ("https://clocklab.net/", "Timers, stopwatch and world clock", "clocklab.net"),
-    ("https://gamutlens.com/", "Color pickers, palettes and contrast", "gamutlens.com"),
+    ("https://perfecttune.net/", "Tuner, metronome and tone generator", "perfecttune.net"),
 ]
 
 PEER_SITES = (
